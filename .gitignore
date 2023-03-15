@@ -1,3 +1,4 @@
 import/
 export/
 .idea
+src/test/__pycache__/

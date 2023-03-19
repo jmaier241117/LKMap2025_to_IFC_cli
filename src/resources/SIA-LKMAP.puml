@@ -149,16 +149,9 @@ Verschluss
 }
 
 class Bankett{
-!! Bankett im Kanal oder Schacht
-   -OBJ_ID: TEXT*20;
-   Superclass: -> BauwerksTeil;  !! 1-1 Beziehung / relation
-   Art: OPTIONAL (
-      andere,
-      beidseitig,
-      einseitig,
-      kein,
-      unbekannt
-    );}
+-OBJ_ID: TEXT*20;
+Art:
+}
 
 class Vorflutereinlauf{
 -OBJ_ID : String

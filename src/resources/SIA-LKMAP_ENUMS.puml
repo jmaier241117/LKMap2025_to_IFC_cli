@@ -1,0 +1,257 @@
+@startuml
+
+enum BaulicherZustand {
+    Z0
+    Z1
+    Z2
+    Z3
+    Z4
+}
+
+enum Sanierungsbedarf {
+    dringend
+    keiner
+    kurzfristig
+    langfristig
+    mittelfristig    
+}
+
+enum Status{
+    aufgehoben_nicht_verfuellt
+    aufgehoben_
+    ausser_Betrieb
+    Berechnungsvariante
+    geplant
+    in_Betrieb
+    Projekt
+    provisorisch    
+    verfuellt
+    wird_aufgehoben
+}
+
+enum Zugänglichkeit{
+    ueberdeckt   
+    unzugaenglich
+    zugaenglich
+}
+enum Umhüllung {
+      erdverlegt
+      in_Kanal_aufgehaengt
+      in_Kanal_einbetoniert
+      in_Leitungsgang
+      in_Vortriebsrohr_Beton
+      in_Vortriebsrohr_Stahl
+      Sand
+      SIA_Typ1
+      SIA_Typ2
+      SIA_Typ3
+      SIA_Typ4      
+}
+
+enum  Funktion_Entwässerungssystem{
+      Arealentwaesserung
+      Gewaesser
+      Hauptsammelkanal
+      Hauptsammelkanal_regional
+      Liegenschaftsentwaesserung
+      Sammelkanal
+      Sanierungsleitung
+      Strassenentwaesserung      
+}
+enum HydraulischeAusführung {
+      Drainagetransportleitung
+      Drosselleitung
+      Duekerleitung
+      Freispiegelleitung
+      Pumpendruckleitung
+      Sickerleitung
+      Speicherleitung
+      Spuelleitung      
+      Vakuumleitung
+}
+
+enum Nutzungsart{
+      Bachwasser
+      entlastetes_Mischabwasser
+      Industrieabwasser
+      Mischabwasser
+      Regenabwasser
+      Reinabwasser
+      Schmutzabwasser      
+}
+
+enum Verbindungsart {
+      Elektroschweissmuffen
+      Flachmuffen
+      Flansch
+      Glockenmuffen
+      Kupplung
+      Schraubmuffen
+      spiegelgeschweisst
+      Spitzmuffen
+      Steckmuffen
+      Ueberschiebmuffen    
+      Vortriebsrohrkupplung
+}
+
+enum Auslaufform {
+  abgerundet
+      blendenfoermig
+      keine_Querschnittsaenderung
+      scharfkantig     
+}
+
+enum Genauigkeit{
+      groesser_6cm
+      plusminus_1cm
+      plusminus_3cm
+      plusminus_6cm     
+}
+
+enum ProfilTyp{
+      Eiprofil
+      Kreisprofil
+      Maulprofil
+      offenes_Profil
+      Rechteckprofil
+      Spezialprofil     
+}
+
+enum VersickerungsArt{
+   _mit_Bodenpassage
+      _ohne_Bodenpassage
+      Flaechenfoermige_Versickerung
+      Kieskoerper
+      Kombination_Schacht_Strang
+      MuldenRigolenversickerung     
+      Versickerung_ueber_die_Schulter
+      Versickerungsbecken
+      Versickerungsschacht
+      Versickerungsstrang_Galerie
+}
+
+enum Mängel{
+     keine
+      unwesentliche
+      wesentliche
+}
+
+enum Notüberlauf {
+    inMischwasserkanalisation
+      inRegenwasserkanalisation
+      inVorfluter
+      keiner
+      oberflaechlichausmuendend     
+}
+
+enum WasserTyp{
+      Regenabwasserer
+      Reinabwasser     
+}
+
+enum Einstiegsart {
+      Drucktuere
+      keine
+      Leiter
+      Steigeisen
+      Treppe
+      Trittnischen
+      Tuere      
+}
+
+enum Material{
+      kombiniert
+      Kunststoff
+      Steinzeug      
+      Zementmoertel
+       Beton
+      Guss
+      Guss_mit_Belagsfuellung
+      Guss_mit_Betonfuellung
+      Asbestzement
+      Beton_Normalbeton
+      Beton_Ortsbeton
+      Beton_Pressrohrbeton
+      Beton_Spezialbeton
+      Beton_unbekannt
+      Faserzement
+      Gebrannte_Steine
+      Guss_duktil
+      Guss_Grauguss
+      Kunststoff_Epoxydharz
+      Kunststoff_Hartpolyethylen
+      Kunststoff_Polyester_GUP
+      Kunststoff_Polyethylen
+      Kunststoff_Polypropylen
+      Kunststoff_Polyvinilchlorid
+      Kunststoff_unbekannt
+      Stahl
+      Stahl_rostfrei
+      Steinzeug
+      Ton
+      unbekannt
+      Zement
+}
+
+enum DeckelForm{
+      eckig
+      rund      
+}
+
+enum InnenschutzKanal{
+  Anstrich_Beschichtung
+      Kanalklinkerauskleidung
+      Steinzeugauskleidung
+      unbekannt
+      Zementmoertelauskleidung
+}
+
+enum SchachtFunktion{
+      Absturzbauwerk
+      Be_Entlueftung
+      Dachwasserschacht
+      Einlaufschacht
+      Entwaesserungsrinne
+      Geleiseschacht
+      Hochwasserentlastung
+      Klaergrube
+      Kontrollschacht
+      Oelabscheider
+      Pumpwerk
+      Schlammsammler
+      Schwimmstoffabscheider
+      Spuelschacht
+      Trennschacht
+}
+
+enum Oberflächenzulauf {
+      keiner
+      Rost
+      Zulauf_seitlich
+}
+
+enum BauwerkFunktion{
+      Absturzbauwerk
+      Be_Entlueftung
+      Duekerkammer
+      Gelaendemulde
+      Geschiebefang
+      Hochwasserentlastung
+      Jauchegrube
+      Klaergrube
+      Kontrollschacht
+      Oelabscheider
+      Pumpwerk
+      Regenbecken_Durchlaufbecken
+      Regenbecken_Fangbecken
+      Regenbecken_Regenklaerbecken
+      Regenbecken_Regenrueckhaltebecken
+      Regenbecken_Verbundbecken
+      Schwimmstoffabscheider
+      seitlicherZugang
+      Spuelschacht
+      Trennschacht
+      Wirbelfallschacht
+}
+
+@enduml

@@ -1,0 +1,216 @@
+@startuml
+
+Abwasserbauwerk <|-- Kanal
+Abwasserbauwerk <|-- Vorflutereinlauf
+Abwasserbauwerk -- BauwerksTeil
+Abwasserbauwerk <|-- Spezialbauwerk
+Abwasserbauwerk <|-- Versickerungsanlage
+Abwasserbauwerk -- Abwassernetzelement
+Abwasserbauwerk <|-- Normschacht
+Abwasserbauwerk -- AbwasserbauwerkText
+Versickerungsanlage ..> Rohrprofil
+Rohrprofil -- Haltung
+Haltung -- HaltungText
+Haltung -- HaltungsPunkt
+Abwassernetzelement -- Haltung
+Abwassernetzelement -- Abwasserknoten
+BauwerksTeil <|-- Bankett
+BauwerksTeil <|-- Trockenwetterfallrohr
+BauwerksTeil <|-- Trockenwetterrinne
+BauwerksTeil <|-- Deckel
+BauwerksTeil <|-- Einstieghilfe
+
+
+class Abwasserbauwerk {
+-OBJ_ID : String
+Eigentümer : Organisation
+Betreiber : Organisation
+BauJahr : Jahr
+BaulicherZustand : BaulicherZustand
+Baulos : String
+Bezeichnung : String
+Bruttokosten : CHF
+Detailgeometrie : Einzelflächen
+ErsatzJahr : Jahr
+Inspektionsintervall : Intervall
+Sanierungsbedarf : Sanierungsbedarf
+Standortname : String
+Status : Status
+Subventionen : CHF
+Zugänglichkeit : Zugänglichkeit
+Letzte_Änderung : Date
+MD_Datenherr : String
+}
+class Kanal {
+-OBJ_ID : String
+Bettung_Umhüllung : Umhüllung
+FunktionHierarchisch : Funktion_Entwässerungssystem
+FunktionHydraulisch : HydraulischeAusführung
+Nutzungsart_geplant : Nutzungsart
+Nutzungsart_Ist : Nutzungsart
+Rorlänge : Länge
+Spülintervall : Intervall
+Verbindungsart
+}
+
+
+class Versickerungsanlage {
+-OBJ_ID : String
+Art : VersickerungsArt
+Beschriftung : Boolean
+Dimension1 : Abmessung
+Dimension2 : Abmessung
+GWDistanz : Länge
+Mängel : Mängel
+Notüberlauf : Notüberlauf
+Saugwagen : Zugänglichkeit
+Schluckvermögen : M3S
+Versickerungswasser : WasserTyp
+Wasserdichtheit : Boolean
+Wirksamefläche : Flächeninhalt
+}
+class Abwassernetzelement {
+-OBJ_ID : String
+Bemerkung : String
+Bezeichnung : String
+Letzte_Änderung : Date
+MD_Datenherr : String
+}
+
+class AbwasserbauwerkText {
+Textinhalt : String
+TextPos: LKoord
+TextOri : Orientierung
+TextHAli : HALIGNMENT
+TextVAli : VALIGNMENT
+PlanTyp : PlanTyp
+Bemerkung : String
+}
+
+class HaltungsPunkt{
+-OBJ_ID : String
+Auslaufform: Auslaufform
+Bemerkung : String
+Bezeichnung : String
+Höhengenauigkeit : Genauigkeit
+Kote: Höhe
+Lage : LKoord
+Lage_Anschluss : Zifferblatt
+Letzte_Änderung : Date
+MD_Datenherr : String
+}
+
+class Rohrprofil{
+-OBJ_ID : String
+Bemerkung : String
+Bezeichnung : String
+HöhenBreitenverhältnis : Verhältnis
+ProfilTyp: ProfilTyp
+Letzte_Änderung : Date
+MD_Datenherr : String
+}
+
+class BauwerksTeil {
+-OBJ_ID : String
+Bemerkung : String
+Bezeichnung : String
+Instandstellung : Boolean
+Letzte_Änderung : Date
+MD_Datenherr : String
+}
+
+class Trockenwetterfallrohr{
+-OBJ_ID : String
+Durchmesser : Abmessung
+}
+
+class Einstieghilfe {
+-OBJ_ID : String
+Art : Einstiegsart
+}
+
+class Trockenwetterrinne {
+-OBJ_ID : String
+Material: Material
+}
+
+class Deckel{
+-OBJ_ID : String
+Deckelform : Deckelform
+Durchmesser : Abmessung
+Entlüftung : Boolean
+Fabrikat : String
+Kote : Höhe
+Lage : LKoord
+Lagegenauigkeit :
+Material : Material
+Schlammeimer
+Verschluss
+}
+
+class Bankett{
+!! Bankett im Kanal oder Schacht
+   -OBJ_ID: TEXT*20;
+   Superclass: -> BauwerksTeil;  !! 1-1 Beziehung / relation
+   Art: OPTIONAL (
+      andere,
+      beidseitig,
+      einseitig,
+      kein,
+      unbekannt
+    );}
+
+class Vorflutereinlauf{
+-OBJ_ID : String
+Hochwasserkote : Höhe
+}
+
+class Normschacht {
+-OBJ_ID : String
+Dimension1 : Abmessung
+Dimension2 : Abmessung
+Funktion : SchachtFunktion
+Material : Material
+Oberflächenzulauf : Oberflaechenzulauf
+}
+
+class Spezialbauwerk {
+-OBJ_ID : String
+Bypass : Boolean
+Funktion : BauwerkFunktion
+}
+
+class Abwasserknoten{
+-OBJ_ID : String
+Lage: LKoord
+Rückstaukote : Höhe
+Sohlenkote : Höhe
+}
+
+class Haltung{
+-OBJ_ID : String
+vonHaltungspunkt : HaltungsPunkt
+nachHaltungspunkt : HaltungsPunkt
+Rohrprofil : Rohrprofil
+Innenschutz : Innenschutz
+LängeEffektiv: Länge
+Lagebestimmung :
+Lichte_Höhe : Abmessung
+Material : Material
+Reibungsbeiwert : Strickler
+Verlauf : Linienzug
+Wandrauhigkeit : Prandtl
+}
+
+class HaltungText{
+Textinhalt : String
+TextPos : LKoord
+TextOri : Orientierung
+TextHAli : HALIGNMENT
+TextVAli : VALIGNMENT
+PlanTyp : PlanTyp
+Bemerkung : String
+}
+
+
+@enduml

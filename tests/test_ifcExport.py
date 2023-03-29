@@ -10,6 +10,7 @@ from ifcopenshell.api import run
 _model: file = ifcopenshell.file()
 _project: Any = run("root.create_entity", _model, ifc_class="IfcProject", name="My _project")
 
+
 # Arrange
 @pytest.fixture
 def create_model():
@@ -44,4 +45,4 @@ def test_ifc_project_element_created(create_model):
 
 
 def test_write_model():
-    _model.write('C:/Users/jamie/SA/lkmap-to-ifc-sa/export/ifc/testModel.ifc')
+    _model.write('/export/ifc/testModel.ifc')

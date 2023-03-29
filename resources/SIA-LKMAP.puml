@@ -149,7 +149,7 @@ Verschluss
 }
 
 class Bankett{
--OBJ_ID: TEXT*20;
+po-OBJ_ID: TEXT*20;
 Art:
 }
 

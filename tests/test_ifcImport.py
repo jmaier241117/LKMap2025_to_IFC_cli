@@ -4,7 +4,7 @@ from ifcopenshell.api import run
 
 # test_with_pytest.py
 
-_model: file = ifcopenshell.open('C:/Users/jamie/SA/lkmap-to-ifc-sa/import/ifc/Vorderladern.ifc')
+_model: file = ifcopenshell.open('/import/ifc/Vorderladern.ifc')
 
 
 def test_ifc_file_opened():

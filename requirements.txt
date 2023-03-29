@@ -1,0 +1,3 @@
+ifcopenshell==0.7.0.230329
+pytest==7.2.2
+typer==0.7.0

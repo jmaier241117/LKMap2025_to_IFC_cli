@@ -1,4 +1,6 @@
 import/
 export/
 .idea
-src/test/__pycache__/
+node_modules/
+tests/__pycache__/
+lkmap_to_ifc_cli/__pycache__/

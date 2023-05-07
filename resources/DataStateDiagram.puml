@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale 350 width
+[*] --> LKMAP
+
+state LKMAP {
+  [*] --> DataSetStateInput
+  DataSetStateInput: LKMAP SIA 405: INTERLIS v2.3
+  DataSetStateInput --> Converting
+}
+
+state Converting {
+  [*] --> ili2gpkg
+  ili2gpkg: Geopackage
+
+}
+ili2gpkg--> BusinessLogic
+
+state BusinessLogic{
+  Converter: IFCOpenShell
+
+}
+BusinessLogic --> IFC
+state IFC {
+
+}
+@enduml

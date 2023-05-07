@@ -1,4 +1,6 @@
+from os.path import exists
 from typing import Any
+from ili2gpkg import Ili2gpkg
 
 import ifcopenshell
 import pytest
@@ -35,6 +37,8 @@ def create_model():
 
     run("spatial.assign_container", _model, relating_structure=storey, product=wall)
 
+    _model.write("export/TESTModel2.ifc")
+
 
 def test_ifc_file_created():
     assert _model != 0
@@ -45,4 +49,4 @@ def test_ifc_project_element_created(create_model):
 
 
 def test_write_model():
-    _model.write('/export/ifc/testModel.ifc')
+    assert exists('export/testModel2.ifc')

@@ -1,3 +1,5 @@
-ifcopenshell==0.7.0.230329
+ifcopenshell~=0.7.0.230218
 pytest==7.2.2
-typer==0.7.0
+typer~=0.4.1
+geopandas==0.12.2
+ili2gpkg==0.1.0

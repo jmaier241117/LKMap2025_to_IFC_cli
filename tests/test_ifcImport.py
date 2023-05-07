@@ -23,3 +23,11 @@ def test_ifc_project_by_guid_element():
 def test_ifc_only_one_project_element():
     project = _model.by_type('IfcProject')
     assert len(project) == 1
+
+
+def test_ifc_propertieSets():
+    buildingElementProxy = model.by_type('IfcBuildingElementProxy')
+    type = ifcopenshell.util.element.get_type(buildingElementProxy)
+
+    psets = ifcopenshell.util.element.get_psets(type)
+    print(psets)

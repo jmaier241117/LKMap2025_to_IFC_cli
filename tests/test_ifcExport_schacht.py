@@ -8,43 +8,26 @@ from ifcopenshell.api import run
 ifc_file: file = ifcopenshell.file()
 
 
-def create_cartesian_point(x, y, z):
-    return ifc_file.createIfcCartesianPoint((x, y, z))
-
-
-def create_direction(x, y, z):
-    return ifc_file.createIfcDirection((x, y, z))
-
-
 @pytest.fixture
 def create_model():
     # all ifc points directions and axis and local placements (not concerning shape)
-    point_of_model_context = ifc_file.createIfcAxis2Placement3D(create_cartesian_point(0.0, 0.0, 0.0),
-                                                                create_direction(0.0, 0.0, 1.0),
-                                                                create_direction(1.0, 0.0, 0.0))
-    point_of_plan_context = ifc_file.createIfcAxis2Placement2D(ifc_file.createIfcCartesianPoint((0.0, 0.0)),
-                                                               ifc_file.createIfcDirection((1.0, 0.0)))
-    site_placement = ifc_file.createIfcLocalPlacement(None, ifc_file.createIfcAxis2Placement3D(
-        create_cartesian_point(0.0, 0.0, 0.0),
-        create_direction(0.0, 0.0, 1.0), create_direction(1.0, 0.0, 0.0)))
-    building_placement = ifc_file.createIfcLocalPlacement(None, ifc_file.createIfcAxis2Placement3D(
-        create_cartesian_point(0.0, 0.0, 0.0),
-        create_direction(0.0, 0.0, 1.0), create_direction(1.0, 0.0, 0.0)))
-    storey_placement = ifc_file.createIfcLocalPlacement(None, ifc_file.createIfcAxis2Placement3D(
-        create_cartesian_point(0.0, 0.0, 0.0),
-        create_direction(0.0, 0.0, 1.0), create_direction(1.0, 0.0, 0.0)))
-    chamber_element_placement = ifc_file.createIfcLocalPlacement(storey_placement, ifc_file.createIfcAxis2Placement3D(
-        create_cartesian_point(0.0, 0.0, 0.0),
-        create_direction(0.0, 0.0, -2.0), create_direction(1.0, 0.0, 0.0)))
+    cartesian_point_3d = ifc_file.createIfcAxis2Placement3D(ifc_file.createIfcCartesianPoint((0.0, 0.0, 0.0)),
+                                                            ifc_file.createIfcDirection((0.0, 0.0, 1.0)),
+                                                            ifc_file.createIfcDirection((1.0, 0.0, 0.0)))
+    cartesian_point_2d = ifc_file.createIfcAxis2Placement2D(ifc_file.createIfcCartesianPoint((0.0, 0.0)),
+                                                            ifc_file.createIfcDirection((1.0, 0.0)))
+    chamber_element_placement = ifc_file.createIfcLocalPlacement(cartesian_point_3d, ifc_file.createIfcAxis2Placement3D(
+        ifc_file.createIfcCartesianPoint((0.0, 0.0, 0.0)),
+        ifc_file.createIfcDirection((0.0, 0.0, -2.0)), ifc_file.createIfcDirection((1.0, 0.0, 0.0))))
 
     # geometricrepresentation contexts and subcontexts
-    model_context = ifc_file.createIfcGeometricRepresentationContext(None, 'Model', 3, 0.01, point_of_model_context,
+    model_context = ifc_file.createIfcGeometricRepresentationContext(None, 'Model', 3, 0.01, cartesian_point_3d,
                                                                      None)
     body_subcontext = ifc_file.createIfcGeometricRepresentationSubContext('Body', 'Model', None, None, None, None,
                                                                           model_context, None, "MODEL_VIEW", None)
     box_subcontext = ifc_file.createIfcGeometricRepresentationSubContext('Box', 'Model', None, None, None, None,
                                                                          model_context, None, "MODEL_VIEW", None)
-    plan_context = ifc_file.createIfcGeometricRepresentationContext(None, 'Plan', 2, 0.01, point_of_plan_context, None)
+    plan_context = ifc_file.createIfcGeometricRepresentationContext(None, 'Plan', 2, 0.01, cartesian_point_2d, None)
 
     # unit assignment
     meters = ifc_file.createIfcSIUnit(None, "LENGTHUNIT", None, "METRE")
@@ -55,14 +38,15 @@ def create_model():
         ifc_file.createIfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0),
         "PLANEANGLEUNIT", 'degree', ifc_file.createIfcMeasureWithUnit(
             ifc_file.createIfcReal(0.0174532925199433), radian))
-    number_9 = ifc_file.createIfcUnitAssignment((cubic_meters, meters, degree, square_meters))
+    unit_assignment = ifc_file.createIfcUnitAssignment((cubic_meters, meters, degree, square_meters))
 
     # setup of project, site, building, storey
     project = ifc_file.createIfcProject('3Mw7bnApr2c9W2BHbLjz8u', None, 'My Project', None, None, None, None,
-                                        (model_context, plan_context), number_9)
-    site = ifc_file.createIfcSite('09lELwXV10KwfwS9Yk8xNU', None, 'My Site', None, None, site_placement)
-    building = ifc_file.createIfcBuilding('07LQpIgG19OA8IqP7TdCKf', None, 'My Building', None, None, building_placement)
-    storey = ifc_file.createIfcBuildingStorey('0P35MQM2zBqvf7SHE9DS4X', None, 'My Storey', None, None, storey_placement)
+                                        (model_context, plan_context), unit_assignment)
+    site = ifc_file.createIfcSite('09lELwXV10KwfwS9Yk8xNU', None, 'My Site', None, None, cartesian_point_3d)
+    building = ifc_file.createIfcBuilding('07LQpIgG19OA8IqP7TdCKf', None, 'My Building', None, None, cartesian_point_3d)
+    storey = ifc_file.createIfcBuildingStorey('0P35MQM2zBqvf7SHE9DS4X', None, 'My Storey', None, None,
+                                              cartesian_point_3d)
 
     run("aggregate.assign_object", ifc_file, relating_object=project, product=site)
     run("aggregate.assign_object", ifc_file, relating_object=site, product=building)
@@ -82,15 +66,15 @@ def create_model():
         polygonalfaceset_tuple += (ifc_file.createIfcIndexedPolygonalFace(polygonalface_tuples),)
 
     # 73-78 setup of 3D representation of duct
-    polygonalfaceset_tuple += (
-        ifc_file.createIfcIndexedPolygonalFace(
-            (4, 2, 64, 62, 60, 58, 56, 54, 52, 50, 48, 46, 44, 42, 40, 38, 36, 34, 32,
-             30, 28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6)),)
+    odd_tuple = ()
+    for i in range(1, 64, 2):
+        odd_tuple += (i,)
+    even_tuple = (4, 2)
+    for i in range(64, 5, -2):
+        even_tuple += (i,)
+    polygonalfaceset_tuple += (ifc_file.createIfcIndexedPolygonalFace(even_tuple),)
     polygonalfaceset_tuple += (ifc_file.createIfcIndexedPolygonalFace((63, 64, 2, 1)),)
-    polygonalfaceset_tuple += (
-        ifc_file.createIfcIndexedPolygonalFace(
-            (1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39,
-             41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63)),)
+    polygonalfaceset_tuple += (ifc_file.createIfcIndexedPolygonalFace(odd_tuple),)
     cartesian_point_list_3d = ifc_file.createIfcCartesianPointList3D(
         ((0.00, 0.60, -2.00), (0.00, 0.60, 2.00), (0.12, 0.59, -2.00),
          (0.12, 0.59, 2.00), (0.23, 0.55, -2.00), (0.23, 0.55, 2.00),
@@ -104,14 +88,10 @@ def create_model():
          (0.33, -0.50, 2.00), (0.23, -0.55, -2.00), (0.23, -0.55, 2.00),
          (0.12, -0.59, -2.00), (0.12, -0.59, 2.00), (0.00, -0.60, -2.00),
          (0.00, -0.60, 2.00), (-0.12, -0.59, -2.0), (-0.12, -0.59, 2.00),
-         (-0.23, -0.55, -2.0), (-0.23, -0.55, 2.00),
-         (-0.33, -0.50, -2.0),
-         (-0.33, -0.50, 2.00), (-0.42, -0.42, -2.0),
-         (-0.42, -0.42, 2.00),
-         (-0.50, -0.33, -2.0), (-0.50, -0.33, 2.00),
-         (-0.55, -0.23, -2.0),
-         (-0.55, -0.23, 2.00), (-0.59, -0.12, -2.0),
-         (-0.59, -0.12, 2.00),
+         (-0.23, -0.55, -2.0), (-0.23, -0.55, 2.00), (-0.33, -0.50, -2.0),
+         (-0.33, -0.50, 2.00), (-0.42, -0.42, -2.0), (-0.42, -0.42, 2.00),
+         (-0.50, -0.33, -2.0), (-0.50, -0.33, 2.00), (-0.55, -0.23, -2.0),
+         (-0.55, -0.23, 2.00), (-0.59, -0.12, -2.0), (-0.59, -0.12, 2.00),
          (-0.60, 0.00, -2.00), (-0.60, 0.00, 2.00), (-0.59, 0.12, -2.00),
          (-0.59, 0.12, 2.00), (-0.55, 0.23, -2.00), (-0.55, 0.23, 2.00),
          (-0.50, 0.33, -2.00), (-0.50, 0.33, 2.00), (-0.42, 0.42, -2.00),

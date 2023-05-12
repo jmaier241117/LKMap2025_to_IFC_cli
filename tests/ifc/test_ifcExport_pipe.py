@@ -234,7 +234,7 @@ def create_model():
     ifc_file.createIfcRelContainedInSpatialStructure('1M6hNzVfn0JeEKNuVP5AEI', None, None, None, [pipe_segment_element],
                                                      storey)
 
-    ifc_file.write("test_pipe_bsp.ifc")
+    ifc_file.write("export/test_pipe_bsp.ifc")
 
 
 def test_model_created(create_model):

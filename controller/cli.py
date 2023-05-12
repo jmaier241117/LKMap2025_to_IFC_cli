@@ -2,7 +2,7 @@ from typing import Optional
 
 import typer
 
-from lkmap_to_ifc_cli import __app_name__, __version__
+from controller import __app_name__, __version__
 
 app = typer.Typer()
 

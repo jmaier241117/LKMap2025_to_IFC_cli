@@ -1,6 +1,7 @@
 import typer as typer
 
-from lkmap_to_ifc_cli import cli, __app_name__
+from controller import __app_name__
+from controller import cli
 
 
 def main(name: str):

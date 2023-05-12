@@ -118,7 +118,7 @@ def create_model():
                                                      [chamber_element],
                                                      storey)
 
-    ifc_file.write("test_schacht_bsp.ifc")
+    ifc_file.write("export/test_schacht_bsp.ifc")
 
 
 def test_model_created(create_model):

@@ -1,5 +1,6 @@
 import ifc.IfcProject as ifc
-import ifc.IfcElementBuilderImpls as IfcBuilder
+import ifc.IfcElementBuilderImpls as ifc_element
+import ifc.ifc_element_proxy_builder as ifc_proxy
 
 import pytest
 import ifcopenshell.guid
@@ -9,28 +10,25 @@ ifc_file = ifcopenshell.file()
 
 @pytest.fixture
 def create_model():
-    project = ifc.IfcProject(ifc_file, "Anwilerstr 10")
-    origin_builder = IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl
-    site = (origin_builder.assign_to_ifcFile(ifc_file).element_name("Site").build("site"))
-    building = (origin_builder.assign_to_ifcFile(ifc_file).element_name("Building").build("building"))
-    storey = (origin_builder.assign_to_ifcFile(ifc_file).element_name("Storey").build("storey"))
+    project = ifc.IfcProjectBuilder(ifc_file, "Pipe")
+    site = ifc_element.IfcSiteBuilder(ifc_file, "Site", project.project_zero_placement)
+    building = ifc_element.IfcBuildingBuilder(ifc_file, "Building", project.project_zero_placement)
+    storey = ifc_element.IfcBuildingStoreyBuilder(ifc_file, "Storey", project.project_zero_placement)
 
     ifc_file.createIfcRelAggregates("alskdjfeslda", None, None, None, project.ifc_project, [site.site_element])
     ifc_file.createIfcRelAggregates("alskdjfeslfa", None, None, None, site.site_element, [building.building_element])
     ifc_file.createIfcRelAggregates("alskdjfeslea", None, None, None, building.building_element,
                                     [storey.storey_element])
-
     coordinates = [{'coord_x': 27.34, 'coord_y': 4.30}, {'coord_x': 19.58, 'coord_y': 13.89},
                    {'coord_x': 29.59, 'coord_y': 17.29}, {'coord_x': 1.82, 'coord_y': 4.27},
                    {'coord_x': 5.31, 'coord_y': 11.45}, {'coord_x': 20.94, 'coord_y': 4.81},
                    {'coord_x': 5.79, 'coord_y': 35.21}]
-    element_builder = IfcBuilder.IfcBuildingElementProxyBuilderImpl
+
     chambers = ()
     for coord_tuple in coordinates:
-        chamber_element = (
-            element_builder.assign_to_ifcFile(ifc_file).element_name("coord_tuple").project_sub_contexts(
-                project.project_sub_contexts).coordinates(coord_tuple).radius(0.6).build("duct"))
-        chambers += (chamber_element.ifc_element,)
+        chamber_element1 = ifc_proxy.IfcBuildingElementProxyCHAMBER(ifc_file, project.project_sub_contexts,
+                                                                    coord_tuple, 0.6)
+        chambers += (chamber_element1.building_proxy_element,)
 
     coordinates_and_length = [
         {'coord_x': 29.04, 'coord_y': -2.41, 'length': 0.38, 'vector_x': -0.17, 'vector_y': 0.33},
@@ -100,11 +98,21 @@ def create_model():
     ]
     pipes = ()
     for coord_tuple in coordinates_and_length:
-        pipe_element = (element_builder.assign_to_ifcFile(ifc_file).element_name("coord_tuple").project_sub_contexts(
-            project.project_sub_contexts).length(coord_tuple).coordinates(coord_tuple).radius(0.3).build("pipe"))
+        pipe_element = ifc_proxy.IfcBuildingElementProxy(ifc_file, project.project_sub_contexts,
+                                                         coord_tuple, 0.3)
         pipes += (pipe_element.building_proxy_element,)
 
-    ifc_file.write("export/test_rothenfluh_builder_pattern.ifc")
+    ifc_file.createIfcRelContainedInSpatialStructure(
+        '1M6hNzVfn0JeEKNuVP5AEI', None,
+        None, None,
+        pipes, storey.storey_element)
+
+    ifc_file.createIfcRelContainedInSpatialStructure(
+        '1M6hNzVfn0JeEKNuVP5AFI', None,
+        None, None,
+        chambers, storey.storey_element)
+
+    ifc_file.write("export/test_pipe_with_swept_disk_solid.ifc")
 
 
 def test_model_created(create_model):

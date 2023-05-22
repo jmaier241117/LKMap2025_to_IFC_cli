@@ -1,55 +1,71 @@
+from abc import ABC, abstractmethod
+
 import ifcopenshell.guid
 
 
-class IfcSite:
-    def __init__(self, project_file, element_name, element_placement):
-        self.project_file = project_file
-        self.element_name = element_name
-        self.element_placement = element_placement
-        self.ifc_element = project_file.createIfcSite(ifcopenshell.guid.new(), None, element_name, None,
-                                                      None, element_placement)
+class AbstractIfcElement(ABC):
+
+    def __init__(self):
+        self.project_file = None
+        self.element_name = None
+        self.element_placement = None
+        self.element = None
+
+    @abstractmethod
+    def create_element_in_ifc_file(self):
+        pass
 
 
-class IfcBuilding:
-    def __init__(self, project_file, element_name, element_placement):
-        self.project_file = project_file
-        self.element_name = element_name
-        self.element_placement = element_placement
-        self.ifc_element = project_file.createIfcBuilding(ifcopenshell.guid.new(), None, element_name,
-                                                          None, None,
-                                                          element_placement)
+class IfcSite(AbstractIfcElement):
+
+    def create_element_in_ifc_file(self) -> any:
+        self.element = self.project_file.createIfcSite(ifcopenshell.guid.new(), None, self.element_name, None,
+                                                       None, self.element_placement)
 
 
-class IfcBuildingStorey:
-    def __init__(self, project_file, element_name, element_placement):
-        self.project_file = project_file
-        self.element_name = element_name
-        self.element_placement = element_placement
-        self.ifc_element = project_file.createIfcBuildingStorey(ifcopenshell.guid.new(), None,
-                                                                element_name, None, None,
-                                                                element_placement)
+class IfcBuilding(AbstractIfcElement):
+
+    def create_element_in_ifc_file(self) -> any:
+        self.element = self.project_file.createIfcBuilding(ifcopenshell.guid.new(), None, self.element_name, None,
+                                                           None, self.element_placement)
 
 
-class IfcBuildingElementProxyPipe:
-    def __init__(self, project_file, element_name, element_shape_def):
-        self.project_file = project_file
-        self.element_name = element_name
-        self.element_shape_def = element_shape_def
-        self.ifc_element = project_file.createIfcBuildingElementProxy(ifcopenshell.guid.new(), None, element_name,
-                                                                      None, None, None,
-                                                                      self.element_shape_def, None,
-                                                                      "ELEMENT")
+class IfcBuildingStorey(AbstractIfcElement):
+
+    def create_element_in_ifc_file(self) -> any:
+        self.element = self.project_file.createIfcBuildingStorey(ifcopenshell.guid.new(), None, self.element_name, None,
+                                                                 None, self.element_placement)
 
 
-class IfcBuildingElementProxyDuct:
-    def __init__(self, project_file, element_name, element_shape_def):
-        self.project_file = project_file
-        self.element_name = element_name
-        self.element_shape_def = element_shape_def
-        self.ifc_element = project_file.createIfcBuildingElementProxy(ifcopenshell.guid.new(), None, element_name,
-                                                                      None, None, None,
-                                                                      self.product_shape_def, None,
-                                                                      "ELEMENT")
+class IfcBuildingElementProxyPipe(AbstractIfcElement):
+    def __init__(self):
+        super().__init__()
+        self.element_shape_def = None
+        self.project_sub_contexts = None
+        self.coordinates = None
+        self.length = None
+        self.radius = None
+
+    def create_element_in_ifc_file(self) -> any:
+        self.element = self.project_file.createIfcBuildingElementProxy(ifcopenshell.guid.new(), None, self.element_name,
+                                                                       None, None, None,
+                                                                       self.element_shape_def, None,
+                                                                       "ELEMENT")
+
+
+class IfcBuildingElementProxyDuct(AbstractIfcElement):
+    def __init__(self):
+        super().__init__()
+        self.element_shape_def = None
+        self.project_sub_contexts = None
+        self.coordinates = None
+        self.radius = None
+
+    def create_element_in_ifc_file(self) -> any:
+        self.element = self.project_file.createIfcBuildingElementProxy(ifcopenshell.guid.new(), None, self.element_name,
+                                                                       None, None, None,
+                                                                       self.element_shape_def, None,
+                                                                       "ELEMENT")
 
 
 class IfcDistributionChamberElement:

@@ -1,4 +1,4 @@
-import ifc.IfcProject as ifc
+import ifc.IfcProject as IfcProjectBuilder
 import ifc.IfcElementBuilderImpls as IfcBuilder
 
 import pytest
@@ -9,28 +9,35 @@ ifc_file = ifcopenshell.file()
 
 @pytest.fixture
 def create_model():
-    project = ifc.IfcProject(ifc_file, "Anwilerstr 10")
-    origin_builder = IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl
-    site = (origin_builder.assign_to_ifcFile(ifc_file).element_name("Site").build("site"))
-    building = (origin_builder.assign_to_ifcFile(ifc_file).element_name("Building").build("building"))
-    storey = (origin_builder.assign_to_ifcFile(ifc_file).element_name("Storey").build("storey"))
-
-    ifc_file.createIfcRelAggregates("alskdjfeslda", None, None, None, project.ifc_project, [site.site_element])
-    ifc_file.createIfcRelAggregates("alskdjfeslfa", None, None, None, site.site_element, [building.building_element])
-    ifc_file.createIfcRelAggregates("alskdjfeslea", None, None, None, building.building_element,
-                                    [storey.storey_element])
+    project = IfcProjectBuilder.IfcProject(ifc_file, "Anwilerstr 10")
+    site = (
+        IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "site").assign_to_ifcFile().element_name(
+            "Site").build())
+    building = (
+        IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "building").assign_to_ifcFile().element_name(
+            "Building").build())
+    storey = (
+        IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "storey").assign_to_ifcFile().element_name(
+            "Ground Floor").build())
+    site.create_element_in_ifc_file()
+    building.create_element_in_ifc_file()
+    storey.create_element_in_ifc_file()
+    ifc_file.createIfcRelAggregates("alskdjfeslda", None, None, None, project.ifc_project, [site.element])
+    ifc_file.createIfcRelAggregates("alskdjfeslfa", None, None, None, site.element, [building.element])
+    ifc_file.createIfcRelAggregates("alskdjfeslea", None, None, None, building.element, [storey.element])
 
     coordinates = [{'coord_x': 27.34, 'coord_y': 4.30}, {'coord_x': 19.58, 'coord_y': 13.89},
                    {'coord_x': 29.59, 'coord_y': 17.29}, {'coord_x': 1.82, 'coord_y': 4.27},
                    {'coord_x': 5.31, 'coord_y': 11.45}, {'coord_x': 20.94, 'coord_y': 4.81},
                    {'coord_x': 5.79, 'coord_y': 35.21}]
-    element_builder = IfcBuilder.IfcBuildingElementProxyBuilderImpl
     chambers = ()
     for coord_tuple in coordinates:
         chamber_element = (
-            element_builder.assign_to_ifcFile(ifc_file).element_name("coord_tuple").project_sub_contexts(
-                project.project_sub_contexts).coordinates(coord_tuple).radius(0.6).build("duct"))
-        chambers += (chamber_element.ifc_element,)
+            IfcBuilder.IfcBuildingElementProxyBuilderImpl(ifc_file, "duct").assign_to_ifcFile().element_name("Pipe")
+            .project_sub_contexts(project.project_sub_contexts).coordinates(coord_tuple).radius(0.6).build()
+        )
+        chamber_element.create_element_in_ifc_file()
+        chambers += (chamber_element.element,)
 
     coordinates_and_length = [
         {'coord_x': 29.04, 'coord_y': -2.41, 'length': 0.38, 'vector_x': -0.17, 'vector_y': 0.33},
@@ -100,9 +107,12 @@ def create_model():
     ]
     pipes = ()
     for coord_tuple in coordinates_and_length:
-        pipe_element = (element_builder.assign_to_ifcFile(ifc_file).element_name("coord_tuple").project_sub_contexts(
-            project.project_sub_contexts).length(coord_tuple).coordinates(coord_tuple).radius(0.3).build("pipe"))
-        pipes += (pipe_element.building_proxy_element,)
+        pipe_element = (
+            IfcBuilder.IfcBuildingElementProxyBuilderImpl(ifc_file, "pipe").assign_to_ifcFile().element_name(
+                "Pipe").project_sub_contexts(project.project_sub_contexts).length(coord_tuple).coordinates(
+                coord_tuple).radius(0.6).build())
+        pipe_element.create_element_in_ifc_file()
+        pipes += (pipe_element.element,)
 
     ifc_file.write("export/test_rothenfluh_builder_pattern.ifc")
 

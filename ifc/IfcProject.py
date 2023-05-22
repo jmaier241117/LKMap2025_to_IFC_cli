@@ -39,7 +39,7 @@ class IfcProject:
             'plan_context': project_file.createIfcGeometricRepresentationContext(None, context_type_plan, 2,
                                                                                  0.01,
                                                                                  self.project_zero_points['2D'], None)}
-        self.project_subcontexts = {
+        self.project_sub_contexts = {
             'body_subcontext': project_file.createIfcGeometricRepresentationSubContext(context_identifier_body,
                                                                                        context_type_model, None,
                                                                                        None, None, None,

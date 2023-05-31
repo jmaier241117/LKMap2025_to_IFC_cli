@@ -12,13 +12,13 @@ def create_model():
     project = IfcProjectBuilder.IfcProject(ifc_file, "Anwilerstr 10")
     site = (
         IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "site").assign_to_ifcFile().element_name(
-            "Site").build())
+            "Site").element_zero_placement().build())
     building = (
         IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "building").assign_to_ifcFile().element_name(
-            "Building").build())
+            "Building").element_zero_placement().build())
     storey = (
         IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "storey").assign_to_ifcFile().element_name(
-            "Ground Floor").build())
+            "Ground Floor").element_zero_placement().build())
     site.create_element_in_ifc_file()
     building.create_element_in_ifc_file()
     storey.create_element_in_ifc_file()
@@ -33,7 +33,7 @@ def create_model():
     chambers = ()
     for coord_tuple in coordinates:
         chamber_element = (
-            IfcBuilder.IfcBuildingElementProxyBuilderImpl(ifc_file, "duct").assign_to_ifcFile().element_name("Pipe")
+            IfcBuilder.IfcBuildingElementProxyBuilderImpl(ifc_file, "duct").assign_to_ifcFile().element_name("Chamber")
             .project_sub_contexts(project.project_sub_contexts).coordinates(coord_tuple).radius(0.6).build()
         )
         chamber_element.create_element_in_ifc_file()
@@ -110,11 +110,21 @@ def create_model():
         pipe_element = (
             IfcBuilder.IfcBuildingElementProxyBuilderImpl(ifc_file, "pipe").assign_to_ifcFile().element_name(
                 "Pipe").project_sub_contexts(project.project_sub_contexts).length(coord_tuple).coordinates(
-                coord_tuple).radius(0.6).build())
+                coord_tuple).radius(0.3).build())
         pipe_element.create_element_in_ifc_file()
         pipes += (pipe_element.element,)
 
-    ifc_file.write("export/test_rothenfluh_builder_pattern.ifc")
+    ifc_file.createIfcRelContainedInSpatialStructure(
+        '1M6hNzVfn0JeEKNuVP5AEI', None,
+        None, None,
+        pipes, storey.element)
+
+    ifc_file.createIfcRelContainedInSpatialStructure(
+        '1M6hNzVfn0JeEKNuVP5AFI', None,
+        None, None,
+        chambers, storey.element)
+
+    ifc_file.write("export/test_rothenfluh.ifc")
 
 
 def test_model_created(create_model):

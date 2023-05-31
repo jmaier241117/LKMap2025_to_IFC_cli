@@ -134,40 +134,23 @@ class IfcBuildingElementProxyBuilderImpl(IIfcElementBuilder):
 
     def build(self) -> any:
         if self.element_type == 'pipe':
-            line = self.project_file.createIfcLine(self.project_file.createIfcCartesianPoint(
-                (self.pipe.coordinates['coord_x'], self.pipe.coordinates['coord_y'], 0.0)),
-                self.project_file.createIfcVector(
-                    self.project_file.createIfcDirection(
-                        (self.pipe.coordinates['vector_x'],
-                         self.pipe.coordinates['vector_y'], 0.0)),
-                    self.pipe.length['length']))
-            self.pipe.shape_rep = self.build_shape_rep(self.build_curve(line), self.pipe.radius,
+            cartesian_point_list_2d = self.project_file.createIfcCartesianPointList2D(self.pipe.coordinates)
+            poly_indexed_curve = self.project_file.createIfcIndexedPolyCurve(cartesian_point_list_2d)
+            self.pipe.shape_rep = self.build_shape_rep(poly_indexed_curve, self.pipe.radius,
                                                        self.pipe.project_sub_contexts)
             return self.pipe
         elif self.element_type == 'duct':
-            line = self.project_file.createIfcLine(self.project_file.createIfcCartesianPoint(
-                (self.duct.coordinates['coord_x'], self.duct.coordinates['coord_y'], 0.0)),
-                self.project_file.createIfcVector(
-                    self.project_file.createIfcDirection((0.0, 0.0, 1.0)), 2.0))
-            self.duct.shape_rep = self.build_shape_rep(self.build_curve(line), self.duct.radius,
+            cartesian_point_list_2d = self.project_file.createIfcCartesianPointList2D([self.duct.coordinates])
+            poly_indexed_curve = self.project_file.createIfcIndexedPolyCurve(cartesian_point_list_2d)
+            self.duct.shape_rep = self.build_shape_rep(poly_indexed_curve, self.duct.radius,
                                                        self.duct.project_sub_contexts)
             return self.duct
         else:
             raise Exception()
 
-    def build_curve(self, line) -> any:
-        trimmed_curve = self.project_file.createIfcTrimmedCurve(line,
-                                                                [self.project_file.createIfcParameterValue(0.0)],
-                                                                [self.project_file.createIfcParameterValue(1.25)],
-                                                                True, "PARAMETER")
+    def build_shape_rep(self, poly_indexed_curve, radius, project_sub_contexts) -> any:
 
-        composite_curve_segment = self.project_file.createIfcCompositeCurveSegment("CONTINUOUS", True,
-                                                                                   trimmed_curve)
-        return self.project_file.createIfcCompositeCurve([composite_curve_segment], False)
-
-    def build_shape_rep(self, composite_curve, radius, project_sub_contexts) -> any:
-
-        swept_disk_solid = self.project_file.createIfcSweptDiskSolid(composite_curve, radius)
+        swept_disk_solid = self.project_file.createIfcSweptDiskSolidPolygonal(poly_indexed_curve, radius, radius * 0.75)
 
         shape_rep = self.project_file.createIfcShapeRepresentation(project_sub_contexts['body_subcontext'],
                                                                    'Body', 'SolidModel', [swept_disk_solid])

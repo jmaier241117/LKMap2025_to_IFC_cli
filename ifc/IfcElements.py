@@ -40,7 +40,7 @@ class IfcBuildingStorey(AbstractIfcElement):
 class IfcBuildingElementProxyPipe(AbstractIfcElement):
     def __init__(self):
         super().__init__()
-        self.element_shape_def = None
+        self.shape_rep = None
         self.project_sub_contexts = None
         self.coordinates = None
         self.length = None
@@ -49,14 +49,14 @@ class IfcBuildingElementProxyPipe(AbstractIfcElement):
     def create_element_in_ifc_file(self) -> any:
         self.element = self.project_file.createIfcBuildingElementProxy(ifcopenshell.guid.new(), None, self.element_name,
                                                                        None, None, None,
-                                                                       self.element_shape_def, None,
+                                                                       self.shape_rep, None,
                                                                        "ELEMENT")
 
 
 class IfcBuildingElementProxyDuct(AbstractIfcElement):
     def __init__(self):
         super().__init__()
-        self.element_shape_def = None
+        self.shape_rep = None
         self.project_sub_contexts = None
         self.coordinates = None
         self.radius = None
@@ -64,7 +64,8 @@ class IfcBuildingElementProxyDuct(AbstractIfcElement):
     def create_element_in_ifc_file(self) -> any:
         self.element = self.project_file.createIfcBuildingElementProxy(ifcopenshell.guid.new(), None, self.element_name,
                                                                        None, None, None,
-                                                                       self.element_shape_def, None,
+                                                                       self.shape_rep
+                                                                       , None,
                                                                        "ELEMENT")
 
 

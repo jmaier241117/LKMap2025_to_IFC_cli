@@ -6,7 +6,7 @@ from ifcopenshell import file
 import ifc.IfcProject as IfcProjectBuilder
 import ifc.IfcElementBuilderImpls as IfcBuilder
 
-ifc_file: file = ifcopenshell.file()
+ifc_file: file = ifcopenshell.file(schema="IFC4X3_TC1")
 
 
 @pytest.fixture
@@ -24,9 +24,9 @@ def create_model():
     site.create_element_in_ifc_file()
     building.create_element_in_ifc_file()
     storey.create_element_in_ifc_file()
-    ifc_file.createIfcRelAggregates("alskdjfeslda", None, None, None, project.ifc_project, [site.element])
-    ifc_file.createIfcRelAggregates("alskdjfeslfa", None, None, None, site.element, [building.element])
-    ifc_file.createIfcRelAggregates("alskdjfeslea", None, None, None, building.element, [storey.element])
+    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, project.ifc_project, [site.element])
+    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, site.element, [building.element])
+    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, building.element, [storey.element])
 
     cartesianPointList2D = ifc_file.createIfcCartesianPointList2D(((20.44, 4.73), (20.14, 4.83),
                                                                    (14.83, 9.07), (14.55, 9.26),
@@ -46,13 +46,13 @@ def create_model():
     pipe_prod_shape = ifc_file.createIfcProductDefinitionShape(None, None, (bounding_box_shape_rep,
                                                                             shape_rep))
 
-    pipe_segment_element = ifc_file.createIfcDistributionFlowElement('3IryYYgibBfAnY6kfakPYk', None, 'Pipe', None,
+    pipe_segment_element = ifc_file.createIfcDistributionFlowElement(ifcopenshell.guid.new(), None, 'Pipe', None,
                                                                      None, None, pipe_prod_shape)
 
-    ifc_file.createIfcRelContainedInSpatialStructure('1M6hNzVfn0JeEKNuVP5AEI', None, None, None, [pipe_segment_element],
+    ifc_file.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.new(), None, None, None, [pipe_segment_element],
                                                      storey.element)
 
-    ifc_file.write("export/test_pipe_swept_disk_solid.ifc")
+    ifc_file.write("export/test_pipe_43_TC1.ifc")
 
 
 def test_model_created(create_model):

@@ -16,9 +16,14 @@ areas_constrained = rothenfluh_areas.cx[bbox.bounds[0]:bbox.bounds[2], bbox.boun
 lines_constrained = rothenfluh_lines.cx[bbox.bounds[0]:bbox.bounds[2], bbox.bounds[1]:bbox.bounds[3]]
 points_constrained = rothenfluh_points.cx[bbox.bounds[0]:bbox.bounds[2], bbox.bounds[1]:bbox.bounds[3]]
 
+filtered_data = data.loc[data['id'].isin(ids)]
+
 areas_constrained.set_index("T_Ili_Tid")
 lines_constrained.set_index("T_Ili_Tid")
 points_constrained.set_index("T_Ili_Tid")
+
+areas_dict = {'type': 'LKFlaeche',
+              'features': []}
 
 points_dict = {'type': 'LKPunkt',
                'features': []}
@@ -37,4 +42,9 @@ for index, row in lines_constrained.iterrows():
                           'geometry': row.geometry.__geo_interface__}
     lines_dict['features'].append(lines_dict_feature)
 
-pprint.pprint(lines_constrained)
+for index, row in areas_constrained.iterrows():
+    area_dict_feature = {'object_type': row.objektart, 'obj_id': row.obj_id,
+                         'geometry': row.geometry.__geo_interface__}
+    areas_dict['features'].append(area_dict_feature)
+
+pprint.pprint(areas_dict)

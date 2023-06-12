@@ -1,7 +1,6 @@
 from typer.testing import CliRunner
 
-from controller import __app_name__, __version__
-from controller import cli
+from lkmap_to_ifc_cli import __app_name__, __version__, cli
 
 runner = CliRunner()
 

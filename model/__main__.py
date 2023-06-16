@@ -3,11 +3,11 @@ from model.GeometryFilter import LKObjectTypeFilter, RangeConstraintFilter
 
 # bbox = box(2635955.3, 1256666.5, 2635997.8, 1256709.9)
 
-object_dictionary = LKObjectTypeFilter.execute_filter("Rothenfluh.gpkg", None)
+object_dictionary = LKObjectTypeFilter("Rothenfluh.gpkg", None).execute_filter()
 print(object_dictionary)
 
-objects_in_range_dictionary = RangeConstraintFilter.execute_filter(object_dictionary,
-                                                                   (2635955.3, 1256666.5, 2635997.8, 1256709.9))
+objects_in_range_dictionary = RangeConstraintFilter(object_dictionary,
+                                                    (2635955.3, 1256666.5, 2635997.8, 1256709.9)).execute_filter()
 
 print(objects_in_range_dictionary)
 areas_dict = {'type': 'LKFlaeche',

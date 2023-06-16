@@ -6,3 +6,4 @@ tests/__pycache__/
 tests/ifc/export/
 lkmap_to_ifc_cli/__pycache__/
 tests/ifc/__pycache__/
+ifc/__pycache__/

@@ -37,42 +37,13 @@ class IfcBuildingStorey(AbstractIfcElement):
                                                                  None, self.element_placement)
 
 
-class IfcDistributionFlowElementPipe(AbstractIfcElement):
+class IfcDistributionFlowElement(AbstractIfcElement):
     def __init__(self):
         super().__init__()
         self.shape_rep = None
         self.project_sub_contexts = None
         self.coordinates = None
         self.radius = None
-
-    def create_element_in_ifc_file(self) -> any:
-        self.element = self.project_file.createIfcDistributionFlowElement(ifcopenshell.guid.new(), None,
-                                                                          self.element_name,
-                                                                          None, None, None,
-                                                                          self.shape_rep)
-
-
-class IfcDistributionFlowElementDuct(AbstractIfcElement):
-    def __init__(self):
-        super().__init__()
-        self.shape_rep = None
-        self.project_sub_contexts = None
-        self.coordinates = None
-        self.radius = None
-
-    def create_element_in_ifc_file(self) -> any:
-        self.element = self.project_file.createIfcDistributionFlowElement(ifcopenshell.guid.new(), None,
-                                                                          self.element_name,
-                                                                          None, None, None,
-                                                                          self.shape_rep)
-
-
-class IfcDistributionFlowElementOtherStructure(AbstractIfcElement):
-    def __init__(self):
-        super().__init__()
-        self.shape_rep = None
-        self.project_sub_contexts = None
-        self.coordinates = None
 
     def create_element_in_ifc_file(self) -> any:
         self.element = self.project_file.createIfcDistributionFlowElement(ifcopenshell.guid.new(), None,

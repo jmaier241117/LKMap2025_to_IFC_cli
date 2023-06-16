@@ -42,4 +42,5 @@ def convert(
                     fg=typer.colors.RED,
                     )
         raise typer.Exit(1)
+
     typer.Exit()

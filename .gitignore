@@ -9,3 +9,4 @@ tests/ifc/__pycache__/
 ifc/__pycache__/
 tests/model/__pycache__/
 model/__pycache__/
+.gpkg

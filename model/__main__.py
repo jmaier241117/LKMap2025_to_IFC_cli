@@ -1,42 +1,26 @@
 from model import GeometryFilter
-from model.GeometryFilter import LKObjectTypeFilter, RangeConstraintFilter
+from model.CharacteristicsFilter import CharacteristicsFilter
+from model.GeometryFilter import LKObjectTypeFilter, RangeConstraintFilter, GroupingToDictionaryFilter
+from itertools import islice
 
 # bbox = box(2635955.3, 1256666.5, 2635997.8, 1256709.9)
 
 object_dictionary = LKObjectTypeFilter("Rothenfluh.gpkg", None).execute_filter()
-print(object_dictionary)
+print(object_dictionary['area_objects'])
 
 objects_in_range_dictionary = RangeConstraintFilter(object_dictionary,
                                                     (2635955.3, 1256666.5, 2635997.8, 1256709.9)).execute_filter()
 
-print(objects_in_range_dictionary)
-areas_dict = {'type': 'LKFlaeche',
-              'features': []}
+print(objects_in_range_dictionary['lkflaeche'])
 
-points_dict = {'type': 'LKPunkt',
-               'features': []}
+dictionary = GroupingToDictionaryFilter(objects_in_range_dictionary, 'lkflaeche').execute_filter()
 
-lines_dict = {'type': 'LKLinie',
-              'features': [],
-              'characteristics': []}
+print(dictionary)
 
-# for index, row in points_constrained.iterrows():
-# points_dict_feature = {'object_type': row.objektart,
-#                      'obj_id': row.obj_id,
-#                      'geometry': row.geometry.__geo_interface__}
-#   points_dict['features'].append(points_dict_feature)
+# Loop through the dictionary starting from the second element
+for key, value in islice(dictionary.items(), 1, None):
+    characteristics_dictionary = CharacteristicsFilter("Rothenfluh.gpkg",
+                                                       {'obj_id': key, 'lkobject_type': 'lkflaeche'}).execute_filter()
+    dictionary[key]['characteristics'] = characteristics_dictionary
 
-# for index, row in lines_constrained.iterrows():
-# lines_dict_feature = {'object_type': row.objektart,
-#                     'obj_id': row.obj_id,
-#                     'geometry': row.geometry.__geo_interface__,
-#                     'characteristics': select_eigenschaft_of_line_object(gpkg_connection, "'" + row.obj_id + "'")}
-#   lines_dict['features'].append(lines_dict_feature)
-
-# for index, row in areas_constrained.iterrows():
-# area_dict_feature = {'object_type': row.objektart, 'obj_id': row.obj_id,
-#                     'geometry': row.geometry.__geo_interface__}
-#    areas_dict['features'].append(area_dict_feature)
-
-# print(lines_dict)
-# select_all_eigenschaften(gpkg_connection)
+print(dictionary)

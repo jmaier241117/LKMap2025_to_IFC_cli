@@ -8,6 +8,5 @@ version = "0.0.1"
 description = "LKMAP to IFC CLI Application"
 readme = "README.md"
 authors = [{ name = "Jamie Maier", email = "jamiemaier98@gmail.com" }]
+requires-python = ">=3.7"
 
-[project.scripts]
-lkmap_to_ifc_cli = "lkmap_to_ifc_cli.__main__:main"

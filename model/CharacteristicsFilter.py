@@ -13,7 +13,7 @@ class CharacteristicsFilter(IFilter):
 
 def _get_characteristics_of_objects(conn, object_id, lkobject_type) -> any:
     cur = conn.cursor()
-    query_string = "SELECT bezeichnung, wert FROM eigenschaften WHERE " + lkobject_type + "_eigenschaft = (SELECT T_ID FROM " + lkobject_type + " WHERE T_Ili_Tid = '" + object_id + "')"
+    query_string = "SELECT bezeichnung, wert FROM eigenschaften WHERE " + lkobject_type + "_eigenschaft = (SELECT T_Id FROM " + lkobject_type + " WHERE T_Ili_Tid = '" + object_id + "')"
     cur.execute(query_string)
     rows = cur.fetchall()
     characteristics = ()

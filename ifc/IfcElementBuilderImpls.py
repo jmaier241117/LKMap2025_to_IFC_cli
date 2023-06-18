@@ -82,6 +82,14 @@ class IfcDistributionFlowElementBuilderImpl(IIfcElementBuilder):
         self.element.element_name = name
         return self
 
+    def element_owner(self, owner):
+        self.element.owner = owner
+        return self
+
+    def element_object_type(self, object_type):
+        self.element.object_type = object_type
+        return self
+
     def project_sub_contexts(self, sub_contexts):
         self.element.project_sub_contexts = sub_contexts
         return self

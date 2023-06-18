@@ -1,4 +1,4 @@
-import ifc.IfcProject as IfcProjectBuilder
+import ifc.IfcFileBuilder as IfcProjectBuilder
 import ifc.IfcElementBuilderImpls as IfcBuilder
 
 import pytest

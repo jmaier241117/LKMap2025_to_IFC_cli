@@ -15,13 +15,34 @@ class FilterChain:
         lkobjecttype_filter_results = LKObjectTypeFilter(self.geopackage, None).execute_filter()
         range_constraint_filter_results = RangeConstraintFilter(lkobjecttype_filter_results,
                                                                 self.clipsrc).execute_filter()
-        for lkobject_type in self.lkobject_types:
-            grouped_dictionary_filter_result = GroupingToDictionaryFilter(
-                range_constraint_filter_results, lkobject_type).execute_filter()
-            for key, value in islice(grouped_dictionary_filter_result.items(), 1, None):
-                characteristics_dictionary = CharacteristicsFilter(self.geopackage,
-                                                                   {'obj_id': key,
-                                                                    'lkobject_type': lkobject_type}).execute_filter()
-                grouped_dictionary_filter_result[key]['characteristics'] = characteristics_dictionary
-            self.filtered_dictionaries += (grouped_dictionary_filter_result,)
+        # areas
+        grouped_area_dictionary_filter_result = GroupingToDictionaryFilter(
+            range_constraint_filter_results, 'lkflaeche').execute_filter()
+        for key, value in islice(grouped_area_dictionary_filter_result.items(), 1, None):
+            characteristics_dictionary = CharacteristicsFilter(self.geopackage,
+                                                               {'obj_id': key,
+                                                                'lkobject_type': 'lkflaeche'}).execute_filter()
+            grouped_area_dictionary_filter_result[key]['characteristics'] = characteristics_dictionary
+        self.filtered_dictionaries += (grouped_area_dictionary_filter_result,)
+
+        # lines
+        grouped_lines_dictionary_filter_result = GroupingToDictionaryFilter(
+            range_constraint_filter_results, 'lklinie').execute_filter()
+        for key, value in islice(grouped_lines_dictionary_filter_result.items(), 1, None):
+            characteristics_dictionary = CharacteristicsFilter(self.geopackage,
+                                                               {'obj_id': key,
+                                                                'lkobject_type': 'lklinie'}).execute_filter()
+            grouped_lines_dictionary_filter_result[key]['characteristics'] = characteristics_dictionary
+        self.filtered_dictionaries += (grouped_lines_dictionary_filter_result,)
+
+        # points
+        grouped_points_dictionary_filter_result = GroupingToDictionaryFilter(
+            range_constraint_filter_results, 'lkpunkt').execute_filter()
+        for key, value in islice(grouped_points_dictionary_filter_result.items(), 1, None):
+            characteristics_dictionary = CharacteristicsFilter(self.geopackage,
+                                                               {'obj_id': key,
+                                                                'lkobject_type': 'lkpunkt'}).execute_filter()
+            grouped_points_dictionary_filter_result[key]['characteristics'] = characteristics_dictionary
+        self.filtered_dictionaries += (grouped_points_dictionary_filter_result,)
+
         return self.filtered_dictionaries

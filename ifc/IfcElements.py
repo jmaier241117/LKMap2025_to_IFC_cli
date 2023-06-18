@@ -44,6 +44,8 @@ class IfcDistributionFlowElement(AbstractIfcElement):
         self.project_sub_contexts = None
         self.coordinates = None
         self.radius = None
+        self.owner = None
+        self.object_type = None
 
     def create_element_in_ifc_file(self) -> any:
         self.element = self.project_file.createIfcDistributionFlowElement(ifcopenshell.guid.new(), None,

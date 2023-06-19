@@ -18,9 +18,9 @@ context_identifier_box = 'Box'
 
 
 class IfcFileUtils:
-    def __init__(self, file_name):
+    def __init__(self, file_path):
         self.file = ifcopenshell.file()
-        self.file_name = file_name
+        self.file_path = file_path
 
     def relational_aggregates(self, from_element, to_element):
         self.file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, from_element, [to_element])
@@ -32,7 +32,7 @@ class IfcFileUtils:
             elements, spatial_endpoint.element)
 
     def write_ifc_file(self):
-        self.file.write("export/" + self.file_name)
+        self.file.write(self.file_path)
 
 
 class IfcProject:

@@ -1,5 +1,6 @@
 from itertools import islice
 
+from enhancer.IntelligentDefaults import ColorDefaults
 from enhancer.ZeroPointUtils import ZeroPointScaler
 from ifc.IfcFileBuilder import IfcFileUtils, IfcProject
 from ifc.IfcElementBuilderImpls import IfcSimpleOriginPlacementElementBuilderImpl, IfcDistributionFlowElementBuilderImpl
@@ -10,12 +11,12 @@ class Controller:
     def __init__(self, cli_arguments, cli_options):
         self.cli_arguments = cli_arguments
         self.cli_options = cli_options
-        self.ifc_file_utils = IfcFileUtils(self.cli_options['ifc_file_name'])
+        self.ifc_file_utils = IfcFileUtils(self.cli_options['ifc_file_path'])
         self.ifc_file = self.ifc_file_utils.file
         self.ifc_project_utils = IfcProject(self.ifc_file, "project")
         self.ifc_project = self.ifc_project_utils.ifc_project
 
-    def run_conversion(self) -> int:
+    def run_conversion(self):
         self._ifc_initialization()
         filter_chain = FilterChain(self.cli_arguments['gpkg'], self.cli_arguments['clipsrc'])
         filtered_dictionaries_tuple = filter_chain.execute_filters()
@@ -25,10 +26,13 @@ class Controller:
                 scaled_dictionary = scaler.scale_point_objects()
                 self._build_chamber_ifc_elements(scaled_dictionary, self.storey)
             if filtered_dictionary['lkobject_type'] == 'lklinie':
-                scaled_dictionary = scaler.scale_line_and_area_objects()
-                self._build_pipe_ifc_elements(scaled_dictionary, self.storey)
+                scaled_dictionary = scaler.scale_line_objects()
+                colored_elements = ColorDefaults(scaled_dictionary).assign_color_to_objects()
+                self._build_pipe_ifc_elements(colored_elements, self.storey)
+            if filtered_dictionary['lkobject_type'] == 'lkflaeche':
+                scaled_dictionary = scaler.scale_area_objects()
+                self._build_special_structure_ifc_elements(scaled_dictionary, self.storey)
         self.ifc_file_utils.write_ifc_file()
-        return 0
 
     def _ifc_initialization(self):
         site = (
@@ -69,7 +73,8 @@ class Controller:
             pipe_element = (
                 IfcDistributionFlowElementBuilderImpl(self.ifc_file, "pipe").assign_to_ifcFile().element_name(
                     key).element_owner(dataset[key]['object_owner']).element_object_type(
-                    dataset[key]['object_type']).project_sub_contexts(
+                    dataset[key]['object_type']).element_color(
+                    dataset[key]['characteristics']['color']).project_sub_contexts(
                     self.ifc_project_utils.project_sub_contexts).coordinates(
                     dataset[key]['geometry']).radius(0.3).build())
             pipe_element.create_element_in_ifc_file()

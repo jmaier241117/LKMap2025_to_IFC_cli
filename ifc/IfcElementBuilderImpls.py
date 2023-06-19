@@ -73,6 +73,7 @@ class IfcDistributionFlowElementBuilderImpl(IIfcElementBuilder):
         self.project_file = project_file
         self.element_type = element_type
         self.element = IfcDistributionFlowElement()
+        self.color = (0, 0, 0)  # Black
 
     def assign_to_ifcFile(self):
         self.element.project_file = self.project_file
@@ -88,6 +89,10 @@ class IfcDistributionFlowElementBuilderImpl(IIfcElementBuilder):
 
     def element_object_type(self, object_type):
         self.element.object_type = object_type
+        return self
+
+    def element_color(self, color_tuple):
+        self.color = color_tuple
         return self
 
     def project_sub_contexts(self, sub_contexts):
@@ -112,7 +117,8 @@ class IfcDistributionFlowElementBuilderImpl(IIfcElementBuilder):
             swept_disk_solid = self.project_file.createIfcSweptDiskSolidPolygonal(poly_indexed_curve,
                                                                                   self.element.radius,
                                                                                   self.element.radius * 0.75)
-            element_color = self.project_file.createIfcColourRgb('color', 0.5, 0.0, 1.0)
+            element_color = self.project_file.createIfcColourRgb('color', self.color[0], self.color[1],
+                                                                 self.color[2])
             self.build_style_rep(swept_disk_solid, element_color)
             self.element.shape_rep = self.build_shape_rep(swept_disk_solid, 'SolidModel',
                                                           self.element.project_sub_contexts)
@@ -136,7 +142,7 @@ class IfcDistributionFlowElementBuilderImpl(IIfcElementBuilder):
 
             swept_disk_solid = self.project_file.createIfcSweptDiskSolidPolygonal(composite_curve, self.element.radius,
                                                                                   self.element.radius * 0.75)
-            element_color = self.project_file.createIfcColourRgb('color', 0.0, 1.0, 0.5)
+            element_color = self.project_file.createIfcColourRgb('color', 0.27, 0.27, 0.27)
             self.build_style_rep(swept_disk_solid, element_color)
             self.element.shape_rep = self.build_shape_rep(swept_disk_solid, 'SolidModel',
                                                           self.element.project_sub_contexts)
@@ -150,7 +156,7 @@ class IfcDistributionFlowElementBuilderImpl(IIfcElementBuilder):
             direction = self.project_file.createIfcDirection((0.0, 0.0, 1.0))
             extruded_area_solid = self.project_file.createIfcExtrudedAreaSolid(arbitrary_closed_profile, None,
                                                                                direction, 2.0)
-            element_color = self.project_file.createIfcColourRgb('color', 1.0, 0.5, 0.0)
+            element_color = self.project_file.createIfcColourRgb('color', 0.88, 0.88, 0.88)
             self.build_style_rep(extruded_area_solid, element_color)
             self.element.shape_rep = self.build_shape_rep(extruded_area_solid, 'SweptSolid',
                                                           self.element.project_sub_contexts)

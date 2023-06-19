@@ -25,18 +25,23 @@ class ZeroPointScalerAreaTestCase(unittest.TestCase):
     def setUp(self):
         self.dataset = {'lkobject_type': 'lkflaeche',
                         'd': {'object_type': 4, 'object_owner': 'Bob',
-                              'geometry': ((2635982.943, 1256671.321), (2635982.905, 1256671.34),
-                                           (2635982.866, 1256671.354), (2635982.827, 1256671.365),
-                                           (2635982.787, 1256671.371), (2635982.748, 1256671.373),
-                                           (2635982.708, 1256671.371), (2635982.67, 1256671.365)),
+                              'geometry': (((2635982.943, 1256671.321), (2635982.905, 1256671.34),
+                                            (2635982.866, 1256671.354), (2635982.827, 1256671.365)),),
                               'characteristics': {'Funktion': 'Sammelkanal', 'Nutzungsart': 'Regenabwasser'}}}
         self.area_scaler = ZeroPointScaler(self.dataset, clipsrc)
         self.geom_tuples_d = self.dataset['d']['geometry']
+        self.geom_tuples_scaled = ((round(self.dataset['d']['geometry'][0][0][0] - clipsrc[0], 4),
+                                    round(self.dataset['d']['geometry'][0][0][1] - clipsrc[1], 4)),
+                                   (round(self.dataset['d']['geometry'][0][1][0] - clipsrc[0], 4),
+                                    round(self.dataset['d']['geometry'][0][1][1] - clipsrc[1], 4)),
+                                   (round(self.dataset['d']['geometry'][0][2][0] - clipsrc[0], 4),
+                                    round(self.dataset['d']['geometry'][0][2][1] - clipsrc[1], 4)),
+                                   (round(self.dataset['d']['geometry'][0][3][0] - clipsrc[0], 4),
+                                    round(self.dataset['d']['geometry'][0][3][1] - clipsrc[1], 4)))
 
     def test_scale_objects(self):
-        result = self.area_scaler.scale_line_and_area_objects()
-        for index, item in enumerate(self.geom_tuples_d):
-            self.assertEquals(result['d']['geometry'][index], (item[0] - clipsrc[0], item[1] - clipsrc[1]))
+        result = self.area_scaler.scale_area_objects()
+        self.assertEquals(self.geom_tuples_scaled, result['d']['geometry'])
 
 
 class ZeroPointScalerLineTestCase(unittest.TestCase):
@@ -63,7 +68,7 @@ class ZeroPointScalerLineTestCase(unittest.TestCase):
               round(self.dataset['c']['geometry'][1][1] - clipsrc[1], 4))))
 
     def test_scale_objects(self):
-        result = self.line_scaler.scale_line_and_area_objects()
+        result = self.line_scaler.scale_line_objects()
         result_tuple = (result['b']['geometry'], result['c']['geometry'])
         print(result_tuple)
         print("\n")

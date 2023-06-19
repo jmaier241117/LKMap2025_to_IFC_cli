@@ -24,8 +24,8 @@ class CharacteristicsFilterTestCase(unittest.TestCase):
         result = characteristics_filter.execute_filter()
 
         # Assert the expected results
-        expected_result = (('Funktion', 'Sammelkanal'),
-                           ('Nutzungsart', 'Regenabwasser'))
+        expected_result = {'Funktion': 'Sammelkanal',
+                           'Nutzungsart': 'Regenabwasser'}
         self.assertEqual(result, expected_result)
 
         # Assert the database connection and queries

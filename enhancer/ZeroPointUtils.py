@@ -12,12 +12,22 @@ class ZeroPointScaler:
             self.dataset[key]['geometry'] = self._subtract_minimums_for_coords(coordinate_tuple)
         return self.dataset
 
-    def scale_line_and_area_objects(self) -> any:
+    def scale_line_objects(self) -> any:
 
         for key in islice(self.dataset.keys(), 1, None):
             coordinates = self.dataset[key]['geometry']
             scaled_coordinates = ()
             for coordinate_tuple in coordinates:
+                scaled_coordinates += (self._subtract_minimums_for_coords(coordinate_tuple),)
+                self.dataset[key]['geometry'] = scaled_coordinates
+        return self.dataset
+
+    def scale_area_objects(self) -> any:
+        for key in islice(self.dataset.keys(), 1, None):
+            coordinates = self.dataset[key]['geometry']
+            scaled_coordinates = ()
+            first_coordinate_tuple = coordinates[0]
+            for coordinate_tuple in first_coordinate_tuple:
                 scaled_coordinates += (self._subtract_minimums_for_coords(coordinate_tuple),)
                 self.dataset[key]['geometry'] = scaled_coordinates
         return self.dataset

@@ -50,29 +50,31 @@ def convert_gpkg_to_ifc(
         clipsrc: Annotated[
             Tuple[float, float, float, float], typer.Argument(
                 help="The range for objects, format: [xmin, ymin, xmax, ymax]")],
-        ifc_file: Annotated[
+        ifc_file_path: Annotated[
             str, typer.Argument(help="The name to be used for the generated IFC file, format: <name>.ifc")],
 
 ) -> None:
-    conversion_init_error = _init_conversion_config(gpkg_path, ifc_file)
+    conversion_init_error = _init_conversion_config(gpkg_path, ifc_file_path)
     if conversion_init_error:
-        typer.secho(f'An error occured during parsing of the required arguments',
-                    fg=typer.colors.RED,
-                    )
+        typer.secho(
+            f'An error occured during parsing of the required arguments, please check that your arguments are valid',
+            fg=typer.colors.RED,
+        )
         raise typer.Exit(1)
-    controller = Controller({'gpkg': gpkg_path, 'clipsrc': clipsrc}, {'ifc_file_name': ifc_file})
+    controller = Controller({'gpkg': gpkg_path, 'clipsrc': clipsrc}, {'ifc_file_path': ifc_file_path})
     controller.run_conversion()
-    # ifc_file_name
+    typer.secho(f"The conversion has successfully completed, you can find your IFC file here \"{ifc_file_path}\"",
+                fg=typer.colors.GREEN)
     typer.Exit()
 
 
 def _init_conversion_config(gpkg_path: str, ifc_file: str) -> int:
     try:
         if not os.path.isfile(gpkg_path):
-            typer.secho(f"The GeoPackge {gpkg_path} cannot be found", fg=typer.colors.RED)
+            typer.secho(f"ERROR: The GeoPackge {gpkg_path} cannot be found", fg=typer.colors.RED)
             return GPKG_ERROR
         if os.path.isfile(ifc_file):
-            typer.secho(f"An ifc file with the given name already exists", fg=typer.colors.RED)
+            typer.secho(f"ERROR: An ifc file with the given name already exists", fg=typer.colors.RED)
             return IFC_ERROR
     except OSError:
         return CONFIG_ERROR

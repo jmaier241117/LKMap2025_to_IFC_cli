@@ -1,0 +1,28 @@
+@startuml
+!include C4_Component.puml
+
+title GIS-to-BIM Converter Prototype - Component Diagram
+
+Container(cli, "Command Line Interface", "Python, Typer", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
+
+Container_Boundary(c1, "Data Processing Controller") {
+    Component(controller, "Controller", "Python", "Controls the processing of given data")
+    Component(filterChain, "FilterChain", "Python, GeoPandas", "Provides Filters to process import data")
+    Component(defaults, "Intelligent Defaults", "Python", "Provides intelligent defaults for missing attributes in import data")
+    Component(ifcBuilder, "IFC Builder", "Python, IfcOpenShell", "Provides Builders to create a valid IFC 4.3 file")
+    Rel(controller, ifcBuilder, "Uses")
+    Rel(controller, defaults, "Uses")
+     }
+System_Ext(filesystem, "File System", "The file system provided by the OS")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
+
+
+Rel(cli, controller, "Uses")
+Rel(controller, filterChain, "Uses")
+Rel(controller, geoPackage, "given as argument")
+
+Rel(filterChain, geoPackage, "Uses")
+Rel(ifcBuilder, filesystem, "writes to")
+
+
+@enduml

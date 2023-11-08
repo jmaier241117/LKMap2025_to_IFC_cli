@@ -2,11 +2,5 @@ import/
 export/
 .idea
 node_modules/*
-tests/__pycache__/*
-tests/ifc/export/*
-lkmap_to_ifc_cli/__pycache__/*
-tests/ifc/__pycache__/*
-ifc/__pycache__/*
-tests/model/__pycache__/*
-model/__pycache__/*
+**/__pycache__/
 *.gpkg

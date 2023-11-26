@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from controller import Controller
-from model.FilterChain import FilterChain
+from model.DataProcessingChain import DataProcessingChain
 
 
 class TestController(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestController(unittest.TestCase):
         self.controller = Controller(self.cli_arguments, self.cli_options)
 
     def test_run_conversion(self):
-        FilterChain.execute_filters = MagicMock(return_value=
+        DataProcessingChain.execute_filters = MagicMock(return_value=
                                                 ({'lkobject_type': 'lkflaeche',
                                                   'd': {'object_type': 4, 'object_owner': 'Bob',
                                                         'geometry': (

@@ -1,10 +1,10 @@
 import sqlite3
 from sqlite3 import Error
 
-from model.IFilter import IFilter
+from model.IProcessor import IProcessor
 
 
-class CharacteristicsFilter(IFilter):
+class CharacteristicsProcessor(IProcessor):
     def execute_filter(self) -> any:
         gpkg_connection = _create_connection(self.dataset)
         return _get_characteristics_of_objects(gpkg_connection, self.filter_attribute['obj_id'],

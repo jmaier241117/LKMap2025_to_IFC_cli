@@ -1,4 +1,4 @@
-class IFilter:
+class IProcessor:
     def __init__(self, dataset, filter_attribute):
         self.dataset = dataset
         self.filter_attribute = filter_attribute

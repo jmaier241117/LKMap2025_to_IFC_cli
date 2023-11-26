@@ -2,13 +2,13 @@ import unittest
 import geopandas
 from shapely import box, linestrings, points
 
-from model.GeometryFilter import LKObjectTypeFilter, RangeConstraintFilter, GroupingToDictionaryFilter
+from model.GeometryProcessor import LKObjectTypeProcessor, RangeConstraintProcessor, GroupingToDictionaryFilter
 
 
 class TestLKObjectTypeFilter(unittest.TestCase):
     def test_execute_filter(self):
         dataset = "Rothenfluh.gpkg"
-        filter_obj = LKObjectTypeFilter(dataset, None)
+        filter_obj = LKObjectTypeProcessor(dataset, None)
         result = filter_obj.execute_filter()
 
         self.assertIsInstance(result, dict)
@@ -34,7 +34,7 @@ class TestRangeConstraintFilter(unittest.TestCase):
             'lkpunkt': 1
         }
         filter_attribute = [2, 2, 4, 4]
-        self.filter_obj = RangeConstraintFilter(dataset, filter_attribute)
+        self.filter_obj = RangeConstraintProcessor(dataset, filter_attribute)
 
     def test_execute_filter(self):
         result = self.filter_obj.execute_filter()
@@ -58,9 +58,9 @@ class TestRangeConstraintFilter(unittest.TestCase):
 
 class TestGroupingToDictionaryFilter(unittest.TestCase):
     def setUp(self):
-        first_filter_result = LKObjectTypeFilter("Rothenfluh.gpkg", None).execute_filter()
-        self.dataset = RangeConstraintFilter(first_filter_result,
-                                             (2635955.3, 1256666.5, 2635997.8, 1256709.9)).execute_filter()
+        first_filter_result = LKObjectTypeProcessor("Rothenfluh.gpkg", None).execute_filter()
+        self.dataset = RangeConstraintProcessor(first_filter_result,
+                                                (2635955.3, 1256666.5, 2635997.8, 1256709.9)).execute_filter()
         self.filter_attributes = {
             'lkflaeche': 'ch14fhv800986760',
             'lklinie': 'ch14fhv800471660',

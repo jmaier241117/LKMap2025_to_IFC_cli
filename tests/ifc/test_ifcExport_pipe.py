@@ -3,7 +3,7 @@ from os.path import exists
 import ifcopenshell
 import pytest
 from ifcopenshell import file
-import ifc.IfcProject as IfcProjectBuilder
+import ifc.IfcUtils as IfcProjectBuilder
 import ifc.IfcElementBuilderImpls as IfcBuilder
 
 ifc_file: file = ifcopenshell.file(schema="IFC4X3_TC1")
@@ -15,30 +15,22 @@ def create_model():
     site = (
         IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "site").assign_to_ifcFile().element_name(
             "Site").element_zero_placement().build())
-    building = (
-        IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "building").assign_to_ifcFile().element_name(
-            "Building").element_zero_placement().build())
-    storey = (
-        IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "storey").assign_to_ifcFile().element_name(
-            "Ground Floor").element_zero_placement().build())
     site.create_element_in_ifc_file()
-    building.create_element_in_ifc_file()
-    storey.create_element_in_ifc_file()
     ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, project.ifc_project, [site.element])
-    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, site.element, [building.element])
-    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, building.element, [storey.element])
 
-    cartesianPointList2D = ifc_file.createIfcCartesianPointList2D(((20.44, 4.73), (20.14, 4.83),
-                                                                   (14.83, 9.07), (14.55, 9.26),
-                                                                   (12.33, 10.81), (5.90, 11.24),
-                                                                   (5.31, 11.45)))
+    cartesianPointList2D = ifc_file.createIfcCartesianPointList2D(((20.44, 4.73), (20.14, 4.83)))
 
     polycurve = ifc_file.createIfcIndexedPolyCurve(cartesianPointList2D)
 
     swept_disk_solid = ifc_file.createIfcSweptDiskSolid(polycurve, 0.0025, 0.002)
+    swept_disk_solid_uncertainty = ifc_file.createIfcSweptDiskSolid(polycurve, 0.005, 0.002)
+    element_color = ifc_file.createIfcColourRgb('color', 0.2, 0.2, 1)
+    surface_style_rendering = ifc_file.createIfcSurfaceStyleShading(element_color, 0.75)
+    surface_style = ifc_file.createIfcSurfaceStyle("style", 'BOTH', [surface_style_rendering])
+    ifc_file.createIfcStyledItem(swept_disk_solid_uncertainty, [surface_style])
     shape_rep = ifc_file.createIfcShapeRepresentation(project.project_sub_contexts['body_subcontext'], 'Body',
                                                       'SolidModel',
-                                                      [swept_disk_solid])
+                                                      [swept_disk_solid, swept_disk_solid_uncertainty])
     bounding_box_of_element = ifc_file.createIfcBoundingBox(
         ifc_file.createIfcCartesianPoint((0.0, 0.0, 0.0)), 2, 2, 50)
     bounding_box_shape_rep = ifc_file.createIfcShapeRepresentation(
@@ -50,7 +42,7 @@ def create_model():
                                                                      None, None, pipe_prod_shape)
 
     ifc_file.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.new(), None, None, None, [pipe_segment_element],
-                                                     storey.element)
+                                                     site.element)
 
     ifc_file.write("export/test_pipe_43_TC1.ifc")
 

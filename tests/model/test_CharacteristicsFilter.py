@@ -1,7 +1,7 @@
 import unittest
 import sqlite3
 from unittest.mock import patch
-from model.CharacteristicsFilter import CharacteristicsFilter
+from model.CharacteristicsFilter import CharacteristicsProcessor
 
 
 class CharacteristicsFilterTestCase(unittest.TestCase):
@@ -18,7 +18,7 @@ class CharacteristicsFilterTestCase(unittest.TestCase):
         # Create an instance of the CharacteristicsFilter class
         dataset = 'data.gpkg'
         filter_attribute = {'obj_id': 'ch14fhv800471660', 'lkobject_type': 'area'}
-        characteristics_filter = CharacteristicsFilter(dataset, filter_attribute)
+        characteristics_filter = CharacteristicsProcessor(dataset, filter_attribute)
 
         # Call the execute_filter method
         result = characteristics_filter.execute_filter()

@@ -10,9 +10,9 @@ class LKObjectTypeProcessor(IProcessor):
         lines = geopandas.read_file(self.dataset, layer='lklinie')
         points = geopandas.read_file(self.dataset, layer='lkpunkt')
         return {
-            'area_objects': areas,
-            'line_objects': lines,
-            'point_objects': points
+            'lkflaeche': areas,
+            'lklinie': lines,
+            'lkpunkt': points
         }
 
 

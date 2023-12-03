@@ -3,20 +3,17 @@ from os.path import exists
 import ifcopenshell
 import pytest
 from ifcopenshell import file
-import ifc.IfcUtils as IfcProjectBuilder
-import ifc.IfcElementBuilderImpls as IfcBuilder
+from ifc.IfcProjectSetupBuilder import IfcProject, IfcSite
+from ifc import IfcUtils
 
-ifc_file: file = ifcopenshell.file(schema="IFC4X3_TC1")
+ifc_file: file = ifcopenshell.file(schema="IFC4X3")
 
 
 @pytest.fixture
 def create_model():
-    project = IfcProjectBuilder.IfcProject(ifc_file, "Pipes ")
-    site = (
-        IfcBuilder.IfcSimpleOriginPlacementElementBuilderImpl(ifc_file, "site").assign_to_ifcFile().element_name(
-            "Site").element_zero_placement().build())
-    site.create_element_in_ifc_file()
-    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, project.ifc_project, [site.element])
+    project = IfcProject(ifc_file, "Pipes", (200, 100, 4))
+    site = IfcSite(ifc_file, 'Site', IfcUtils.create_zero_placement(ifc_file))
+    ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, project.element, [site.element])
 
     cartesianPointList2D = ifc_file.createIfcCartesianPointList2D(((20.44, 4.73), (20.14, 4.83)))
 
@@ -28,13 +25,13 @@ def create_model():
     surface_style_rendering = ifc_file.createIfcSurfaceStyleShading(element_color, 0.75)
     surface_style = ifc_file.createIfcSurfaceStyle("style", 'BOTH', [surface_style_rendering])
     ifc_file.createIfcStyledItem(swept_disk_solid_uncertainty, [surface_style])
-    shape_rep = ifc_file.createIfcShapeRepresentation(project.project_sub_contexts['body_subcontext'], 'Body',
+    shape_rep = ifc_file.createIfcShapeRepresentation(project.project_contexts['model_context'], 'Body',
                                                       'SolidModel',
                                                       [swept_disk_solid, swept_disk_solid_uncertainty])
     bounding_box_of_element = ifc_file.createIfcBoundingBox(
         ifc_file.createIfcCartesianPoint((0.0, 0.0, 0.0)), 2, 2, 50)
     bounding_box_shape_rep = ifc_file.createIfcShapeRepresentation(
-        project.project_sub_contexts['box_subcontext'], 'Box', 'BoundingBox', [bounding_box_of_element])
+        project.project_contexts['model_context'], 'Box', 'BoundingBox', [bounding_box_of_element])
     pipe_prod_shape = ifc_file.createIfcProductDefinitionShape(None, None, (bounding_box_shape_rep,
                                                                             shape_rep))
 

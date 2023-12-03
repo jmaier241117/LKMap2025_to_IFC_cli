@@ -47,11 +47,12 @@ def main(
 @app.command()
 def convert_gpkg_to_ifc(
         gpkg_path: Annotated[str, typer.Argument(help="The path to the Geopackge you would like to use")],
-        clipsrc: Annotated[
-            Tuple[float, float, float, float], typer.Argument(
-                help="The range for objects, format: [xmin, ymin, xmax, ymax]")],
         ifc_file_path: Annotated[
             str, typer.Argument(help="The name to be used for the generated IFC file, format: <name>.ifc")],
+        reference_null_point: Annotated[Tuple[float, float, float], typer.Argument(
+            help="The reference null point for all elements, format LV95: x , y, z")],
+        clipsrc: Optional[Tuple[float, float, float, float]] = None,
+        # typer.Argument(help="The range for objects, format: [xmin, ymin, xmax, ymax]"),
 
 ) -> None:
     conversion_init_error = _init_conversion_config(gpkg_path, ifc_file_path)
@@ -61,7 +62,9 @@ def convert_gpkg_to_ifc(
             fg=typer.colors.RED,
         )
         raise typer.Exit(1)
-    controller = Controller({'gpkg': gpkg_path, 'clipsrc': clipsrc}, {'ifc_file_path': ifc_file_path})
+    controller = Controller(
+        {'gpkg': gpkg_path, 'ifc_file_path': ifc_file_path, 'reference_null_point': reference_null_point},
+        {'clipsrc': clipsrc})
     controller.run_conversion()
     typer.secho(f"The conversion has successfully completed, you can find your IFC file here \"{ifc_file_path}\"",
                 fg=typer.colors.GREEN)

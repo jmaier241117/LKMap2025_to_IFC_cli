@@ -16,7 +16,7 @@ class Controller:
 
 
     def run_conversion(self):
-        filter_chain = DataProcessingChain(self.cli_arguments['gpkg'], self.cli_arguments['clipsrc'])
+        filter_chain = DataProcessingChain(self.cli_arguments['gpkg'], self.cli_options['clipsrc'])
         filtered_dictionaries_tuple = filter_chain.execute_filters()
         self.ifc_controller.ifc_base_element_initialization()
         for filtered_dictionary in filtered_dictionaries_tuple:
@@ -31,7 +31,7 @@ class Controller:
             if filtered_dictionary['lkobject_type'] == 'lkflaeche':
              #   scaled_dictionary = scaler.scale_area_objects()
              self.ifc_controller.build_special_structure_ifc_elements(filtered_dictionary)
-        write_ifc_file(self.ifc_file, self.cli_options['ifc_file_path'])
+        write_ifc_file(self.ifc_file, self.cli_arguments['ifc_file_path'])
 
 
 

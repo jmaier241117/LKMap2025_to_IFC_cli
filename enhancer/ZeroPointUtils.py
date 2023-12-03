@@ -2,9 +2,9 @@ from itertools import islice
 
 
 class ZeroPointScaler:
-    def __init__(self, lkobject_type_dataset, clipsrc):
+    def __init__(self, lkobject_type_dataset, reference_null_point):
         self.dataset = lkobject_type_dataset
-        self.scale_attributes = (clipsrc[0], clipsrc[1])
+        self.scale_attributes = (reference_null_point[0], reference_null_point[1], reference_null_point[2])
 
     def scale_point_objects(self) -> any:
         for key in islice(self.dataset.keys(), 1, None):
@@ -33,7 +33,8 @@ class ZeroPointScaler:
         return self.dataset
 
     def _subtract_minimums_for_coords(self, coordinate_tuple) -> ():
-        x_coord, y_coord = coordinate_tuple
+        x_coord, y_coord, z_coord = coordinate_tuple
         x_coord -= self.scale_attributes[0]
         y_coord -= self.scale_attributes[1]
-        return round(x_coord, 4), round(y_coord, 4)
+        z_coord -= self.scale_attributes[2]
+        return round(x_coord, 4), round(y_coord, 4), round(x_coord, 4)

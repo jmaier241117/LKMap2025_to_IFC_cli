@@ -5,9 +5,10 @@ import geopandas
 
 
 class TapPointProcessor:
-    def __init__(self, dataset):
+    def __init__(self, dataset, type):
         self.dataset = dataset
         self.gpkg_connection = _create_connection(dataset)
+        self.type = type
 
     def execute_processor(self) -> any:
         tap_points = self._get_tap_points()
@@ -19,7 +20,7 @@ class TapPointProcessor:
         return self._combine_tap_points(tap_points)
 
     def _get_tap_points(self) -> any:
-        with open('tapPoint.sql', 'r') as sql_file:
+        with open("tappingPoints_" + self.type + ".sql", 'r') as sql_file:
             sql_script = sql_file.read()
         cur = self.gpkg_connection.cursor()
         cur.execute(sql_script)
@@ -48,22 +49,21 @@ class TapPointProcessor:
             tap_point_list = []
             for tap_point_id in tap_points[key]:
                 tap_point_list.append(list(tap_points[key][tap_point_id]['geometry']))
-            tap_points_combined[key] = {}
+            tap_points_combined[key] = []
             index = 0
-            counter = 0
             while index < len(tap_point_list):
-                x_and_y_match = tap_point_list[index][0:1]
+                x_and_y_match = tap_point_list[index][0:2]
                 index += 1
                 for tap_point in tap_point_list[index:]:
-                    if x_and_y_match == tap_point[0:1]:
+                    if x_and_y_match == tap_point[0:2]:
                         index -= 1
                         new_tap_point = tap_point_list[index]
                         new_tap_point.append(tap_point[2])
                         tap_point_list.pop(index)
                         tap_point_list.remove(tap_point)
-                        counter += 1
-                        tap_points_combined[key][counter] = sorted(new_tap_point, reverse=True)
+                        tap_points_combined[key].append(sorted(new_tap_point, reverse=True))
         return tap_points_combined
+
 
 def _create_connection(db_file):
     conn = None

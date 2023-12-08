@@ -1,3 +1,4 @@
+import json
 from itertools import islice
 
 from model.AttributeProcessor import AttributeProcessor
@@ -10,7 +11,6 @@ class DataProcessingChain:
     def __init__(self, geopackage, clipsrc):
         self.geopackage = geopackage
         self.clipsrc = clipsrc
-        self.lkobject_types = ('lkflaeche', 'lklinie', 'lkpunkt')
         self.filtered_dictionaries = ()
 
     def execute_filters(self) -> any:
@@ -26,31 +26,32 @@ class DataProcessingChain:
             to_dictionary_processor = GroupingToDictionaryProcessor(lkobjecttype_filter_results,
                                                                     attribute_dataset)
         # areas
-        area_dictionary = to_dictionary_processor.execute_standard_processor('lkflaeche')
-
-        for key in islice(area_dictionary.keys(), 1, None):
-            characteristics_dictionary = CharacteristicsProcessor(self.geopackage,
-                                                                  {'obj_id': key,
-                                                                   'lkobject_type': 'lkflaeche'}).execute_filter()
-            area_dictionary[key]['characteristics'] = characteristics_dictionary
-        self.filtered_dictionaries += (area_dictionary,)
+        area_dictionary = to_dictionary_processor.execute_processor('lkflaeche')
+        area_dictionary_characteristics = self._get_element_characteristics(area_dictionary, 'lkflaeche')
+        formatted_json1 = json.dumps(area_dictionary_characteristics, indent=4)
+        print(formatted_json1)
+        self.filtered_dictionaries += (area_dictionary_characteristics,)
 
         # lines
-        lines_dictionary = to_dictionary_processor.execute_standard_processor('lklinie')
-        for key in islice(lines_dictionary.keys(), 1, None):
-            characteristics_dictionary = CharacteristicsProcessor(self.geopackage,
-                                                                  {'obj_id': key,
-                                                                   'lkobject_type': 'lklinie'}).execute_filter()
-            lines_dictionary[key]['characteristics'] = characteristics_dictionary
-        self.filtered_dictionaries += (lines_dictionary,)
+        lines_dictionary = to_dictionary_processor.execute_processor('lklinie')
+        lines_dictionary_characteristics = self._get_element_characteristics(lines_dictionary, 'lklinie')
+        formatted_json2 = json.dumps(lines_dictionary_characteristics, indent=4)
+        print(formatted_json2)
+        self.filtered_dictionaries += (lines_dictionary_characteristics,)
 
         # points
-        points_dictionary = to_dictionary_processor.execute_standard_processor('lkpunkt')
-        for key in islice(points_dictionary.keys(), 1, None):
-            characteristics_dictionary = CharacteristicsProcessor(self.geopackage,
-                                                                  {'obj_id': key,
-                                                                   'lkobject_type': 'lkpunkt'}).execute_filter()
-            points_dictionary[key]['characteristics'] = characteristics_dictionary
-        self.filtered_dictionaries += (points_dictionary,)
+        points_dictionary = to_dictionary_processor.execute_processor('lkpunkt')
+        points_dictionary_characteristics = self._get_element_characteristics(points_dictionary, 'lkpunkt')
+        formatted_json3 = json.dumps(points_dictionary_characteristics, indent=4)
+        print(formatted_json3)
+        self.filtered_dictionaries += (points_dictionary_characteristics,)
 
         return self.filtered_dictionaries
+
+    def _get_element_characteristics(self, dictionary, object_type) -> any:
+        for key in islice(dictionary.keys(), 1, None):
+            characteristics_dictionary = CharacteristicsProcessor(self.geopackage,
+                                                                  {'obj_id': key,
+                                                                   'lkobject_type': object_type}).execute_filter()
+            dictionary[key]['characteristics'] = characteristics_dictionary
+        return dictionary

@@ -11,9 +11,9 @@ from ifc.IfcUtils import create_zero_placement, relational_aggregates, spatial_r
 
 
 class IfcCreationController:
-    def __init__(self):
+    def __init__(self, reference_null_point):
         self.file = ifcopenshell.file()
-        self.project = IfcProject(self.file, 'Project')
+        self.project = IfcProject(self.file, 'Project', reference_null_point)
         self.site = IfcSite(self.file, "Site", create_zero_placement(self.file))
 
     def ifc_base_element_initialization(self):

@@ -3,7 +3,7 @@ class GroupingToDictionaryProcessor():
         self.dataset = dataset
         self.attributes = attributes
 
-    def execute_standard_processor(self, lkobject_type) -> any:
+    def execute_processor(self, lkobject_type) -> any:
         dictionary = {'lkobject_type': lkobject_type}
         for index, row in self.dataset[lkobject_type].iterrows():
             dictionary[row.T_Ili_Tid] = {'attributes': {}}

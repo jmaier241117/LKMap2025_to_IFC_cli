@@ -1,6 +1,7 @@
 import sqlite3
 from itertools import islice
 from sqlite3 import Error
+from statistics import mean
 
 import geopandas
 
@@ -11,7 +12,7 @@ class CoordinateAdapter:
 
     def execute_point_coordinate_adapter(self, elements, tapping_points) -> any:
         for key in islice(elements.keys(), 1, None):
-            coordinate_2d = elements[key]['geometry']
+            coordinate_2d = list(elements[key]['geometry'])
             list_3d = []
             if key in tapping_points:
                 tap_point = tapping_points[key][0]
@@ -24,11 +25,12 @@ class CoordinateAdapter:
                 list_3d.append([coordinate_2d[0], coordinate_2d[1], self.scale_attributes[2]])
                 list_3d.append([coordinate_2d[0], coordinate_2d[1], (self.scale_attributes[2] - 2)])
             elements[key]['geometry'] = self._scale_objects(list_3d)
-            return elements
+        return elements
 
     def execute_line_coordinate_adapter(self, elements, tapping_points) -> any:
         for key in islice(elements.keys(), 1, None):
-            coordinate_list_2d = elements[key]['geometry']
+            coordinate_list_2d = list(elements[key]['geometry'])
+            coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
             list_3d = []
             if key in tapping_points:
                 tp_list = tapping_points[key]
@@ -43,26 +45,29 @@ class CoordinateAdapter:
                     index.append(self.scale_attributes[2])
                     list_3d.append(index)
             elements[key]['geometry'] = self._scale_objects(list_3d)
-            return elements
+        return elements
 
-    def _execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
+    def execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
         for key in islice(elements.keys(), 1, None):
-            coordinate_list_2d = elements[key]['geometry'][0]
+            coordinate_list_2d = list(elements[key]['geometry'][0])
+            coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
             list_3d = []
             if key in tapping_points:
-                # element has tapping points case 3, 4, 5
                 tp_list = tapping_points[key]
+                thickness_list = []
                 for index in tp_list:
                     x_and_y = index[0:2]
                     if any(x_and_y == coordinate_2d for coordinate_2d in coordinate_list_2d):
-                        list_3d.append([index[0], index[1], index[2]])
+                        thickness_list.append(index[2] - index[3])
                         list_3d.append([index[0], index[1], index[3]])
-                elements[key]['geometry'] = list_3d
-            else:
-                # case 1
+                        coordinate_list_2d.remove(x_and_y)
+                elements[key]['thickness'] = mean(thickness_list)
+            if coordinate_list_2d:
                 for index in coordinate_list_2d:
                     index.append(self.scale_attributes[2])
                     list_3d.append(index)
+            elements[key]['geometry'] = self._scale_objects(list_3d)
+        return elements
 
     def _scale_objects(self, coordinates) -> any:
         scaled_coordinates = ()

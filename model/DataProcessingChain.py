@@ -1,17 +1,22 @@
 import json
 from itertools import islice
 
+from model.TapPointProcessor import TapPointProcessor
 from model.AttributeProcessor import AttributeProcessor
 from model.CharacteristicsFilter import CharacteristicsProcessor
+from model.CoordinateAdapter import CoordinateAdapter
 from model.GeometryProcessor import LKObjectTypeProcessor, RangeConstraintProcessor
 from model.GroupingToDictionaryProcessor import GroupingToDictionaryProcessor
 
 
 class DataProcessingChain:
-    def __init__(self, geopackage, clipsrc):
-        self.geopackage = geopackage
+    def __init__(self, cli_arguments, clipsrc):
+        self.geopackage = cli_arguments['gpkg']
+        self.reference_null_point = cli_arguments['reference_null_point']
         self.clipsrc = clipsrc
         self.filtered_dictionaries = ()
+        self.tapping_points_processor = TapPointProcessor(self.geopackage)
+        self.coordinate_adapter = CoordinateAdapter(self.reference_null_point)
 
     def execute_filters(self) -> any:
         attribute_processor = AttributeProcessor(self.geopackage)
@@ -25,25 +30,30 @@ class DataProcessingChain:
         else:
             to_dictionary_processor = GroupingToDictionaryProcessor(lkobjecttype_filter_results,
                                                                     attribute_dataset)
-        # areas
-        area_dictionary = to_dictionary_processor.execute_processor('lkflaeche')
-        area_dictionary_characteristics = self._get_element_characteristics(area_dictionary, 'lkflaeche')
-        formatted_json1 = json.dumps(area_dictionary_characteristics, indent=4)
-        print(formatted_json1)
+
+        area_object_type = 'lkflaeche'
+        area_dictionary = to_dictionary_processor.execute_processor(area_object_type)
+        area_tapping_points = self.tapping_points_processor.execute_processor(area_object_type)
+        area_dictionary = self.coordinate_adapter.execute_area_coordinate_adapter(area_dictionary, area_tapping_points)
+        area_dictionary_characteristics = self._get_element_characteristics(area_dictionary, area_object_type)
         self.filtered_dictionaries += (area_dictionary_characteristics,)
 
         # lines
-        lines_dictionary = to_dictionary_processor.execute_processor('lklinie')
-        lines_dictionary_characteristics = self._get_element_characteristics(lines_dictionary, 'lklinie')
-        formatted_json2 = json.dumps(lines_dictionary_characteristics, indent=4)
-        print(formatted_json2)
+        line_object_type = 'lklinie'
+        lines_dictionary = to_dictionary_processor.execute_processor(line_object_type)
+        line_tapping_points = self.tapping_points_processor.execute_processor(line_object_type)
+        lines_dictionary = self.coordinate_adapter.execute_line_coordinate_adapter(lines_dictionary,
+                                                                                   line_tapping_points)
+        lines_dictionary_characteristics = self._get_element_characteristics(lines_dictionary, line_object_type)
         self.filtered_dictionaries += (lines_dictionary_characteristics,)
 
         # points
-        points_dictionary = to_dictionary_processor.execute_processor('lkpunkt')
-        points_dictionary_characteristics = self._get_element_characteristics(points_dictionary, 'lkpunkt')
-        formatted_json3 = json.dumps(points_dictionary_characteristics, indent=4)
-        print(formatted_json3)
+        point_object_type = 'lkpunkt'
+        points_dictionary = to_dictionary_processor.execute_processor(point_object_type)
+        point_tapping_points = self.tapping_points_processor.execute_processor(point_object_type)
+        points_dictionary = self.coordinate_adapter.execute_point_coordinate_adapter(points_dictionary,
+                                                                                     point_tapping_points)
+        points_dictionary_characteristics = self._get_element_characteristics(points_dictionary, point_object_type)
         self.filtered_dictionaries += (points_dictionary_characteristics,)
 
         return self.filtered_dictionaries

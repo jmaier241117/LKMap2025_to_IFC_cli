@@ -1,3 +1,6 @@
+import math
+
+
 class GroupingToDictionaryProcessor():
     def __init__(self, dataset, attributes):
         self.dataset = dataset
@@ -7,8 +10,9 @@ class GroupingToDictionaryProcessor():
         dictionary = {'lkobject_type': lkobject_type}
         for index, row in self.dataset[lkobject_type].iterrows():
             dictionary[row.T_Ili_Tid] = {'attributes': {}}
+            lookup_key = lkobject_type + '_object_types'
             dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Objektart'] = \
-                self.attributes['lkflaeche_object_types'][row.objektart]
+                self.attributes[lookup_key][row.objektart]
             dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Lagebestimmung'] = \
                 self.attributes['position_declaration_types'][row.lagebestimmung]
             dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Letzte_Aenderung'] = row.letzte_aenderung
@@ -38,5 +42,5 @@ class GroupingToDictionaryProcessor():
             lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite'] = str(row.breite)
             lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite_Annahme'] = str(row.breite_annahme)
             lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Profiltyp'] = self.attributes['profile_types'][
-                row.profiltyp]
+                row.profiltyp] if not math.isnan(row.profiltyp) else 'unbekannt'
         return lklinie_dictionary

@@ -22,11 +22,11 @@ class RangeConstraintProcessor(IProcessor):
         bbox = box(self.filter_attribute[0], self.filter_attribute[1], self.filter_attribute[2],
                    self.filter_attribute[3])
         dataframe_in_range = {
-            'lkflaeche': self.dataset['area_objects'].cx[bbox.bounds[0]:bbox.bounds[2],
+            'lkflaeche': self.dataset['lkflaeche'].cx[bbox.bounds[0]:bbox.bounds[2],
                          bbox.bounds[1]:bbox.bounds[3]],
-            'lklinie': self.dataset['line_objects'].cx[bbox.bounds[0]:bbox.bounds[2],
+            'lklinie': self.dataset['lklinie'].cx[bbox.bounds[0]:bbox.bounds[2],
                        bbox.bounds[1]:bbox.bounds[3]],
-            'lkpunkt': self.dataset['point_objects'].cx[bbox.bounds[0]:bbox.bounds[2],
+            'lkpunkt': self.dataset['lkpunkt'].cx[bbox.bounds[0]:bbox.bounds[2],
                        bbox.bounds[1]:bbox.bounds[3]]
         }
         return dataframe_in_range

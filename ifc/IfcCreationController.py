@@ -6,6 +6,7 @@ from ifc import IfcUtils
 from ifc.IfcElementBuilders import IfcDuctElementBuilder, IfcPipeElementBuilder, IfcSpecialStructureElementBuilder
 from ifc.IfcProjectSetupBuilder import IfcProject, IfcSite
 from ifc.IfcPropertySetBuilder import IfcPropertySet
+from ifc.IfcUtils import Uncertainty
 
 
 class IfcCreationController:
@@ -20,12 +21,19 @@ class IfcCreationController:
     def build_chamber_ifc_elements(self, dataset):
         chambers = ()
         for key in islice(dataset.keys(), 1, None):
+            if dataset[key]['attributes']['CHLKMap_Dimension1']:
+                radius = dataset[key]['attributes']['CHLKMap_Dimension1']
+                default_dimension_value = False
+            else:
+                radius = dataset[key]['attributes']['CHLKMap_Dimension_Annahme']
+                default_dimension_value = True
             chamber_element = (
                 IfcDuctElementBuilder(self.ifc_file).geometric_context(self.project.project_contexts['model_context'])
                 .element_name(key)
                 .coordinates(dataset[key]['geometry'])
-                .position_uncertain(True)
-                .radius(0.6)
+                .radius(radius)
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
+                                    default_dimension_value)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, chamber_element.distribution_flow_element,
                                                   dataset[key]['attributes'])
@@ -36,12 +44,19 @@ class IfcCreationController:
     def build_pipe_ifc_elements(self, dataset):
         pipes = ()
         for key in islice(dataset.keys(), 1, None):
+            if dataset[key]['attributes']['CHLKMap_Breite']:
+                radius = dataset[key]['attributes']['CHLKMap_Breite']
+                default_dimension_value = False
+            else:
+                radius = dataset[key]['attributes']['CHLKMap_Breite_Annahme']
+                default_dimension_value = True
             pipe_element = (
                 IfcPipeElementBuilder(self.ifc_file).geometric_context(self.project.project_contexts['model_context'])
                 .element_name(key)
                 .coordinates(dataset[key]['geometry'])
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']))
-                .radius(0.3)
+                .radius(radius)
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
+                                    default_dimension_value)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, pipe_element.distribution_flow_element,
                                                   dataset[key]['attributes'])
@@ -57,7 +72,7 @@ class IfcCreationController:
                     self.project.project_contexts['model_context'])
                 .element_name(key)
                 .coordinates(dataset[key]['geometry'])
-                .position_uncertain(True)
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']))
                 .thickness(2)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, special_element.distribution_flow_element,
@@ -83,8 +98,10 @@ class IfcCreationController:
         self.ifc_file.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.new(), None, None, None, elements,
                                                               spatial_endpoint.element)
 
-    def _check_uncertainty(self, uncertainty_value) -> bool:
-        if uncertainty_value == "unbekannt":
-            return True
+    def _check_uncertainty(self, uncertainty_value) -> any:
+        if uncertainty_value == Uncertainty.PRECISE.value:
+            return Uncertainty.PRECISE
+        elif uncertainty_value == Uncertainty.IMPRECISE.value:
+            return Uncertainty.IMPRECISE
         else:
-            return False
+            return Uncertainty.UNKNOWN

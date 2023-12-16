@@ -31,16 +31,18 @@ class GroupingToDictionaryProcessor():
 
     def _execute_lkpunkt_processor(self, lkpunkt_dictionary) -> any:
         for index, row in self.dataset['lkpunkt'].iterrows():
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Dimension1'] = str(row.dimension1)
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Dimension2'] = str(row.dimension2)
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Dimension_Annahme'] = str(row.dimension_annahme)
+            lkpunkt_dictionary[row.T_Ili_Tid]['attributes'][
+                'CHLKMap_Dimension1'] = row.dimension1 if not row.dimension1 else None
+            lkpunkt_dictionary[row.T_Ili_Tid]['attributes'][
+                'CHLKMap_Dimension2'] = row.dimension2 if not row.dimension2 else None
+            lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Dimension_Annahme'] = 600.0
             lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_SymbolOri'] = str(row.symbolori)
         return lkpunkt_dictionary
 
     def _execute_lklinie_processor(self, lklinie_dictionary) -> any:
         for index, row in self.dataset['lklinie'].iterrows():
-            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite'] = str(row.breite)
-            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite_Annahme'] = str(row.breite_annahme)
+            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite'] = row.breite if not row.breite else None
+            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite_Annahme'] = 250.0
             lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Profiltyp'] = self.attributes['profile_types'][
                 row.profiltyp] if not math.isnan(row.profiltyp) else 'unbekannt'
         return lklinie_dictionary

@@ -15,9 +15,11 @@ class IfcPropertySet:
         properties = ()
         for attribute in self.attributes:
             if self.attributes[attribute] is not None:
+                attribute_string = self.attributes[attribute] if isinstance(self.attributes[attribute], str) else str(
+                    self.attributes[attribute])
                 prop = self.project_file.createIfcPropertySingleValue(attribute, None,
                                                                       self.project_file.createIfcLabel(
-                                                                          self.attributes[attribute]))
+                                                                          attribute_string))
             else:
                 prop = self.project_file.createIfcPropertySingleValue(attribute, None,
                                                                       self.project_file.createIfcLabel(""))
@@ -30,4 +32,4 @@ class IfcPropertySet:
 
     def create_property_set_element_relationship(self):
         self.project_file.createIfcRelDefinesByProperties(ifcopenshell.guid.new(), None, 'RelProperties', None,
-                                                        [self.element], self.property_set)
+                                                          [self.element], self.property_set)

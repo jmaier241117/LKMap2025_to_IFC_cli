@@ -68,7 +68,7 @@ class CoordinateAdapter:
                     index.append(self.scale_attributes[2]-2)
                     list_3d.append(index)
             elements[key]['geometry'] = self._scale_objects(list_3d)
-            elements[key]['thickness'] = thickness if thickness != 0.0 else 2.0
+            elements[key]['thickness'] = thickness if thickness != 0.0 else 1.0
         return elements
 
     def _scale_objects(self, coordinates) -> any:

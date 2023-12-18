@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 
 import geopandas
+import pyogrio
 
 
 class TapPointProcessor:
@@ -19,8 +20,8 @@ class TapPointProcessor:
         return self._combine_tap_points(tap_points)
 
     def _get_tap_points(self, object_type) -> any:
-        with open("tappingPoints_" + object_type + ".sql", 'r') as sql_file:
-            sql_script = sql_file.read()
+        sql_script = ("select  a.T_Id, o.T_Id from abstichpunkt as a left join lkobjekt as o on a."
+                      + object_type + "ref = o.T_Id WHERE o.T_Id is not null")
         cur = self.gpkg_connection.cursor()
         cur.execute(sql_script)
         rows = cur.fetchall()
@@ -33,10 +34,10 @@ class TapPointProcessor:
         return tap_points
 
     def _get_tap_point_geometries(self) -> any:
-        tap_points = geopandas.read_file(self.dataset, layer='abstichpunkt')
+        tap_points = pyogrio.read_dataframe(self.dataset, layer='abstichpunkt', fid_as_index=True)
         tap_point_geometries = {}
         for index, row in tap_points.iterrows():
-            tap_point_geometries[row.T_Ili_Tid] = row.geometry.__geo_interface__['coordinates']
+            tap_point_geometries[index] = row.geometry.__geo_interface__['coordinates']
         return tap_point_geometries
 
     def _combine_tap_points(self, tap_points) -> any:

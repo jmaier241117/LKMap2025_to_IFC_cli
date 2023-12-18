@@ -1,33 +1,32 @@
-import geopandas
-from shapely import box
-from model.IProcessor import IProcessor
+import pyogrio
 
 
-class LKObjectTypeProcessor(IProcessor):
+class GeometryProcessor:
 
-    def execute_filter(self) -> any:
-        areas = geopandas.read_file(self.dataset, layer='lkflaeche')
-        lines = geopandas.read_file(self.dataset, layer='lklinie')
-        points = geopandas.read_file(self.dataset, layer='lkpunkt')
+    def __init__(self, dataset, clipsrc):
+        self.dataset = dataset
+        self.clipsrc = clipsrc
+
+    def execute_processor(self) -> any:
+        if self.clipsrc:
+            bbox_tuple = (self.clipsrc[0], self.clipsrc[1], self.clipsrc[2], self.clipsrc[3])
+            areas = pyogrio.read_dataframe(self.dataset, layer='lkobjekt', bbox=bbox_tuple, fid_as_index=True)
+            lines = pyogrio.read_dataframe(self.dataset, layer='lkobjekt_linie', bbox=bbox_tuple, fid_as_index=True)
+            points = pyogrio.read_dataframe(self.dataset, layer='lkobjekt_symbolpos', bbox=bbox_tuple,
+                                            fid_as_index=True)
+        else:
+            areas = pyogrio.read_dataframe(self.dataset, layer='lkobjekt', fid_as_index=True)
+            lines = pyogrio.read_dataframe(self.dataset, layer='lkobjekt_linie', fid_as_index=True)
+            points = pyogrio.read_dataframe(self.dataset, layer='lkobjekt_symbolpos', fid_as_index=True)
         return {
-            'lkflaeche': areas,
-            'lklinie': lines,
-            'lkpunkt': points
+            'lkflaeche': self._map_geometry_to_dictionary(areas),
+            'lklinie': self._map_geometry_to_dictionary(lines),
+            'lkpunkt': self._map_geometry_to_dictionary(points),
         }
 
-
-class RangeConstraintProcessor(IProcessor):
-    def execute_filter(self) -> any:
-        # Filter Attribute is the given Range in the format of clipsrc[xmin ymin xmax ymax]
-        bbox = box(self.filter_attribute[0], self.filter_attribute[1], self.filter_attribute[2],
-                   self.filter_attribute[3])
-        dataframe_in_range = {
-            'lkflaeche': self.dataset['area_objects'].cx[bbox.bounds[0]:bbox.bounds[2],
-                         bbox.bounds[1]:bbox.bounds[3]],
-            'lklinie': self.dataset['line_objects'].cx[bbox.bounds[0]:bbox.bounds[2],
-                       bbox.bounds[1]:bbox.bounds[3]],
-            'lkpunkt': self.dataset['point_objects'].cx[bbox.bounds[0]:bbox.bounds[2],
-                       bbox.bounds[1]:bbox.bounds[3]]
-        }
-        return dataframe_in_range
-
+    def _map_geometry_to_dictionary(self, dataframe) -> any:
+        geometry_dictionary = {}
+        for index, row in dataframe.iterrows():
+            geometry_dictionary[index] = {}
+            geometry_dictionary[index]['geometry'] = row.geometry.__geo_interface__['coordinates']
+        return geometry_dictionary

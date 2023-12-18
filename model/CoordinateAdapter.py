@@ -11,7 +11,7 @@ class CoordinateAdapter:
         self.scale_attributes = (reference_null_point[0], reference_null_point[1], reference_null_point[2])
 
     def execute_point_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in islice(elements.keys(), 1, None):
+        for key in elements.keys():
             coordinate_2d = list(elements[key]['geometry'])
             list_3d = []
             if key in tapping_points:
@@ -28,7 +28,7 @@ class CoordinateAdapter:
         return elements
 
     def execute_line_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in islice(elements.keys(), 1, None):
+        for key in elements.keys():
             coordinate_list_2d = list(elements[key]['geometry'])
             coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
             list_3d = []
@@ -48,10 +48,11 @@ class CoordinateAdapter:
         return elements
 
     def execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in islice(elements.keys(), 1, None):
+        for key in elements.keys():
             coordinate_list_2d = list(elements[key]['geometry'][0])
             coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
             list_3d = []
+            thickness = 0.0
             if key in tapping_points:
                 tp_list = tapping_points[key]
                 thickness_list = []
@@ -61,12 +62,13 @@ class CoordinateAdapter:
                         thickness_list.append(index[2] - index[3])
                         list_3d.append([index[0], index[1], index[3]])
                         coordinate_list_2d.remove(x_and_y)
-                elements[key]['thickness'] = mean(thickness_list)
+                thickness = mean(thickness_list)
             if coordinate_list_2d:
                 for index in coordinate_list_2d:
-                    index.append(self.scale_attributes[2])
+                    index.append(self.scale_attributes[2]-2)
                     list_3d.append(index)
             elements[key]['geometry'] = self._scale_objects(list_3d)
+            elements[key]['thickness'] = thickness if thickness != 0.0 else 1.0
         return elements
 
     def _scale_objects(self, coordinates) -> any:

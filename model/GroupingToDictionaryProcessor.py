@@ -1,48 +1,52 @@
-import math
+import sqlite3
+from sqlite3 import Error
 
 
-class GroupingToDictionaryProcessor():
-    def __init__(self, dataset, attributes):
+class GroupingToDictionaryProcessor:
+    def __init__(self, dataset):
         self.dataset = dataset
-        self.attributes = attributes
+        self.gpkg_connection = _create_connection(dataset)
 
-    def execute_processor(self, lkobject_type) -> any:
+    def execute_processor(self, lkobject_type, geometries) -> any:
         dictionary = {'lkobject_type': lkobject_type}
-        for index, row in self.dataset[lkobject_type].iterrows():
-            dictionary[row.T_Ili_Tid] = {'attributes': {}}
-            lookup_key = lkobject_type + '_object_types'
-            dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Objektart'] = \
-                self.attributes[lookup_key][row.objektart]
-            dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Lagebestimmung'] = \
-                self.attributes['position_declaration_types'][row.lagebestimmung]
-            dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Letzte_Aenderung'] = row.letzte_aenderung
-            dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Eigentuemer'] = \
-                self.attributes['organizations'][
-                    row.eigentuemerref]
-            dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Hoehenbestimmung'] = row.hoehenbestimmung
-            dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Status'] = self.attributes['status_types'][
-                row.astatus]
-            dictionary[row.T_Ili_Tid]['geometry'] = row.geometry.__geo_interface__['coordinates']
-        if lkobject_type == 'lkpunkt':
-            dictionary = self._execute_lkpunkt_processor(dictionary)
-        elif lkobject_type == 'lklinie':
-            dictionary = self._execute_lklinie_processor(dictionary)
+        self.gpkg_connection.row_factory = sqlite3.Row
+        for element_id in geometries:
+            query_string = "SELECT * FROM lkobjekt where T_Id =" + str(element_id)
+            cur = self.gpkg_connection.execute(query_string)
+            for row in cur:
+                dictionary[row['T_Id']] = {}
+                dictionary[row['T_Id']]['T_Ili_Tid'] = row['T_Ili_Tid']
+                dictionary[row['T_Id']]['CHLKMap_Objektart'] = row['objektart1']
+                dictionary[row['T_Id']]['CHLKMap_Lagebestimmung'] = row['lagebestimmung']
+                dictionary[row['T_Id']]['CHLKMap_Letzte_Aenderung'] = row['letzte_aenderung']
+                dictionary[row['T_Id']]['CHLKMap_Eigentuemer'] = row['eigentuemerref']
+                dictionary[row['T_Id']]['CHLKMap_Hoehenbestimmung'] = row['hoehenbestimmung']
+                dictionary[row['T_Id']]['CHLKMap_Status'] = row['astatus']
+                dictionary[row['T_Id']]['geometry'] = geometries[row['T_Id']]['geometry']
+                if lkobject_type == 'lklinie':
+                    dictionary = self._execute_lklinie_processor(dictionary, row)
+                elif lkobject_type == 'lkpunkt':
+                    dictionary = self._execute_lkpunkt_processor(dictionary, row)
         return dictionary
 
-    def _execute_lkpunkt_processor(self, lkpunkt_dictionary) -> any:
-        for index, row in self.dataset['lkpunkt'].iterrows():
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes'][
-                'CHLKMap_Dimension1'] = row.dimension1 if not row.dimension1 else None
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes'][
-                'CHLKMap_Dimension2'] = row.dimension2 if not row.dimension2 else None
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Dimension_Annahme'] = 600.0
-            lkpunkt_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_SymbolOri'] = str(row.symbolori)
+    def _execute_lkpunkt_processor(self, lkpunkt_dictionary, row) -> any:
+        lkpunkt_dictionary[row['T_Id']]['CHLKMap_Dimension1'] = row['dimension1']
+        lkpunkt_dictionary[row['T_Id']]['CHLKMap_Dimension2'] = row['dimension2']
+        lkpunkt_dictionary[row['T_Id']]['CHLKMap_Dimension_Annahme'] = 600.0
+        lkpunkt_dictionary[row['T_Id']]['CHLKMap_SymbolOri'] = row['symbolori']
         return lkpunkt_dictionary
 
-    def _execute_lklinie_processor(self, lklinie_dictionary) -> any:
-        for index, row in self.dataset['lklinie'].iterrows():
-            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite'] = row.breite if not row.breite else None
-            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Breite_Annahme'] = 250.0
-            lklinie_dictionary[row.T_Ili_Tid]['attributes']['CHLKMap_Profiltyp'] = self.attributes['profile_types'][
-                row.profiltyp] if not math.isnan(row.profiltyp) else 'unbekannt'
+    def _execute_lklinie_processor(self, lklinie_dictionary, row) -> any:
+        lklinie_dictionary[row['T_Id']]['CHLKMap_Breite'] = row['breite']
+        lklinie_dictionary[row['T_Id']]['CHLKMap_Breite_Annahme'] = 250.0
+        lklinie_dictionary[row['T_Id']]['CHLKMap_Profiltyp'] = row['profiltyp']
         return lklinie_dictionary
+
+
+def _create_connection(db_file):
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Error as e:
+        print(e)
+    return conn

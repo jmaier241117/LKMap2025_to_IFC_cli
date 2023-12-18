@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ili:transfer xmlns:ili="http://www.interlis.ch/xtf/2.4/INTERLIS" xmlns:geom="http://www.interlis.ch/geometry/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SIA405_LKMap_d_2025_draft="http://www.interlis.ch/xtf/2.4/SIA405_LKMap_d_2025_draft" xmlns:SIA405_Base_d_2025_draft="http://www.interlis.ch/xtf/2.4/SIA405_Base_d_2025_draft">
+	<ili:headersection>
+		<ili:models>
+			<ili:model>SIA405_LKMap_d_2025_draft</ili:model>
+			<ili:model>SIA405_Base_d_2025_draft</ili:model>
+		</ili:models>
+		<ili:sender>ili2pg-4.10.0-c2af4b50c5475f788286f974812b52bb0f9b19bc</ili:sender>
+	</ili:headersection>
+	<ili:datasection>		
+		<SIA405_LKMap_d_2025_draft:SIA405_LKMap ili:bid="SIA405_LKMap_d_2025_draft.SIA405_LKMap">			
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000143">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690767.58</geom:c1>
+						<geom:c2>1236000.789</geom:c2>
+						<geom:c3>417.7</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKLinieRef ili:ref="ch208ckgccm3zQg0"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000144">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690767.58</geom:c1>
+						<geom:c2>1236000.789</geom:c2>
+						<geom:c3>417.4</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKLinieRef ili:ref="ch208ckgccm3zQg0"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+						<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000145">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690766.88</geom:c1>
+						<geom:c2>1236001.678</geom:c2>
+						<geom:c3>417.6</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKLinieRef ili:ref="ch208ckgccm3zQg0"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000146">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690766.88</geom:c1>
+						<geom:c2>1236001.678</geom:c2>
+						<geom:c3>417.3</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKLinieRef ili:ref="ch208ckgccm3zQg0"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000147">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690764.3</geom:c1>
+						<geom:c2>1236004.54</geom:c2>
+						<geom:c3>417.5</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKLinieRef ili:ref="ch208ckgccm3zQg0"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000148">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690764.3</geom:c1>
+						<geom:c2>1236004.54</geom:c2>
+						<geom:c3>417.2</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKLinieRef ili:ref="ch208ckgccm3zQg0"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgccm3zQg0">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230208</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>150</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690767.58</geom:c1><geom:c2>1236000.789</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690766.88</geom:c1><geom:c2>1236001.678</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690764.3</geom:c1><geom:c2>1236004.54</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>weitere</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgqqUfOSZH">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>125</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690766.496</geom:c1><geom:c2>1236001.326</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690766.88</geom:c1><geom:c2>1236001.653</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690767.285</geom:c1><geom:c2>1236006.92</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690766.775</geom:c1><geom:c2>1236007.808</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690767.017</geom:c1><geom:c2>1236008.033</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690767.284</geom:c1><geom:c2>1236008.278</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000149">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690767.284</geom:c1>
+						<geom:c2>1236008.278</geom:c2>
+						<geom:c3>420.0</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckg1rBUStBs"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000150">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690767.284</geom:c1>
+						<geom:c2>1236008.278</geom:c2>
+						<geom:c3>418.0</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckg1rBUStBs"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckg1rBUStBs">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>800</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>800</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.Kontroll_Einsteigschacht</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690767.284</geom:c1><geom:c2>1236008.278</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckg8wi2sy4I">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>150</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690767.284</geom:c1><geom:c2>1236008.278</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690767.553</geom:c1><geom:c2>1236008.498</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690768.127</geom:c1><geom:c2>1236008.956</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000151">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690768.127</geom:c1>
+						<geom:c2>1236008.956</geom:c2>
+						<geom:c3>420.0</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckggzBRTlYW"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000152">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690768.127</geom:c1>
+						<geom:c2>1236008.956</geom:c2>
+						<geom:c3>418.0</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckggzBRTlYW"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckggzBRTlYW">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20211130</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Kaliberwechsel</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690768.127</geom:c1><geom:c2>1236008.956</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>323.6</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckg68ROtCBD">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>120</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690768.127</geom:c1><geom:c2>1236008.956</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690770.432</geom:c1><geom:c2>1236010.525</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690770.66</geom:c1><geom:c2>1236010.538</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgzL9qJFHS">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230208</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>ungenau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690767.678</geom:c1><geom:c2>1236033.395</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690769.328</geom:c1><geom:c2>1236029.815</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckg6CgBwFw9">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230208</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>ungenau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>300</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690768.137</geom:c1><geom:c2>1236033.604</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690769.876</geom:c1><geom:c2>1236029.786</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000153">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690765.134</geom:c1>
+						<geom:c2>1236033.617</geom:c2>
+						<geom:c3>420.0</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckgcIg4t661"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000154">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690765.134</geom:c1>
+						<geom:c2>1236033.617</geom:c2>
+						<geom:c3>418.0</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckgcIg4t661"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgcIg4t661">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20210211</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>600</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>800</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.Kontroll_Einsteigschacht</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690765.134</geom:c1><geom:c2>1236033.617</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgvPgmRiaT">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>200</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690765.134</geom:c1><geom:c2>1236033.617</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690766.076</geom:c1><geom:c2>1236032.158</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690778.56</geom:c1><geom:c2>1236010.87</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000155">
+				<SIA405_LKMap_d_2025_draft:Art>KoteZ</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690765.134</geom:c1>
+						<geom:c2>1236033.617</geom:c2>
+						<geom:c3>420.7</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckgBa7prvYd"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:Abstichpunkt ili:tid="ch211v63AP000156">
+				<SIA405_LKMap_d_2025_draft:Art>KoteRef</SIA405_LKMap_d_2025_draft:Art>
+				<SIA405_LKMap_d_2025_draft:Position>
+					<geom:coord>
+						<geom:c1>2690765.134</geom:c1>
+						<geom:c2>1236033.617</geom:c2>
+						<geom:c3>420.3</geom:c3>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:Position>
+				<SIA405_LKMap_d_2025_draft:LKPunktRef ili:ref="ch208ckgBa7prvYd"/>
+			</SIA405_LKMap_d_2025_draft:Abstichpunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgBa7prvYd">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220725</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>unbekannt</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Deckel</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690765.134</geom:c1><geom:c2>1236033.617</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>220</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckg52bvbGub">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220922</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>700</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>700</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.Schlammsammler</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690767.867</geom:c1><geom:c2>1236035.2</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos><SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgUmRJriah">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220812</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>160</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690767.867</geom:c1><geom:c2>1236035.2</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690766.076</geom:c1><geom:c2>1236032.158</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgk3Vdg3bb">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220725</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>unbekannt</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Deckel</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690767.867</geom:c1><geom:c2>1236035.2</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgl6jvJBUi">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230213</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>ungenau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>30</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>30</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.weitere</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690767.697</geom:c1><geom:c2>1236298.568</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckg1YTp1gyO">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230208</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690767.697</geom:c1><geom:c2>1236298.568</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690772.148</geom:c1><geom:c2>1236297.314</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgQvD1a0q2">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230213</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>800</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>800</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.weitere</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690768.055</geom:c1><geom:c2>1236319.375</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgR4bpNsCV">
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230213</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>800</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>800</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.weitere</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord><geom:c1>2690768.318</geom:c1><geom:c2>1236320.57</geom:c2></geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgrZlYRq83">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>30</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>30</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.Schlammsammler</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord>
+						<geom:c1>2690771.692</geom:c1>
+						<geom:c2>1236035.969</geom:c2>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgii6Crwqp">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>800</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>800</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.weitere</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord>
+						<geom:c1>2690769.891</geom:c1>
+						<geom:c2>1236135.191</geom:c2>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckgMC6BChBH">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Dimension1>900</SIA405_LKMap_d_2025_draft:Dimension1>
+				<SIA405_LKMap_d_2025_draft:Dimension2>1100</SIA405_LKMap_d_2025_draft:Dimension2>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Normschacht.Kontroll_Einsteigschacht</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord>
+						<geom:c1>2690770.548</geom:c1>
+						<geom:c2>1236149.723</geom:c2>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>90</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKPunkt ili:tid="ch208ckg1zbRBz1m">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Deckel</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:SymbolPos>
+					<geom:coord>
+						<geom:c1>2690770.21</geom:c1>
+						<geom:c2>1236149.739</geom:c2>
+					</geom:coord>
+				</SIA405_LKMap_d_2025_draft:SymbolPos>
+				<SIA405_LKMap_d_2025_draft:SymbolOri>0</SIA405_LKMap_d_2025_draft:SymbolOri>
+			</SIA405_LKMap_d_2025_draft:LKPunkt>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgZtECINUO">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690770.273</geom:c1>
+							<geom:c2>1236151.689</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690770.548</geom:c1>
+							<geom:c2>1236149.723</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgR5a6flUa">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>150</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690769.147</geom:c1>
+							<geom:c2>1236160.517</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690770.273</geom:c1>
+							<geom:c2>1236151.689</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgscKjNOuc">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>300</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690770.548</geom:c1>
+							<geom:c2>1236149.723</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690730.519</geom:c1>
+							<geom:c2>1236147.639</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgf4GTvjYr">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Breite>150</SIA405_LKMap_d_2025_draft:Breite>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690769.891</geom:c1>
+							<geom:c2>1236135.191</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690769.541</geom:c1>
+							<geom:c2>1236135.642</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690768.316</geom:c1>
+							<geom:c2>1236137.524</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690766.272</geom:c1>
+							<geom:c2>1236140.706</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690764.974</geom:c1>
+							<geom:c2>1236142.815</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690763.6</geom:c1>
+							<geom:c2>1236145.012</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690762.28</geom:c1>
+							<geom:c2>1236147.118</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690761.464</geom:c1>
+							<geom:c2>1236148.426</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690761.066</geom:c1>
+							<geom:c2>1236149.214</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+			<SIA405_LKMap_d_2025_draft:LKLinie ili:tid="ch208ckgi3XJefaS">
+				<SIA405_Base_d_2025_draft:DatenherrRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:DatenlieferantRef ili:ref="ch20p3q400001634"/>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20220810</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_LKMap_d_2025_draft:EigentuemerRef ili:ref="ch20p3q400001634"/>
+				<SIA405_LKMap_d_2025_draft:Lagebestimmung>genau</SIA405_LKMap_d_2025_draft:Lagebestimmung>
+				<SIA405_LKMap_d_2025_draft:Status>in_Betrieb</SIA405_LKMap_d_2025_draft:Status>
+				<SIA405_LKMap_d_2025_draft:Linie>
+					<geom:polyline>
+						<geom:coord>
+							<geom:c1>2690771.692</geom:c1>
+							<geom:c2>1236035.969</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690771.808</geom:c1>
+							<geom:c2>1236035.493</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690772.901</geom:c1>
+							<geom:c2>1236031.891</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690773.294</geom:c1>
+							<geom:c2>1236030.567</geom:c2>
+						</geom:coord>
+						<geom:coord>
+							<geom:c1>2690772.941</geom:c1>
+							<geom:c2>1236029.655</geom:c2>
+						</geom:coord>
+					</geom:polyline>
+				</SIA405_LKMap_d_2025_draft:Linie>
+				<SIA405_LKMap_d_2025_draft:Objektart>Abwasser.Haltung_Kanal</SIA405_LKMap_d_2025_draft:Objektart>
+				<SIA405_LKMap_d_2025_draft:Profiltyp>Kreisprofil</SIA405_LKMap_d_2025_draft:Profiltyp>
+			</SIA405_LKMap_d_2025_draft:LKLinie>
+		</SIA405_LKMap_d_2025_draft:SIA405_LKMap>
+		<SIA405_Base_d_2025_draft:Administration ili:bid="SIA405_Base_d_2025_draft.Administration">
+			<SIA405_Base_d_2025_draft:Organisation ili:tid="ch20p3q400001634">
+				<SIA405_Base_d_2025_draft:Bezeichnung>Verband Schweizer Abwasser- und Gewaesserschutzfachleute</SIA405_Base_d_2025_draft:Bezeichnung>
+				<SIA405_Base_d_2025_draft:Letzte_Aenderung>20230828</SIA405_Base_d_2025_draft:Letzte_Aenderung>
+				<SIA405_Base_d_2025_draft:Organisationstyp>Privat</SIA405_Base_d_2025_draft:Organisationstyp>
+				<SIA405_Base_d_2025_draft:Status>aktiv</SIA405_Base_d_2025_draft:Status>
+				<SIA405_Base_d_2025_draft:UID>CHE106189304</SIA405_Base_d_2025_draft:UID>
+			</SIA405_Base_d_2025_draft:Organisation>
+		</SIA405_Base_d_2025_draft:Administration>
+	</ili:datasection>
+</ili:transfer>

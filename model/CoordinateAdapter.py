@@ -11,7 +11,7 @@ class CoordinateAdapter:
         self.scale_attributes = (reference_null_point[0], reference_null_point[1], reference_null_point[2])
 
     def execute_point_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in islice(elements.keys(), 1, None):
+        for key in elements.keys():
             coordinate_2d = list(elements[key]['geometry'])
             list_3d = []
             if key in tapping_points:
@@ -28,7 +28,7 @@ class CoordinateAdapter:
         return elements
 
     def execute_line_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in islice(elements.keys(), 1, None):
+        for key in elements.keys():
             coordinate_list_2d = list(elements[key]['geometry'])
             coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
             list_3d = []
@@ -48,7 +48,7 @@ class CoordinateAdapter:
         return elements
 
     def execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in islice(elements.keys(), 1, None):
+        for key in elements.keys():
             coordinate_list_2d = list(elements[key]['geometry'][0])
             coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
             list_3d = []

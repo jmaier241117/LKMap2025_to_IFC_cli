@@ -1,14 +1,11 @@
-import sqlite3
-from sqlite3 import Error
-
-import geopandas
 import pyogrio
+
+from model import DBUtils
 
 
 class TapPointProcessor:
     def __init__(self, dataset):
         self.dataset = dataset
-        self.gpkg_connection = _create_connection(dataset)
 
     def execute_processor(self, object_type) -> any:
         tap_points = self._get_tap_points(object_type)
@@ -22,7 +19,7 @@ class TapPointProcessor:
     def _get_tap_points(self, object_type) -> any:
         sql_script = ("select  a.T_Id, o.T_Id from abstichpunkt as a left join lkobjekt as o on a."
                       + object_type + "ref = o.T_Id WHERE o.T_Id is not null")
-        cur = self.gpkg_connection.cursor()
+        cur = DBUtils.gpkg_connection.cursor()
         cur.execute(sql_script)
         rows = cur.fetchall()
         tap_points = {}
@@ -59,12 +56,3 @@ class TapPointProcessor:
                         tap_point_list.remove(tap_point)
                         tap_points_combined[key].append(sorted(new_tap_point_tuple, reverse=True))
         return tap_points_combined
-
-
-def _create_connection(db_file):
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except Error as e:
-        print(e)
-    return conn

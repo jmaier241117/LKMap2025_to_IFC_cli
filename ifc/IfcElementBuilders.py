@@ -20,10 +20,6 @@ class IIfcElementBuilder:
         self.element.element_name = name
         return self
 
-    def element_color(self, color_tuple):
-        self.element.element_color = color_tuple
-        return self
-
     def coordinates(self, coordinates):
         self.element.coordinates = coordinates
         return self
@@ -38,7 +34,15 @@ class IIfcElementBuilder:
         return self
 
     def build(self) -> any:
-        raise NotImplementedError()
+        self.element.build_representation_element()
+        if self.element.position_uncertain == Uncertainty.IMPRECISE:
+            self.element.build_representation_uncertainty_imprecise_element()
+        elif self.element.position_uncertain == Uncertainty.UNKNOWN:
+            self.element.build_representation_uncertainty_unknown_element()
+        self.element.build_style_representation()
+        self.element.build_shape_representation()
+        self.element.create_element_in_ifc_file()
+        return self.element
 
 
 class IfcDuctElementBuilder(IIfcElementBuilder):
@@ -50,17 +54,6 @@ class IfcDuctElementBuilder(IIfcElementBuilder):
         self.element.radius = radius / 1000
         return self
 
-    def build(self) -> any:
-        self.element.build_representation_element()
-        if self.element.position_uncertain == Uncertainty.IMPRECISE:
-            self.element.build_representation_uncertainty_imprecise_element()
-        elif self.element.position_uncertain == Uncertainty.UNKNOWN:
-            self.element.build_representation_uncertainty_unknown_element()
-        self.element.build_style_representation()
-        self.element.build_shape_representation()
-        self.element.create_element_in_ifc_file()
-        return self.element
-
 
 class IfcPipeElementBuilder(IIfcElementBuilder):
     def __init__(self, ifc_file):
@@ -71,17 +64,6 @@ class IfcPipeElementBuilder(IIfcElementBuilder):
         self.element.radius = radius / 1000
         return self
 
-    def build(self) -> any:
-        self.element.build_representation_element()
-        if self.element.position_uncertain == Uncertainty.IMPRECISE:
-            self.element.build_representation_uncertainty_imprecise_element()
-        elif self.element.position_uncertain == Uncertainty.UNKNOWN:
-            self.element.build_representation_uncertainty_unknown_element()
-        self.element.build_style_representation()
-        self.element.build_shape_representation()
-        self.element.create_element_in_ifc_file()
-        return self.element
-
 
 class IfcSpecialStructureElementBuilder(IIfcElementBuilder):
     def __init__(self, ifc_file):
@@ -90,14 +72,3 @@ class IfcSpecialStructureElementBuilder(IIfcElementBuilder):
     def thickness(self, thickness):
         self.element.thickness = thickness
         return self
-
-    def build(self) -> any:
-        self.element.build_representation_element()
-        if self.element.position_uncertain == Uncertainty.IMPRECISE:
-            self.element.build_representation_uncertainty_imprecise_element()
-        elif self.element.position_uncertain == Uncertainty.UNKNOWN:
-            self.element.build_representation_uncertainty_unknown_element()
-        self.element.build_style_representation()
-        self.element.build_shape_representation()
-        self.element.create_element_in_ifc_file()
-        return self.element

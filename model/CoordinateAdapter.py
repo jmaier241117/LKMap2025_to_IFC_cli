@@ -42,7 +42,7 @@ class CoordinateAdapter:
                         coordinate_list_2d.remove(x_and_y)
             if coordinate_list_2d:
                 for index in coordinate_list_2d:
-                    index.append(self.scale_attributes[2])
+                    index.append(self.scale_attributes[2]-1.5)
                     list_3d.append(index)
             elements[key]['geometry'] = self._scale_objects(list_3d)
         return elements

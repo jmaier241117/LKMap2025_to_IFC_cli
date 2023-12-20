@@ -22,19 +22,32 @@ uncertainty_surcharge = {
     'DEFAULT_UNKNOWN': 0.9,
     'DEFAULT_PRECISE': 0.3
 }
-colors = {
-    'uncertainty_imprecise': (1, 1, 0.88),
-    'uncertainty_unknown': (1, 0.88, 0.75),
-    'duct_element': (0.88, 0.88, 0.88),
-    'pipe_element': (0.0, 0.0, 0.6),
-    'special_structure': (0.88, 0.88, 0.88),
-}
 
+default_surface_style = None
+surface_style_imprecise = None
+surface_style_unknown = None
 
 class Uncertainty(Enum):
     IMPRECISE = 'ungenau'
     PRECISE = 'genau'
     UNKNOWN = 'unbekannt'
+
+
+def initialize_styles(ifc_file):
+    default_element_color = ifc_file.createIfcColourRgb('color', 0.88, 0.88, 0.88)
+    surface_style_rendering = ifc_file.createIfcSurfaceStyleShading(default_element_color, 0.0)
+    global default_surface_style
+    default_surface_style = ifc_file.createIfcSurfaceStyle("style", 'BOTH', [surface_style_rendering])
+    imprecise_color = ifc_file.createIfcColourRgb('color', 1.0, 1.0, 0.88)
+    surface_style_rendering_imprecise = ifc_file.createIfcSurfaceStyleShading(imprecise_color, 0.75)
+    global surface_style_imprecise
+    surface_style_imprecise = ifc_file.createIfcSurfaceStyle("style", 'BOTH',
+                                                             [surface_style_rendering_imprecise])
+    unknown_color = ifc_file.createIfcColourRgb('color', 1.0, 0.88, 0.75)
+    surface_style_rendering_unknown = ifc_file.createIfcSurfaceStyleShading(unknown_color, 0.75)
+    global surface_style_unknown
+    surface_style_unknown = ifc_file.createIfcSurfaceStyle("style", 'BOTH',
+                                                           [surface_style_rendering_unknown])
 
 
 def write_ifc_file(ifc_file, file_path):

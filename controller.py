@@ -1,6 +1,3 @@
-from itertools import islice
-
-from enhancer.IntelligentDefaults import ColorDefaults
 from ifc.IfcCreationController import IfcCreationController
 from ifc.IfcUtils import write_ifc_file
 from model.DataProcessingChain import DataProcessingChain
@@ -26,10 +23,6 @@ class Controller:
                 self.ifc_creation_controller.build_pipe_ifc_elements(filtered_dictionary)
             if filtered_dictionary['lkobject_type'] == 'lkflaeche':
                 self.ifc_creation_controller.build_special_structure_ifc_elements(filtered_dictionary)
-        write_ifc_file(self.ifc_file, self.cli_arguments['ifc_file_path'])
+        write_ifc_file(self.ifc_file, self.cli_options['ifc_file_path'])
 
 
-contoller = Controller(
-    {'xtf': 'experimental.xtf', 'ifc_file_path': 'ifctest.ifc', 'reference_null_point': (2691039.8, 1236160.3, 420.0)},
-    {'clipsrc': None})
-contoller.run_conversion()

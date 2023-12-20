@@ -6,7 +6,7 @@ from ifc import IfcUtils
 from ifc.IfcElementBuilders import IfcDuctElementBuilder, IfcPipeElementBuilder, IfcSpecialStructureElementBuilder
 from ifc.IfcProjectSetupBuilder import IfcProject, IfcSite
 from ifc.IfcPropertySetBuilder import IfcPropertySet
-from ifc.IfcUtils import Uncertainty
+from ifc.IfcUtils import Uncertainty, initialize_styles
 
 
 class IfcCreationController:
@@ -15,8 +15,9 @@ class IfcCreationController:
         self.project = IfcProject(self.ifc_file, 'Project', reference_null_point)
         self.site = IfcSite(self.ifc_file, "Site", self._create_zero_placement())
 
-    def ifc_base_element_initialization(self):
+    def ifc_base_initialization(self):
         self._relational_aggregates(self.project.element, self.site.element)
+        initialize_styles(self.ifc_file)
 
     def build_chamber_ifc_elements(self, dataset):
         chambers = ()
@@ -29,7 +30,7 @@ class IfcCreationController:
                 default_dimension_value = True
             chamber_element = (
                 IfcDuctElementBuilder(self.ifc_file).geometric_context(self.project.project_contexts['model_context'])
-                .element_name(key)
+                .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
                 .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
@@ -52,7 +53,7 @@ class IfcCreationController:
                 default_dimension_value = True
             pipe_element = (
                 IfcPipeElementBuilder(self.ifc_file).geometric_context(self.project.project_contexts['model_context'])
-                .element_name(key)
+                .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
                 .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
@@ -70,7 +71,7 @@ class IfcCreationController:
             special_element = (
                 IfcSpecialStructureElementBuilder(self.ifc_file).geometric_context(
                     self.project.project_contexts['model_context'])
-                .element_name(key)
+                .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']))
                 .thickness(2)

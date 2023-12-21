@@ -5,7 +5,17 @@ class CoordinateAdapter:
     def __init__(self, reference_null_point):
         self.scale_attributes = (reference_null_point[0], reference_null_point[1], reference_null_point[2])
 
-    def execute_point_coordinate_adapter(self, elements, tapping_points) -> any:
+    def execute_processor(self, lkobject_type, elements, tapping_points) -> any:
+        adapted_elements = None
+        if lkobject_type == 'lklinie':
+            adapted_elements = self._execute_line_coordinate_adapter(elements, tapping_points)
+        elif lkobject_type == 'lkpunkt':
+            adapted_elements = self._execute_point_coordinate_adapter(elements, tapping_points)
+        elif lkobject_type == 'lkflaeche':
+            adapted_elements = self._execute_area_coordinate_adapter(elements, tapping_points)
+        return adapted_elements
+
+    def _execute_point_coordinate_adapter(self, elements, tapping_points) -> any:
         for key in elements.keys():
             coordinate_2d = list(elements[key]['geometry'])
             list_3d = []
@@ -22,7 +32,7 @@ class CoordinateAdapter:
             elements[key]['geometry'] = self._scale_objects(list_3d)
         return elements
 
-    def execute_line_coordinate_adapter(self, elements, tapping_points) -> any:
+    def _execute_line_coordinate_adapter(self, elements, tapping_points) -> any:
         for key in elements.keys():
             coordinate_list_2d = list(elements[key]['geometry'])
             coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
@@ -42,7 +52,7 @@ class CoordinateAdapter:
             elements[key]['geometry'] = self._scale_objects(list_3d)
         return elements
 
-    def execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
+    def _execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
         for key in elements.keys():
             coordinate_list_2d = list(elements[key]['geometry'][0])
             coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]

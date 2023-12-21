@@ -1,48 +1,50 @@
 import pyogrio
 
-from model import DBUtils
-
 
 class TapPointProcessor:
     def __init__(self, dataset):
         self.dataset = dataset
+        self.tap_point_geometries = None
 
     def execute_processor(self, object_type) -> any:
-        tap_points = self._get_tap_points(object_type)
-        tap_point_geometries = self._get_tap_point_geometries()
-        for key in tap_points:
-            for tap_point_id in tap_point_geometries:
-                if tap_point_id in tap_points[key]:
-                    tap_points[key][tap_point_id] = tap_point_geometries[tap_point_id]
-        return self._combine_tap_points(tap_points)
+        self.tap_point_geometries = {}
+        if object_type == 'lkpunkt':
+            self._get_point_tap_points()
+        elif object_type == 'lklinie':
+            self._get_line_tap_points()
+        elif object_type == 'lkflaeche':
+            self._get_area_tap_points()
+        return self._combine_tap_points(self.tap_point_geometries) if self.tap_point_geometries else None
 
-    def _get_tap_points(self, object_type) -> any:
-        sql_script = ("select  a.T_Id, o.T_Id from abstichpunkt as a left join lkobjekt as o on a."
-                      + object_type + "ref = o.T_Id WHERE o.T_Id is not null")
-        cur = DBUtils.gpkg_connection.cursor()
-        cur.execute(sql_script)
-        rows = cur.fetchall()
-        tap_points = {}
-        for row in rows:
-            if row[1] in tap_points:
-                tap_points[row[1]][row[0]] = {}
-            else:
-                tap_points[row[1]] = {row[0]: {}}
-        return tap_points
+    def _get_point_tap_points(self):
+        point_tap_points_layer = pyogrio.read_dataframe(self.dataset, layer='abstichpunkt', where='lkpunktref not null')
+        if not point_tap_points_layer.empty:
+            for index, row in point_tap_points_layer.iterrows():
+                if row.lkpunktref not in self.tap_point_geometries:
+                    self.tap_point_geometries[row.lkpunktref] = []
+                self.tap_point_geometries[row.lkpunktref].append(row.geometry.__geo_interface__['coordinates'])
 
-    def _get_tap_point_geometries(self) -> any:
-        tap_points = pyogrio.read_dataframe(self.dataset, layer='abstichpunkt', fid_as_index=True)
-        tap_point_geometries = {}
-        for index, row in tap_points.iterrows():
-            tap_point_geometries[index] = row.geometry.__geo_interface__['coordinates']
-        return tap_point_geometries
+    def _get_line_tap_points(self):
+        line_tap_points_layer = pyogrio.read_dataframe(self.dataset, layer='abstichpunkt', where='lklinieref not null')
+        if not line_tap_points_layer.empty:
+            for index, row in line_tap_points_layer.iterrows():
+                if row.lklinieref not in self.tap_point_geometries:
+                    self.tap_point_geometries[row.lklinieref] = []
+                self.tap_point_geometries[row.lklinieref].append(row.geometry.__geo_interface__['coordinates'])
+
+    def _get_area_tap_points(self):
+        area_tap_points_layer = pyogrio.read_dataframe(self.dataset, layer='abstichpunkt',
+                                                       where='lkflaecheref not null')
+        if not area_tap_points_layer.empty:
+            for index, row in area_tap_points_layer.iterrows():
+                if row.lkflaecheref in self.tap_point_geometries:
+                    self.tap_point_geometries[row.lkflaecheref] = []
+                self.tap_point_geometries[row.lkflaecheref].append(row.geometry.__geo_interface__['coordinates'])
 
     def _combine_tap_points(self, tap_points) -> any:
         tap_points_combined = {}
         for key in tap_points:
-            tap_point_list = []
-            for tap_point_id in tap_points[key]:
-                tap_point_list.append(tap_points[key][tap_point_id])
+            tap_point_list = tap_points[key]
             tap_points_combined[key] = []
             index = 0
             while index < len(tap_point_list):

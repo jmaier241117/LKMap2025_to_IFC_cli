@@ -1,9 +1,4 @@
-import sqlite3
-from itertools import islice
-from sqlite3 import Error
 from statistics import mean
-
-import geopandas
 
 
 class CoordinateAdapter:
@@ -42,7 +37,7 @@ class CoordinateAdapter:
                         coordinate_list_2d.remove(x_and_y)
             if coordinate_list_2d:
                 for index in coordinate_list_2d:
-                    index.append(self.scale_attributes[2]-1.5)
+                    index.append(self.scale_attributes[2] - 1.5)
                     list_3d.append(index)
             elements[key]['geometry'] = self._scale_objects(list_3d)
         return elements
@@ -65,7 +60,7 @@ class CoordinateAdapter:
                 thickness = mean(thickness_list)
             if coordinate_list_2d:
                 for index in coordinate_list_2d:
-                    index.append(self.scale_attributes[2]-2)
+                    index.append(self.scale_attributes[2] - 2)
                     list_3d.append(index)
             elements[key]['geometry'] = self._scale_objects(list_3d)
             elements[key]['thickness'] = thickness if thickness != 0.0 else 1.0
@@ -80,6 +75,3 @@ class CoordinateAdapter:
             z_coord -= self.scale_attributes[2]
             scaled_coordinates += ((round(x_coord, 4), round(y_coord, 4), round(z_coord, 4)),)
         return scaled_coordinates
-
-
-

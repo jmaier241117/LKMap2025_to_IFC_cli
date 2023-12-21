@@ -1,11 +1,9 @@
-from itertools import islice
 import os
 
-from model.DBUtils import create_connection, convert_ili_2_gpkg, cleanUp_db
+from model.GeoPackageUtils import convert_ili_2_gpkg, cleanUp_db
 from model.GeometryProcessor import GeometryProcessor
 from model.GroupingToDictionaryProcessor import GroupingToDictionaryProcessor
 from model.TapPointProcessor import TapPointProcessor
-from model.CharacteristicsFilter import CharacteristicsProcessor
 from model.CoordinateAdapter import CoordinateAdapter
 
 
@@ -17,12 +15,8 @@ class DataProcessingChain:
         self.filtered_dictionaries = ()
 
     def execute_filters(self) -> any:
-        completed_process = convert_ili_2_gpkg(self.datafile)
-        print(completed_process)
-        if completed_process.returncode != 0:
-            print("dafsd")
+        convert_ili_2_gpkg(self.datafile)
         geopackage = "GeoPackage.gpkg"
-        create_connection(geopackage)
         if os.path.isfile(geopackage):
             geom_processor = GeometryProcessor(geopackage, self.clipsrc)
             tapping_points_processor = TapPointProcessor(geopackage)
@@ -54,14 +48,6 @@ class DataProcessingChain:
             group_areas = GroupingToDictionaryProcessor(geopackage)
             final_areas = group_areas.execute_processor(area_object_type, area_dictionary)
             self.filtered_dictionaries += (final_areas,)
-            cleanUp_db()
+            print(self.filtered_dictionaries)
+            cleanUp_db(geopackage)
         return self.filtered_dictionaries
-
-
-def _get_element_characteristics(self, dictionary, object_type) -> any:
-    for key in islice(dictionary.keys(), 1, None):
-        characteristics_dictionary = CharacteristicsProcessor(self.geopackage,
-                                                              {'obj_id': key,
-                                                               'lkobject_type': object_type}).execute_filter()
-        dictionary[key]['characteristics'] = characteristics_dictionary
-    return dictionary

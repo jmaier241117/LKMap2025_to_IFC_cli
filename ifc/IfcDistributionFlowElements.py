@@ -17,6 +17,7 @@ class IIfcDistributionFlowElement:
             'default': None,
             'imprecise': None,
             'unknown': None,
+            'height_unknown': None,
         }
         self.representation_type = None
         self.shape_representation = None
@@ -36,6 +37,9 @@ class IIfcDistributionFlowElement:
                                                   [IfcUtils.surface_style_imprecise])
         elif self.representation_elements['unknown']:
             self.project_file.createIfcStyledItem(self.representation_elements['unknown'],
+                                                  [IfcUtils.surface_style_unknown])
+        elif self.representation_elements['height_unknown']:
+            self.project_file.createIfcStyledItem(self.representation_elements['height_unknown'],
                                                   [IfcUtils.surface_style_unknown])
 
     def build_shape_representation(self) -> any:
@@ -60,6 +64,7 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
         self.radius = None
         self.representation_type = 'SolidModel'
         self.poly_indexed_curve = None
+        self.extrusion_direction = self.project_file.createIfcDirection((0.0, 0.0, 1.0))
 
     def build_representation_element(self):
         cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(self.coordinates)
@@ -85,6 +90,14 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
             self.radius + uncertainty_addon,
             self.radius)
 
+    def build_height_uncertainty_element(self):
+        arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
+                                                                                        self.poly_indexed_curve)
+        self.representation_elements['height_unknown'] = self.project_file.createIfcExtrudedAreaSolid(
+            arbitrary_closed_profile,
+            None,
+            self.extrusion_direction,
+            2.0)
 
 class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
     def __init__(self, ifc_file):
@@ -92,6 +105,7 @@ class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
         self.radius = None
         self.representation_type = 'SolidModel'
         self.poly_indexed_curve = None
+
 
     def build_representation_element(self):
         cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(self.coordinates)
@@ -114,6 +128,7 @@ class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
             self.poly_indexed_curve,
             self.radius + uncertainty_addon,
             self.radius)
+
 
 
 class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):

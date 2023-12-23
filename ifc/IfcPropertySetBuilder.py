@@ -1,7 +1,5 @@
 import ifcopenshell
 
-from ifc import IfcUtils
-
 
 class IfcPropertySet:
     def __init__(self, ifc_file, element, attributes):

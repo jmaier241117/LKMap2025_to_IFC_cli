@@ -10,10 +10,11 @@ from ifc.IfcUtils import Uncertainty, initialize_styles
 
 
 class IfcCreationController:
-    def __init__(self, reference_null_point):
+    def __init__(self, reference_null_point, show_height_uncertainty):
         self.ifc_file = ifcopenshell.file(schema="IFC4X3")
         self.project = IfcProject(self.ifc_file, 'Project', reference_null_point)
         self.site = IfcSite(self.ifc_file, "Site", self._create_zero_placement())
+        self.show_height_uncertainty = show_height_uncertainty
 
     def ifc_base_initialization(self):
         self._relational_aggregates(self.project.element, self.site.element)
@@ -58,6 +59,9 @@ class IfcCreationController:
                 .radius(radius)
                 .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
                                     default_dimension_value)
+                .height_position_uncertain(
+                    self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
+                    if self.show_height_uncertainty else Uncertainty.PRECISE)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, pipe_element.distribution_flow_element,
                                                   dataset[key]['attributes'])

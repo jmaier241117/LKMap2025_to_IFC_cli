@@ -5,18 +5,20 @@ import click
 from ifc.IfcCreationController import IfcCreationController
 from ifc.IfcUtils import write_ifc_file
 from model.DataProcessingChain import DataProcessingChain
-from setup import POLYGON, POINT, XTF_ERROR, IFC_ERROR, CONFIG_ERROR, SUCCESS
+from setup import POLYGON, POINT, XTF_ERROR, CONFIG_ERROR, SUCCESS
 
 
 @click.command()
-@click.argument('importfile', type=click.Path())
-@click.option('--nullpoint', required=True, type=POINT,
+@click.argument('import_file', type=click.Path())
+@click.option('--null_point', required=True, type=POINT,
               help='The Reference Null Point used for creating the elements, example: \'POINT(2691039.8 1236160.3 420.0)\'')
-@click.option('--exportpath', default=None, type=click.Path(),
+@click.option('--export_path', default=None, type=click.Path(),
               help='The path to where you would like your IFC file to be generated')
-@click.option('--clipsrc', default=None, type=POLYGON,
+@click.option('--clip_src', default=None, type=POLYGON,
               help='The range for which elements should be included, example: \'POLYGON((69.0 41.0, 69.0 41.4, 69.4 41.4, 69.4 41.0, 69.0 41.0))\'')
-def convert(importfile, nullpoint, exportpath, clipsrc):
+@click.option('--show_height_uncertainty', default=False,
+              help='Flag if height uncertainties should be shown, default = False')
+def convert(import_file, null_point, export_path, clip_src, show_height_uncertainty):
     """
      IMPORTFILE is the path to the INTERLIS transferfile (.xtf) you would like to use!
 
@@ -24,11 +26,12 @@ def convert(importfile, nullpoint, exportpath, clipsrc):
 
      EXPORTFILE is , format: <name>.ifc
     """
-    print(nullpoint)
-    if check_conversion_config(importfile, exportpath) == 0:
-        run_conversion({'xtf': importfile, 'reference_null_point': nullpoint},
-                       {'clipsrc': clipsrc, 'ifc_file_path': exportpath})
-    click.secho(f"The conversion has successfully completed, you can find your IFC file here \"{exportpath}\"",
+    print(null_point)
+    if check_conversion_config(import_file, export_path) == 0:
+        run_conversion({'xtf': import_file, 'reference_null_point': null_point},
+                       {'clipsrc': clip_src, 'ifc_file_path': export_path,
+                        'show_height_uncertainty': show_height_uncertainty})
+    click.secho(f"The conversion has successfully completed, you can find your IFC file here \"{export_path}\"",
                 fg='green')
 
 
@@ -42,8 +45,9 @@ def check_conversion_config(importfile, exportpath) -> int:
                         fg='magenta')
             click.confirm('Do you want to continue?', abort=True)
         if exportpath and os.path.isfile(exportpath):
-            click.secho(f"ERROR: An ifc file with the given name already exists", fg='red')
-            return IFC_ERROR
+            click.confirm(
+                f'An ifc file with the given name already exists at {exportpath}, do you want to overwrite it?',
+                abort=True)
     except OSError:
         return CONFIG_ERROR
     return SUCCESS
@@ -53,7 +57,8 @@ def run_conversion(cli_arguments, cli_options):
     data_processing_chain = DataProcessingChain(cli_arguments, cli_options['clipsrc'])
     processed_dictionaries = data_processing_chain.execute_processing_chain()
     print(processed_dictionaries)
-    ifc_creation_controller = IfcCreationController(cli_arguments['reference_null_point'])
+    ifc_creation_controller = IfcCreationController(cli_arguments['reference_null_point'],
+                                                    cli_options['show_height_uncertainty'])
     ifc_creation_controller.ifc_base_initialization()
     ifc_creation_controller.build_chamber_ifc_elements(processed_dictionaries['lkpunkt'])
     ifc_creation_controller.build_pipe_ifc_elements(processed_dictionaries['lklinie'])

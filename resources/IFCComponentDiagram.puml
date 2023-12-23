@@ -4,12 +4,10 @@
 title LKMap-to-IFC Converter Prototype - IFC Component Diagram
 
 Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
-Container(controller, "Data Processing Controller", "Python", "Controls the processing of data")
 Container(modelController, "Model", "Python", "")
 ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
-Rel(cli, controller, "Uses")
-Rel_L(controller, modelController, "Uses")
-Rel_R(controller, IFC, "Uses")
+Rel_L(cli, modelController, "Uses")
+Rel(cli, IFC, "Uses")
 
 Container_Boundary(IFC, "IFC") {
     Component(ifcCreationController, "IfcCreationController", "Python", "Controls the processing of given data")

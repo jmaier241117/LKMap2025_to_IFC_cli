@@ -1,6 +1,6 @@
 import os
 
-from model.GeoPackageUtils import convert_ili_2_gpkg, cleanUp_db
+from model.GeoPackageUtils import convert_ili_2_gpkg, cleanUp_geopackage
 from model.GeometryProcessor import GeometryProcessor
 from model.GroupingToDictionaryProcessor import GroupingToDictionaryProcessor
 from model.TapPointProcessor import TapPointProcessor
@@ -12,7 +12,7 @@ class DataProcessingChain:
         self.datafile = cli_arguments['xtf']
         self.reference_null_point = cli_arguments['reference_null_point']
         self.clipsrc = clipsrc
-        self.filtered_dictionaries = ()
+        self.filtered_dictionaries = {}
         self.geopackage = "GeoPackage.gpkg"
         self.lkobject_types = ('lklinie', 'lkpunkt', 'lkflaeche')
         self.geometry_processor = GeometryProcessor(self.geopackage, self.clipsrc)
@@ -20,7 +20,7 @@ class DataProcessingChain:
         self.tapping_points_processor = TapPointProcessor(self.geopackage)
         self.to_dictionary_processor = GroupingToDictionaryProcessor(self.geopackage)
 
-    def execute_filters(self) -> any:
+    def execute_processing_chain(self) -> any:
         convert_ili_2_gpkg(self.datafile)
         if os.path.isfile(self.geopackage):
             lkobject_geometries = self.geometry_processor.execute_processor()
@@ -30,6 +30,7 @@ class DataProcessingChain:
                                                                                lkobject_geometries[lkobject_type],
                                                                                tapping_points)
                 final_dictionary = self.to_dictionary_processor.execute_processor(lkobject_type, adapted_dictionary)
-                self.filtered_dictionaries += (final_dictionary,)
-            cleanUp_db(self.geopackage)
+                self.filtered_dictionaries[lkobject_type] = final_dictionary
+            cleanUp_geopackage(self.geopackage)
         return self.filtered_dictionaries
+

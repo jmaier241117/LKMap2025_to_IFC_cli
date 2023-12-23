@@ -1,0 +1,35 @@
+@startuml
+!include C4_Component.puml
+
+title LKMap-to-IFC Converter Prototype - Model Component Diagram
+
+Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
+Container(controller, "Data Processing Controller", "Python", "Controls the processing of data")
+Container(ifcController, "IfcController", "Python", "")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
+Component_Ext(ili2gpkg, "Ili2GPKG", "java", "")
+Rel(cli, controller, "Uses")
+Rel(controller, Model, "Uses")
+Rel_R(controller, ifcController, "Uses")
+Container_Boundary(Model, "MODEL") {
+    Component(dataProcessingChain, "Data Processing Chain", "Python", "Controls the processing of given data")
+    Component(coordinateAdapter, "Coordinate Adapter", "Python", "")
+    Component(geometryProcessor, "Geometry Processor", "Python", "")
+    Component(geoPackageUtils, "GeoPackage Utils", "Python", "")
+    Component(tapPointProcessor, "Tapping Point Processor", "Python", "")
+    Component(toDictionaryProcessor, "GroupingToDictionaryProcessor", "Python", "")
+    Rel_R(dataProcessingChain, geometryProcessor, "uses")
+    Rel_L(dataProcessingChain, tapPointProcessor, "uses")
+    Rel(dataProcessingChain, geoPackageUtils, "uses")
+    Rel(dataProcessingChain, coordinateAdapter, "uses")
+    Rel(dataProcessingChain, toDictionaryProcessor, "uses")
+}
+Rel(geoPackageUtils, ili2gpkg, "uses")
+System_Ext(filesystem, "File System", "The file system provided by the OS")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
+
+Rel_D(Model, geoPackage, "Uses")
+Rel(ifcController, filesystem, "writes to")
+
+
+@enduml

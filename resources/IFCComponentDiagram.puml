@@ -1,0 +1,34 @@
+@startuml
+!include C4_Component.puml
+
+title LKMap-to-IFC Converter Prototype - IFC Component Diagram
+
+Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
+Container(controller, "Data Processing Controller", "Python", "Controls the processing of data")
+Container(modelController, "Model", "Python", "")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
+Rel(cli, controller, "Uses")
+Rel_L(controller, modelController, "Uses")
+Rel_R(controller, IFC, "Uses")
+
+Container_Boundary(IFC, "IFC") {
+    Component(ifcCreationController, "IfcCreationController", "Python", "Controls the processing of given data")
+    Component(ifcElementBuilders, "IfcElementBuilders", "Python", "")
+    Component(ifcProjectSetupBuilder, "IfcProjectSetupBuilder", "Python", "")
+    Component(ifcPropertySetBuilder, "IfcPropertySetBuilder", "Python", "")
+    Component(ifcUtils, "IfcUtils", "Python", "")
+    Rel(ifcCreationController, ifcElementBuilders, "uses")
+    Rel(ifcCreationController, ifcProjectSetupBuilder, "uses")
+    Rel(ifcCreationController, ifcUtils, "uses")
+    Rel_L(ifcElementBuilders, ifcUtils, "uses")
+    Rel(ifcProjectSetupBuilder, ifcUtils, "uses")
+    Rel_R(ifcCreationController, ifcPropertySetBuilder, "uses")
+}
+System_Ext(filesystem, "File System", "The file system provided by the OS")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
+
+Rel(modelController, geoPackage, "Uses")
+Rel(IFC, filesystem, "writes to")
+
+
+@enduml

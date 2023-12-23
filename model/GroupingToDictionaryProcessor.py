@@ -9,7 +9,7 @@ class GroupingToDictionaryProcessor:
 
     def execute_processor(self, lkobject_type, geometries) -> any:
         organisations = self._get_organisations()
-        dictionary = {'lkobject_type': lkobject_type}
+        dictionary = {}
         for element_id in geometries:
             data = pyogrio.read_dataframe(self.dataset, layer='lkobjekt', read_geometry=False,
                                           where='T_Id = ' + str(element_id), fid_as_index=True)
@@ -19,8 +19,10 @@ class GroupingToDictionaryProcessor:
                 if lkobject_type == 'lkflaeche':
                     dictionary[index]['attributes']['CHLKMap_Objektart'] = row.objektart
                 dictionary[index]['attributes']['CHLKMap_Lagebestimmung'] = row.lagebestimmung
-                dictionary[index]['attributes']['CHLKMap_Letzte_Aenderung'] = str(row.letzte_aenderung.date())
-                dictionary[index]['attributes']['CHLKMap_Eigentuemer'] = organisations[row.eigentuemerref]
+                dictionary[index]['attributes']['CHLKMap_Letzte_Aenderung'] = str(
+                    row.letzte_aenderung.date())
+                dictionary[index]['attributes']['CHLKMap_Eigentuemer'] = organisations[
+                    row.eigentuemerref]
                 dictionary[index]['attributes']['CHLKMap_Hoehenbestimmung'] = row.hoehenbestimmung
                 dictionary[index]['attributes']['CHLKMap_Status'] = row.astatus
                 dictionary[index]['geometry'] = geometries[index]['geometry']
@@ -43,7 +45,8 @@ class GroupingToDictionaryProcessor:
 
     def _execute_lklinie_processor(self, lklinie_dictionary, index, row) -> any:
         lklinie_dictionary[index]['attributes']['CHLKMap_Objektart'] = row.objektart1
-        lklinie_dictionary[index]['attributes']['CHLKMap_Breite'] = row.breite if not math.isnan(row.breite) else None
+        lklinie_dictionary[index]['attributes']['CHLKMap_Breite'] = row.breite if not math.isnan(
+            row.breite) else None
         lklinie_dictionary[index]['attributes']['CHLKMap_Breite_Annahme'] = 250.0
         lklinie_dictionary[index]['attributes']['CHLKMap_Profiltyp'] = row.profiltyp
         return lklinie_dictionary

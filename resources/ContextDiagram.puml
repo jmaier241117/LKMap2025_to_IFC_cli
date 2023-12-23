@@ -1,13 +1,13 @@
 @startuml
 !include C4_Context.puml
 
-title System Context diagram for GIS-to-BIM Converter Prototype
+title System Context diagram for LKMap-to-IFC Converter Prototype
 
-Person(user, "Protoype User", "An architect, civil engineer, etc. that wants to convert GeoPackage data to IFC 4.3 ")
-System(GIS_To_BIM_Converter_Prototype, "GPKG-to-IFC CLI Prototype", "Allows users to enter arguments to convert GeoPackage data to IFC 4.3")
+Person(user, "Protoype User", "An architect, civil engineer, etc. that wants to convert LKMap2025 data to IFC 4.3 ")
+System(LKMap_2_IFC_Converter_Prototype, "LKMap-to-IFC CLI Prototype", "Allows users to enter arguments to convert LKMap2025 data to IFC 4.3")
 System_Ext(filesystem, "File System", "File system provided by the OS")
 
-Rel(user, GIS_To_BIM_Converter_Prototype, "uses")
-Rel(GIS_To_BIM_Converter_Prototype, filesystem, "writes to")
+Rel(user, LKMap_2_IFC_Converter_Prototype, "uses")
+Rel(LKMap_2_IFC_Converter_Prototype, filesystem, "writes to")
 
 @enduml

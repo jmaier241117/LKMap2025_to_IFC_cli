@@ -1,0 +1,51 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+DataProcessingChain o-- CoordinateAdapter
+DataProcessingChain o-- GeometryProcessor
+DataProcessingChain o-- GeoPackageUtils
+DataProcessingChain o-- GroupingToDictionaryProcessor
+DataProcessingChain o-- TapPointProcessor
+
+class CoordinateAdapter{
+    +scale_attributes : (float, float, float)
+    --
+    +execute_processor()
+    -execute_point_coordinate_adapter()
+}
+class DataProcessingChain{
+    execute_processing_chain()
+}
+class GeometryProcessor{
+    +dataset : GeoPackage
+    +clipsrc : (float, float, float, float)
+    --
+    +execute_processor()
+    -map_geometry_to_dictionary()
+}
+class GeoPackageUtils{
+    +convert_ili_2_gpkg()
+    +cleanUp_geopackage()
+}
+class GroupingToDictionaryProcessor{
+    +dataset : GeoPackage
+    --
+    +execute_processor()
+    -execute_lkpunkt_processor()
+    -execute_lklinie_processor()
+    -execute_lkflaeche_processor()
+    -get_organisations()
+}
+class TapPointProcessor{
+    +dataset : GeoPackage
+    +tap_point_geometries : Dictionary
+    --
+    +execute_processor()
+    -get_point_tap_points()
+    -get_point_tap_points()
+    -get_area_tap_points()
+    -combine_tap_points()
+}
+
+
+@enduml

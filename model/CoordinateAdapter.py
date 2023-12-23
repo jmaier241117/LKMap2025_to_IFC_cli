@@ -4,77 +4,74 @@ from statistics import mean
 class CoordinateAdapter:
     def __init__(self, reference_null_point):
         self.scale_attributes = (reference_null_point[0], reference_null_point[1], reference_null_point[2])
+        self.lkobject_type = None
+        self.coordinates_3d = None
+        self.area_thickness = None
 
     def execute_processor(self, lkobject_type, elements, tapping_points) -> any:
-        adapted_elements = None
-        if lkobject_type == 'lklinie':
-            adapted_elements = self._execute_line_coordinate_adapter(elements, tapping_points)
-        elif lkobject_type == 'lkpunkt':
-            adapted_elements = self._execute_point_coordinate_adapter(elements, tapping_points)
-        elif lkobject_type == 'lkflaeche':
-            adapted_elements = self._execute_area_coordinate_adapter(elements, tapping_points)
-        return adapted_elements
-
-    def _execute_point_coordinate_adapter(self, elements, tapping_points) -> any:
+        self.lkobject_type = lkobject_type
         for key in elements.keys():
-            coordinate_2d = list(elements[key]['geometry'])
-            list_3d = []
+            self.coordinates_3d = []
             if key in tapping_points:
-                tap_point = tapping_points[key][0]
-                if tap_point[0:2] == coordinate_2d:
-                    list_3d.append([tap_point[0], tap_point[1], tap_point[2]])
-                    list_3d.append([tap_point[0], tap_point[1], tap_point[3]])
-                else:
-                    print("this should never happen")
+                if lkobject_type == 'lkpunkt':
+                    self._execute_points_adapter(elements[key]['geometry'], tapping_points[key][0])
+                elif lkobject_type == 'lklinie':
+                    self._execute_adapter(elements[key]['geometry'], tapping_points[key])
+                elif lkobject_type == 'lkflaeche':
+                    self._execute_adapter(elements[key]['geometry'][0], tapping_points[key])
             else:
-                list_3d.append([coordinate_2d[0], coordinate_2d[1], self.scale_attributes[2]])
-                list_3d.append([coordinate_2d[0], coordinate_2d[1], (self.scale_attributes[2] - 2)])
-            elements[key]['geometry'] = self._scale_objects(list_3d)
+                if lkobject_type == 'lklinie':
+                    self._execute_default_3d_coordinate_adapter(elements[key]['geometry'])
+                elif lkobject_type == 'lkpunkt':
+                    self._execute_default_3d_coordinate_adapter(elements[key]['geometry'])
+                elif lkobject_type == 'lkflaeche':
+                    self._execute_default_3d_coordinate_adapter(elements[key]['geometry'][0])
+            elements[key]['geometry'] = self._scale_objects(self.coordinates_3d)
+            if lkobject_type == 'flaeche':
+                elements[key]['thickness'] = self.area_thickness
         return elements
 
-    def _execute_line_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in elements.keys():
-            coordinate_list_2d = list(elements[key]['geometry'])
-            coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
-            list_3d = []
-            if key in tapping_points:
-                tp_list = tapping_points[key]
-                for index in tp_list:
-                    x_and_y = index[0:2]
-                    if any(x_and_y == coordinate_2d for coordinate_2d in coordinate_list_2d):
-                        z_line_coordinate = index[2] - ((index[2] - index[3]) / 2)
-                        list_3d.append([index[0], index[1], z_line_coordinate])
-                        coordinate_list_2d.remove(x_and_y)
-            if coordinate_list_2d:
-                for index in coordinate_list_2d:
-                    index.append(self.scale_attributes[2] - 1.5)
-                    list_3d.append(index)
-            elements[key]['geometry'] = self._scale_objects(list_3d)
-        return elements
+    def _execute_default_3d_coordinate_adapter(self, element_geometry):
+        coordinate_2d = list(element_geometry)
+        if self.lkobject_type == 'lkpunkt':
+            self.coordinates_3d = [[coordinate_2d[0], coordinate_2d[1], self.scale_attributes[2]],
+                                   [coordinate_2d[0], coordinate_2d[1], (self.scale_attributes[2] - 2.0)]]
+        else:
+            for coordinate in coordinate_2d:
+                self.coordinates_3d.append([coordinate[0], coordinate[1], self.scale_attributes[2] - 2.0])
+            self.area_thickness = 2.0
 
-    def _execute_area_coordinate_adapter(self, elements, tapping_points) -> any:
-        for key in elements.keys():
-            coordinate_list_2d = list(elements[key]['geometry'][0])
-            coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
-            list_3d = []
-            thickness = 0.0
-            if key in tapping_points:
-                tp_list = tapping_points[key]
-                thickness_list = []
-                for index in tp_list:
-                    x_and_y = index[0:2]
-                    if any(x_and_y == coordinate_2d for coordinate_2d in coordinate_list_2d):
-                        thickness_list.append(index[2] - index[3])
-                        list_3d.append([index[0], index[1], index[3]])
-                        coordinate_list_2d.remove(x_and_y)
-                thickness = mean(thickness_list)
-            if coordinate_list_2d:
-                for index in coordinate_list_2d:
-                    index.append(self.scale_attributes[2] - 2)
-                    list_3d.append(index)
-            elements[key]['geometry'] = self._scale_objects(list_3d)
-            elements[key]['thickness'] = thickness if thickness != 0.0 else 1.0
-        return elements
+    def _execute_points_adapter(self, element_geometry, element_tapping_point):
+        coordinate_2d = list(element_geometry)
+        tap_point = element_tapping_point
+        if tap_point[0:2] == coordinate_2d:
+            self.coordinates_3d.append([tap_point[0], tap_point[1], tap_point[2]])
+            self.coordinates_3d.append([tap_point[0], tap_point[1], tap_point[3]])
+        else:
+            self._execute_default_3d_coordinate_adapter(element_geometry)
+
+    def _execute_adapter(self, element_geometry, element_tapping_points):
+        coordinate_list_2d = list(element_geometry)
+        coordinate_list_2d = [list(coord_tuple) for coord_tuple in coordinate_list_2d]
+        thickness_list = []
+        z_coordinates = []
+        for tap_point in element_tapping_points:
+            x_and_y = tap_point[0:2]
+            if any(x_and_y == coordinate_2d for coordinate_2d in coordinate_list_2d):
+                if self.lkobject_type == 'lklinie':
+                    z_line_coordinate = tap_point[2] - ((tap_point[2] - tap_point[3]) / 2)
+                    self.coordinates_3d.append([tap_point[0], tap_point[1], z_line_coordinate])
+                    z_coordinates.append(z_line_coordinate)
+                elif self.lkobject_type == 'lkflaeche':
+                    thickness_list.append(tap_point[2] - tap_point[3])
+                    self.coordinates_3d.append([tap_point[0], tap_point[1], tap_point[3]])
+                    z_coordinates.append(tap_point[3])
+                coordinate_list_2d.remove(x_and_y)
+        if coordinate_list_2d:
+            for coordinate in coordinate_list_2d:
+                z_line_coordinate = mean(z_coordinates) if z_coordinates else self.scale_attributes[2] - 2.0
+                self.coordinates_3d.append([coordinate[0], coordinate[1], z_line_coordinate])
+        self.area_thickness = mean(thickness_list) if thickness_list else 2.0
 
     def _scale_objects(self, coordinates) -> any:
         scaled_coordinates = ()

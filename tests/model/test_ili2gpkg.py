@@ -1,4 +1,4 @@
-from ili2gpkg import Ili2gpkg
+from model.ili2gpkg import Ili2gpkg
 
 
 def test_ili2gpkg_conversion_schema_import():

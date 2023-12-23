@@ -2,20 +2,22 @@
 
 !include C4_Container.puml
 
-title GIS-to-BIM Converter Prototype - Container Diagram
+title LKMap-to-IFC Converter Prototype - Container Diagram
 Person(user, "Protoype User", "An architect, civil engineer, etc. that wants to convert GeoPackage data to IFC 4.3 ")
 
-System_Boundary(system, "GPKG-to-IFC Prototype") {
-    Container(cli, "Command Line Interface", "Python, Typer", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
-    Container(controller, "Data Processing Controller", "Python", "Controls the processing of given data")
+System_Boundary(system, "LKMap-to-IFC Prototype") {
+    Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
+    Container(controller, "Data Processing Controller", "Python", "Controls the processing of data")
+    Container(model, "Data Processing Chain", "Python, Pyogrio", "Controls the process of extrancting and preparing given data")
+    Container(ifc, "Ifc Creation Controller", "Python, IfcOpenShell", "Controls the process of creating the IFC file")
+    ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
     Rel(cli, controller, "uses")
+    Rel(controller, model, "uses")
+    Rel(controller, ifc, "uses")
+    Rel(model, geoPackage, "uses")
 }
 System_Ext(filesystem, "File System", "The file system provided by the OS")
-ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
-
-Rel(cli, geoPackage, "aquires dataset from argument")
-Rel(geoPackage, controller, "loads dataset")
 Rel(user, system, "uses")
-Rel(controller, filesystem, "writes to")
+Rel(ifc, filesystem, "writes to")
 
 @enduml

@@ -11,7 +11,7 @@ def convert_ili_2_gpkg(datafile) -> any:
     return code
 
 
-def cleanUp_db(geopackage):
+def cleanUp_geopackage(geopackage):
     dataset_layer = pyogrio.read_dataframe(geopackage, layer='T_ILI2DB_DATASET')
     if not dataset_layer.empty:
         for index, row in dataset_layer.iterrows():

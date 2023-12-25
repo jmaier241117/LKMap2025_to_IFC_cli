@@ -1,7 +1,7 @@
 import ifcopenshell
 
 from ifc import IfcUtils
-from ifc.IfcUtils import uncertainty_surcharge
+from ifc.IfcUtils import uncertainty_surcharge, get_height_uncertainty_coordinates
 
 
 class IIfcDistributionFlowElement:
@@ -17,7 +17,7 @@ class IIfcDistributionFlowElement:
             'default': None,
             'imprecise': None,
             'unknown': None,
-            'height_unknown': None,
+            'height_unknown': [],
         }
         self.representation_type = None
         self.shape_representation = None
@@ -38,12 +38,17 @@ class IIfcDistributionFlowElement:
         elif self.representation_elements['unknown']:
             self.project_file.createIfcStyledItem(self.representation_elements['unknown'],
                                                   [IfcUtils.surface_style_unknown])
-        elif self.representation_elements['height_unknown']:
-            self.project_file.createIfcStyledItem(self.representation_elements['height_unknown'],
-                                                  [IfcUtils.surface_style_unknown])
+        if self.representation_elements['height_unknown']:
+            for element in self.representation_elements['height_unknown']:
+                self.project_file.createIfcStyledItem(element, [IfcUtils.surface_style_unknown_height])
 
     def build_shape_representation(self) -> any:
-        rep_elements_list = list(self.representation_elements.values())
+        rep_elements_list = []
+        for element in self.representation_elements.values():
+            if not isinstance(element, list):
+                rep_elements_list.append(element)
+            else:
+                rep_elements_list.extend(element)
         rep_elements = [element for element in rep_elements_list if element is not None]
         shape_rep = self.project_file.createIfcShapeRepresentation(self.geometric_context,
                                                                    'Body', self.representation_type,
@@ -91,13 +96,20 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
             self.radius)
 
     def build_height_uncertainty_element(self):
-        arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
-                                                                                        self.poly_indexed_curve)
-        self.representation_elements['height_unknown'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile,
-            None,
-            self.extrusion_direction,
-            2.0)
+        index = 0
+        while index < len(self.coordinates) - 1:
+            index = index + 1
+            uncertainty_coordinates = get_height_uncertainty_coordinates(self.coordinates[index - 1],
+                                                                         self.coordinates[index], self.radius)
+            cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(uncertainty_coordinates)
+            poly_indexed_curve = self.project_file.createIfcIndexedPolyCurve(cartesian_point_list_3d)
+            arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', None,
+                                                                                            poly_indexed_curve)
+            extruded = self.project_file.createIfcExtrudedAreaSolid(arbitrary_closed_profile, None,
+                                                                    self.extrusion_direction, 2.0)
+
+            self.representation_elements['height_unknown'].append(extruded)
+
 
 class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
     def __init__(self, ifc_file):
@@ -105,7 +117,6 @@ class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
         self.radius = None
         self.representation_type = 'SolidModel'
         self.poly_indexed_curve = None
-
 
     def build_representation_element(self):
         cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(self.coordinates)
@@ -128,7 +139,6 @@ class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
             self.poly_indexed_curve,
             self.radius + uncertainty_addon,
             self.radius)
-
 
 
 class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):

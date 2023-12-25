@@ -45,7 +45,7 @@ class IfcCreationController:
 
     def build_pipe_ifc_elements(self, dataset):
         pipes = ()
-        for key in islice(dataset.keys(), 1, None):
+        for key in dataset.keys():
             if dataset[key]['attributes']['CHLKMap_Breite']:
                 radius = dataset[key]['attributes']['CHLKMap_Breite']
                 default_dimension_value = False

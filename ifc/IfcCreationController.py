@@ -6,20 +6,25 @@ from ifc import IfcUtils
 from ifc.IfcElementBuilders import IfcDuctElementBuilder, IfcPipeElementBuilder, IfcSpecialStructureElementBuilder
 from ifc.IfcProjectSetupBuilder import IfcProject, IfcSite
 from ifc.IfcPropertySetBuilder import IfcPropertySet
-from ifc.IfcUtils import Uncertainty, initialize_styles
+from ifc.IfcUtils import Uncertainty, initialize_styles, initialize_zero_points, initialize_directions
 
 
 class IfcCreationController:
     def __init__(self, reference_null_point, show_height_uncertainty, show_position_uncertainty):
         self.ifc_file = ifcopenshell.file(schema="IFC4X3")
-        self.project = IfcProject(self.ifc_file, 'Project', reference_null_point)
-        self.site = IfcSite(self.ifc_file, "Site", self._create_zero_placement())
+        self.project = None
+        self.site = None
         self.show_height_uncertainty = show_height_uncertainty
         self.show_position_uncertainty = show_position_uncertainty
+        self.reference_null_point = reference_null_point
 
     def ifc_base_initialization(self):
-        self._relational_aggregates(self.project.element, self.site.element)
+        initialize_zero_points(self.ifc_file)
+        initialize_directions(self.ifc_file)
         initialize_styles(self.ifc_file)
+        self.project = IfcProject(self.ifc_file, 'Project', self.reference_null_point)
+        self.site = IfcSite(self.ifc_file, "Site", self._create_zero_placement())
+        self._relational_aggregates(self.project.element, self.site.element)
 
     def build_chamber_ifc_elements(self, dataset):
         chambers = ()
@@ -97,14 +102,7 @@ class IfcCreationController:
         self._spatial_relations_of_elements(specials, self.site)
 
     def _create_zero_placement(self):
-        return self.ifc_file.createIfcLocalPlacement(None,
-                                                     self.ifc_file.createIfcAxis2Placement3D(
-                                                         self.ifc_file.createIfcCartesianPoint(
-                                                             IfcUtils.zero_point_3D),
-                                                         self.ifc_file.createIfcDirection(
-                                                             IfcUtils.zero_point_3D_direction_1),
-                                                         self.ifc_file.createIfcDirection(
-                                                             IfcUtils.zero_point_3D_direction_2)))
+        return self.ifc_file.createIfcLocalPlacement(None, self.project.project_zero_points['3D'])
 
     def _relational_aggregates(self, from_element, to_element):
         self.ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, from_element, [to_element])

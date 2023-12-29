@@ -53,14 +53,8 @@ class IIfcDistributionFlowElement:
         shape_rep = self.project_file.createIfcShapeRepresentation(self.geometric_context,
                                                                    'Body', self.representation_type,
                                                                    rep_elements)
-        # Not sure if needed bb
-        bounding_box_of_element = self.project_file.createIfcBoundingBox(
-            self.project_file.createIfcCartesianPoint((0.0, 0.0, 0.0)), 2, 2, 50)
-        bounding_box_shape_rep = self.project_file.createIfcShapeRepresentation(
-            self.geometric_context, 'Box', 'BoundingBox', [bounding_box_of_element])
         self.shape_representation = self.project_file.createIfcProductDefinitionShape(None, None,
-                                                                                      (bounding_box_shape_rep,
-                                                                                       shape_rep))
+                                                                                      [shape_rep])
 
 
 class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
@@ -69,7 +63,6 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
         self.radius = None
         self.representation_type = 'SolidModel'
         self.poly_indexed_curve = None
-        self.extrusion_direction = self.project_file.createIfcDirection((0.0, 0.0, 1.0))
 
     def build_representation_element(self):
         cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(self.coordinates)
@@ -102,7 +95,7 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
             arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', None,
                                                                                             poly_indexed_curve)
             extruded = self.project_file.createIfcExtrudedAreaSolid(arbitrary_closed_profile, None,
-                                                                    self.extrusion_direction, 2.0)
+                                                                    IfcUtils.z_axis_3D_direction, -2.0)
             self.representation_elements['height_unknown'].append(extruded)
 
 
@@ -149,16 +142,14 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
         super().__init__(ifc_file)
         self.thickness = None
         self.representation_type = 'SweptSolid'
-        self.extrusion_direction = None
 
     def build_representation_element(self):
         cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(self.coordinates)
         poly_indexed_curve = self.project_file.createIfcIndexedPolyCurve(cartesian_point_list_3d)
         arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
                                                                                         poly_indexed_curve)
-        self.extrusion_direction = self.project_file.createIfcDirection((0.0, 0.0, 1.0))
         self.representation_elements['default'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile, None, self.extrusion_direction, self.thickness)
+            arbitrary_closed_profile, None, IfcUtils.z_axis_3D_direction, -self.thickness)
 
     def build_representation_uncertainty_imprecise_element(self):
         uncertainty_coordinates = []
@@ -171,7 +162,7 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
         arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
                                                                                         poly_indexed_curve)
         self.representation_elements['imprecise'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile, None, self.extrusion_direction, self.thickness)
+            arbitrary_closed_profile, None, IfcUtils.z_axis_3D_direction, -self.thickness)
 
     def build_representation_uncertainty_unknown_element(self):
         uncertainty_coordinates = []
@@ -188,7 +179,7 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
         arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
                                                                                         poly_indexed_curve)
         self.representation_elements['unknown'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile, None, self.extrusion_direction, self.thickness)
+            arbitrary_closed_profile, None, IfcUtils.z_axis_3D_direction, -self.thickness)
 
     def build_height_uncertainty_element(self):
         uncertainty_coordinates = []
@@ -200,5 +191,5 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
         arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
                                                                                         poly_indexed_curve)
         extruded = self.project_file.createIfcExtrudedAreaSolid(arbitrary_closed_profile, None,
-                                                                self.extrusion_direction, 2.0)
+                                                                IfcUtils.z_axis_3D_direction, 2.0)
         self.representation_elements['height_unknown'].append(extruded)

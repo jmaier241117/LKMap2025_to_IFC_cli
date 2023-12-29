@@ -15,3 +15,21 @@ qodana-python:
   artifacts:
       paths:
          - qodana
+
+unit-tests:
+  image: python:latest
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  cache:
+    paths:
+      - .cache/pip
+      - venv/
+  before_script:
+    - python3 -V  # Print out python version for debugging
+    - pip3 install virtualenv
+    - virtualenv venv
+    - source venv/bin/activate
+    - pip3 install requests
+    - pip3 install python-dotenv
+  script:
+    - python3 -m unittest

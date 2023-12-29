@@ -1,15 +1,8 @@
 import math
 from enum import Enum
 
-import ifcopenshell
-import ifcopenshell.guid
 from scipy import stats
 
-zero_point_3D = (0.0, 0.0, 0.0)
-zero_point_3D_direction_1 = (0.0, 0.0, 1.0)
-zero_point_3D_direction_2 = (1.0, 0.0, 0.0)
-zero_point_2D = (0.0, 0.0)
-zero_point_2D_direction = (1.0, 0.0)
 length_unit = "METRE"
 area_unit = "SQUARE_METRE"
 volume_unit = "CUBIC_METRE"
@@ -25,16 +18,42 @@ uncertainty_surcharge = {
     'DEFAULT_PRECISE': 0.3
 }
 
-default_surface_style = None
-surface_style_imprecise = None
-surface_style_unknown = None
-surface_style_unknown_height = None
-
 
 class Uncertainty(Enum):
     IMPRECISE = 'ungenau'
     PRECISE = 'genau'
     UNKNOWN = 'unbekannt'
+
+
+zero_point_3D = None
+zero_point_2D = None
+
+
+def initialize_zero_points(ifc_file):
+    global zero_point_3D
+    zero_point_3D = ifc_file.createIfcCartesianPoint((0.0, 0.0, 0.0))
+    global zero_point_2D
+    zero_point_2D = ifc_file.createIfcCartesianPoint((0.0, 0.0))
+
+
+z_axis_3D_direction = None
+x_axis_3D_direction = None
+x_axis_2D_direction = None
+
+
+def initialize_directions(ifc_file):
+    global z_axis_3D_direction
+    z_axis_3D_direction = ifc_file.createIfcDirection((0.0, 0.0, 1.0))
+    global x_axis_3D_direction
+    x_axis_3D_direction = ifc_file.createIfcDirection((1.0, 0.0, 0.0))
+    global x_axis_2D_direction
+    x_axis_2D_direction = ifc_file.createIfcDirection((1.0, 0.0))
+
+
+default_surface_style = None
+surface_style_imprecise = None
+surface_style_unknown = None
+surface_style_unknown_height = None
 
 
 def initialize_styles(ifc_file):
@@ -66,12 +85,11 @@ def write_ifc_file(ifc_file, file_path):
 def get_height_uncertainty_coordinates(point1, point2, radius) -> any:
     x_values = [point1[0], point2[0]]
     y_values = [point1[1], point2[1]]
-    print(x_values)
     slope, intercept, r_value, p_value, std_err = stats.linregress(x_values, y_values)
     dy = math.sqrt(radius ** 2 / (slope ** 2 + 1))
     dx = -slope * dy
-    new_point1 = (float(round(point1[0] + dx, 4)), round(point1[1] + dy, 4), -2.0)
-    new_point2 = (float(round(point1[0] - dx, 4)), round(point1[1] - dy, 4), -2.0)
-    new_point3 = (float(round(point2[0] + dx, 4)), round(point2[1] + dy, 4), -2.0)
-    new_point4 = (float(round(point2[0] - dx, 4)), round(point2[1] - dy, 4), -2.0)
+    new_point1 = (float(round(point1[0] + dx, 4)), round(point1[1] + dy, 4), 0.0)
+    new_point2 = (float(round(point1[0] - dx, 4)), round(point1[1] - dy, 4), 0.0)
+    new_point3 = (float(round(point2[0] + dx, 4)), round(point2[1] + dy, 4), 0.0)
+    new_point4 = (float(round(point2[0] - dx, 4)), round(point2[1] - dy, 4), 0.0)
     return new_point1, new_point3, new_point4, new_point2, new_point1

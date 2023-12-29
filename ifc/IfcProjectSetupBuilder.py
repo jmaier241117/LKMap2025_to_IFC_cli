@@ -10,15 +10,8 @@ class IfcProject:
         self.project_name = project_name
         self.project_zero_points = {
             '3D': self.project_file.createIfcAxis2Placement3D(
-                self.project_file.createIfcCartesianPoint(IfcUtils.zero_point_3D),
-                self.project_file.createIfcDirection(
-                    IfcUtils.zero_point_3D_direction_1),
-                self.project_file.createIfcDirection(
-                    IfcUtils.zero_point_3D_direction_2)),
-            '2D': self.project_file.createIfcAxis2Placement2D(
-                self.project_file.createIfcCartesianPoint(IfcUtils.zero_point_2D),
-                self.project_file.createIfcDirection(
-                    IfcUtils.zero_point_2D_direction))}
+                IfcUtils.zero_point_3D, IfcUtils.z_axis_3D_direction, IfcUtils.x_axis_3D_direction),
+            '2D': self.project_file.createIfcAxis2Placement2D(IfcUtils.zero_point_2D, IfcUtils.x_axis_2D_direction)}
         self.project_contexts = {
             'model_context': self.project_file.createIfcGeometricRepresentationContext(None,
                                                                                        IfcUtils.context_type_model, 3,
@@ -26,15 +19,12 @@ class IfcProject:
                                                                                        self.project_zero_points['3D'],
                                                                                        None),
             'plan_context': self.project_file.createIfcGeometricRepresentationContext(None, IfcUtils.context_type_plan,
-                                                                                      2,
-                                                                                      0.01,
+                                                                                      2, 0.01,
                                                                                       self.project_zero_points['2D'],
                                                                                       None)}
         self.element = self.project_file.createIfcProject(ifcopenshell.guid.new(), None, project_name, None, None,
-                                                          None,
-                                                          None,
-                                                          (self.project_contexts['model_context'],
-                                                           self.project_contexts['plan_context']),
+                                                          None, None, (self.project_contexts['model_context'],
+                                                                       self.project_contexts['plan_context']),
                                                           self._create_unit_assignment())
 
         projected_crs = self.project_file.createIfcProjectedCRS('EPSG:2056', 'CH1903+ / LV95', 'CH1903Plus_1', None,

@@ -15,7 +15,7 @@ class TestIfcCreationControllerPoints(unittest.TestCase):
                            'CHLKMap_Dimension1': '600', 'CHLKMap_Dimension2': '800',
                            'CHLKMap_Dimension_Annahme': '600', 'CHLKMap_SymbolOri': '0.0'},
             'geometry': (2704394.757, 1231182.229), 'characteristics': {}}})
-        controller.ifc_base_element_initialization()
+        controller.ifc_base_initialization()
 
     def test_build_chamber_ifc_elements(self):
         controller.build_chamber_ifc_elements(self.dataset)
@@ -38,7 +38,7 @@ class TestIfcCreationControllerPipes(unittest.TestCase):
                   'CHLKMap_Profiltyp': 'Kreisprofil'},
              'geometry': ((2704377.024, 1231204.022), (2704394.757, 1231182.229)), 'characteristics': {}}}
         )
-        controller.ifc_base_element_initialization()
+        controller.ifc_base_initialization()
 
     def test_build_pipe_ifc_elements(self):
         controller.build_pipe_ifc_elements(self.dataset)
@@ -59,13 +59,13 @@ class TestIfcCreationControllerAreas(unittest.TestCase):
              'geometry': ((2704373.884, 1231209.472), (2704372.423, 1231199.535), (2704385.575, 1231200.12),
                           (2704383.529, 1231209.472), (2704373.884, 1231209.472)), 'characteristics': {}}}
         )
-        controller.ifc_base_element_initialization()
+        controller.ifc_base_initialization()
 
     def test_build_special_structure_ifc_elements(self):
         controller.build_special_structure_ifc_elements(self.dataset)
         special_structures = controller.file.by_type("IfcDistributionFlowElement")
         self.assertEquals(len(special_structures), 3)
-        controller.file.write("export/test_ifcCreationController.ifc")
+
 
 
 if __name__ == '__main__':

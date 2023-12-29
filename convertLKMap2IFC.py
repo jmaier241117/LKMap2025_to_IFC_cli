@@ -9,8 +9,7 @@ from setup import POLYGON, POINT, XTF_ERROR, CONFIG_ERROR, SUCCESS
 
 
 @click.argument('import_file', type=click.Path())
-@click.option('--null_point', required=True, type=POINT,
-              help='The Reference Null Point used for creating the elements, example: \'POINT(2691039.8 1236160.3 420.0)\'')
+@click.argument('null_point',  type=POINT)
 @click.option('--export_path', default=None, type=click.Path(),
               help='The path to where you would like your IFC file to be generated')
 @click.option('--clip_src', default=None, type=POLYGON,

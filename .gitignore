@@ -3,6 +3,5 @@ export/
 .idea
 node_modules/*
 **/__pycache__/
-*.gpkg
 *.ifc
 *.xtf

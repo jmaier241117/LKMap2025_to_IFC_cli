@@ -1,20 +1,20 @@
 @startuml
 !include C4_Component.puml
 
-title LKMap-to-IFC Converter Prototype - IFC Component Diagram
+title LKMap-to-IFC Converter Prototype - IFC Creation Controller Component Diagram
 
-Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and convert-gpkg-to-ifc command")
-Container(modelController, "Model", "Python", "")
+Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and options")
+Container(modelController, "Data Processing Chain", "Python, Pyogrio, Subprocess", "Prepares the provided data")
 ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
 Rel_L(cli, modelController, "Uses")
-Rel(cli, IFC, "Uses")
+Rel(cli, IFCCreationController, "Uses")
 
-Container_Boundary(IFC, "IFC") {
-    Component(ifcCreationController, "IfcCreationController", "Python", "Controls the processing of given data")
-    Component(ifcElementBuilders, "IfcElementBuilders", "Python", "")
-    Component(ifcProjectSetupBuilder, "IfcProjectSetupBuilder", "Python", "")
-    Component(ifcPropertySetBuilder, "IfcPropertySetBuilder", "Python", "")
-    Component(ifcUtils, "IfcUtils", "Python", "")
+Container_Boundary(IFCCreationController, "IFC Creation Controller") {
+    Component(ifcCreationController, "IfcCreationController", "Python, IfcOpenShell", "Controls the creation of elements in the IFC model")
+    Component(ifcElementBuilders, "IfcElementBuilders", "Python, IfcOpenShell", "Creates Elements and their geometric representations")
+    Component(ifcProjectSetupBuilder, "IfcProjectSetupBuilder", "Python, IfcOpenShell", "Creates the basic structure in the IFC model")
+    Component(ifcPropertySetBuilder, "IfcPropertySetBuilder", "Python, IfcOpenShell", "Creates the IFC Property Sets for the elements")
+    Component(ifcUtils, "IfcUtils", "Python, IfcOpenShell", "Provides utility functions")
     Rel(ifcCreationController, ifcElementBuilders, "uses")
     Rel(ifcCreationController, ifcProjectSetupBuilder, "uses")
     Rel(ifcCreationController, ifcUtils, "uses")
@@ -23,10 +23,10 @@ Container_Boundary(IFC, "IFC") {
     Rel_R(ifcCreationController, ifcPropertySetBuilder, "uses")
 }
 System_Ext(filesystem, "File System", "The file system provided by the OS")
-ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided 2D data to be converted")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided LKMap_2025 data to be converted")
 
 Rel(modelController, geoPackage, "Uses")
-Rel(IFC, filesystem, "writes to")
+Rel_R(cli, filesystem, "writes to")
 
 
 @enduml

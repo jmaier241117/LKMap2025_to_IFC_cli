@@ -2,7 +2,7 @@ from enum import Enum
 
 import click
 import shapely
-from shapely import GEOSException
+from shapely import GEOSException, wkt
 
 
 class PointParamType(click.ParamType):
@@ -12,7 +12,10 @@ class PointParamType(click.ParamType):
         try:
             point = shapely.wkt.loads(value)
             coords = list(point.coords)
-            return coords[0]
+            if len(coords[0]) == 3:
+                return coords[0]
+            else:
+                raise click.ClickException('The WKT Point provided must be 3 Dimensional!')
         except GEOSException:
             self.fail(f"{value!r} is not a valid WKT Point", param, ctx)
 

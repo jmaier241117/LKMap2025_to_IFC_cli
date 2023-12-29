@@ -8,7 +8,6 @@ from model.DataProcessingChain import DataProcessingChain
 from setup import POLYGON, POINT, XTF_ERROR, CONFIG_ERROR, SUCCESS
 
 
-@click.command()
 @click.argument('import_file', type=click.Path())
 @click.option('--null_point', required=True, type=POINT,
               help='The Reference Null Point used for creating the elements, example: \'POINT(2691039.8 1236160.3 420.0)\'')
@@ -20,7 +19,9 @@ from setup import POLYGON, POINT, XTF_ERROR, CONFIG_ERROR, SUCCESS
               help='Flag if height uncertainties should be shown, default = True')
 @click.option('--show_position_uncertainty', default=True,
               help='Flag if position uncertainties should be shown, default = True')
-def convert(import_file, null_point, export_path, clip_src, show_height_uncertainty, show_position_uncertainty):
+@click.command()
+def convertLKMap2IFC(import_file, null_point, export_path, clip_src, show_height_uncertainty,
+                     show_position_uncertainty):
     """
      IMPORTFILE is the path to the INTERLIS transferfile (.xtf) you would like to use!
 
@@ -28,32 +29,26 @@ def convert(import_file, null_point, export_path, clip_src, show_height_uncertai
 
      EXPORTFILE is , format: <name>.ifc
     """
-    print(null_point)
-    if check_conversion_config(import_file, export_path) == 0:
-        run_conversion({'xtf': import_file, 'reference_null_point': null_point},
-                       {'clipsrc': clip_src, 'ifc_file_path': export_path,
-                        'show_height_uncertainty': show_height_uncertainty,
-                        'show_position_uncertainty': show_position_uncertainty})
-    click.secho(f"The conversion has successfully completed, you can find your IFC file here \"{export_path}\"",
-                fg='green')
-
-
-def check_conversion_config(importfile, exportpath) -> int:
     try:
-        if not os.path.isfile(importfile):
-            click.secho(f"ERROR: The file {importfile} cannot be found", fg='red')
-            return XTF_ERROR
-        if not exportpath:
-            click.secho(f"WARNING: No export path was given, the file will be created in the current working directory",
+        if not os.path.isfile(import_file):
+            raise click.ClickException(f'The file {import_file} cannot be found')
+        if not export_path:
+            click.secho(f"WARNING: No export path was given," +
+                        " the file will be created in the current working directorys export folder!",
                         fg='magenta')
             click.confirm('Do you want to continue?', abort=True)
-        if exportpath and os.path.isfile(exportpath):
-            click.confirm(
-                f'An ifc file with the given name already exists at {exportpath}, do you want to overwrite it?',
-                abort=True)
+            export_path = 'export/' + (import_file.split(".")[0]) + '.ifc'
+        if os.path.isfile(export_path):
+            click.secho(f'WARNING: An ifc file with the given name already exists at {export_path}', fg='magenta')
+            click.confirm('Do you want to overwrite it?', abort=True)
     except OSError:
         return CONFIG_ERROR
-    return SUCCESS
+    run_conversion({'xtf': import_file, 'reference_null_point': null_point},
+                   {'clipsrc': clip_src, 'ifc_file_path': export_path,
+                    'show_height_uncertainty': show_height_uncertainty,
+                    'show_position_uncertainty': show_position_uncertainty})
+    click.secho(f"The conversion has successfully completed, you can find your IFC file here \"{export_path}\"",
+                fg='green')
 
 
 def run_conversion(cli_arguments, cli_options):
@@ -70,4 +65,4 @@ def run_conversion(cli_arguments, cli_options):
 
 
 if __name__ == '__main__':
-    convert()
+    convertLKMap2IFC()

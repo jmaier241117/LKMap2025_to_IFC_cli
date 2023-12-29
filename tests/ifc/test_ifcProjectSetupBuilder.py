@@ -14,22 +14,22 @@ class TestIfcProjectSetupBuilder(unittest.TestCase):
         self.zero_placement = self.ifc_file.createIfcLocalPlacement(None, self.project.project_zero_points['3D'])
 
     def test_geometric_representation_context(self):
-        self.assertEquals(2, len(self.ifc_file.by_type("IfcGeometricRepresentationContext")))
+        self.assertEqual(2, len(self.ifc_file.by_type("IfcGeometricRepresentationContext")))
 
     def test_ifc_si_unit_and_assignment(self):
-        self.assertEquals(4, len(self.ifc_file.by_type("IfcSIUnit")))
-        self.assertEquals(1, len(self.ifc_file.by_type("IfcUnitAssignment")))
+        self.assertEqual(4, len(self.ifc_file.by_type("IfcSIUnit")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcUnitAssignment")))
 
     def test_projected_crs_and_map_conversion(self):
-        self.assertEquals(1, len(self.ifc_file.by_type("IfcProjectedCRS")))
-        self.assertEquals(1, len(self.ifc_file.by_type("IfcMapConversion")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcProjectedCRS")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcMapConversion")))
 
     def test_ifc_project(self):
-        self.assertEquals(1, len(self.ifc_file.by_type("IfcProject")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcProject")))
 
     def test_ifc_site(self):
         IfcSite(self.ifc_file, "Site", self.zero_placement)
-        self.assertEquals(1, len(self.ifc_file.by_type("IfcSite")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcSite")))
 
 
 if __name__ == '__main__':

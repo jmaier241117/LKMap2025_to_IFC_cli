@@ -13,16 +13,16 @@ class TestIfcUtils(unittest.TestCase):
         initialize_styles(self.ifc_file)
         styles = self.ifc_file.by_type("IfcSurfaceStyle")
         colors = self.ifc_file.by_type("IfcColourRgb")
-        self.assertEquals(4, len(styles))
-        self.assertEquals(4, len(colors))
+        self.assertEqual(4, len(styles))
+        self.assertEqual(4, len(colors))
 
     def test_initialize_zero_points(self):
         initialize_zero_points(self.ifc_file)
-        self.assertEquals(2, len(self.ifc_file.by_type("IfcCartesianPoint")))
+        self.assertEqual(2, len(self.ifc_file.by_type("IfcCartesianPoint")))
 
     def test_initalize_directions(self):
         initialize_directions(self.ifc_file)
-        self.assertEquals(3, len(self.ifc_file.by_type("IfcDirection")))
+        self.assertEqual(3, len(self.ifc_file.by_type("IfcDirection")))
 
 
 if __name__ == '__main__':

@@ -31,6 +31,7 @@ unit-tests:
     - source venv/bin/activate
     - pip3 install pyogrio
     - pip3 install ifcopenshell
+    - pip3 install scipy
     - pip3 install python-dotenv
   script:
     - python3 -m unittest

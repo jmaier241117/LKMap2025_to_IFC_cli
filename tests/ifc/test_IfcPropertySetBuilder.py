@@ -17,8 +17,8 @@ class TestIfcPropertySetBuilder(unittest.TestCase):
 
     def test_build_chamber_ifc_elements(self):
         IfcPropertySet(self.file, self.element, self.attributes)
-        self.assertEquals(len(self.file.by_type("IfcPropertySingleValue")), 6)
-        self.assertEquals(len(self.file.by_type("IfcPropertySet")), 1)
+        self.assertEqual(len(self.file.by_type("IfcPropertySingleValue")), 6)
+        self.assertEqual(len(self.file.by_type("IfcPropertySet")), 1)
 
 
 if __name__ == '__main__':

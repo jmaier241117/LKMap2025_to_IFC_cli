@@ -29,7 +29,8 @@ unit-tests:
     - pip3 install virtualenv
     - virtualenv venv
     - source venv/bin/activate
-    - pip3 install requests
+    - pip3 install pyogrio
+    - pip3 install ifcopenshell
     - pip3 install python-dotenv
   script:
     - python3 -m unittest

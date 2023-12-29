@@ -3,7 +3,7 @@ import unittest
 import ifcopenshell
 
 from ifc.IfcUtils import initialize_styles, initialize_zero_points, initialize_directions, \
-    get_height_uncertainty_coordinates
+    get_height_uncertainty_coordinates, initialize_contexts
 
 
 class TestIfcUtils(unittest.TestCase):
@@ -24,6 +24,10 @@ class TestIfcUtils(unittest.TestCase):
     def test_initalize_directions(self):
         initialize_directions(self.ifc_file)
         self.assertEqual(3, len(self.ifc_file.by_type("IfcDirection")))
+
+    def test_xinitialize_contexts(self):
+        initialize_contexts(self.ifc_file)
+        self.assertEqual(2, len(self.ifc_file.by_type("IfcGeometricRepresentationContext")))
 
 
 if __name__ == '__main__':

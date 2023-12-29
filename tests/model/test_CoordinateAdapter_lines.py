@@ -27,7 +27,7 @@ class CoordinateAdapterTestCase(unittest.TestCase):
     def test_execute_default_3d_coordinate_adapter_lines(self):
         self.coordinate_adapter.coordinates_3d = []
         self.coordinate_adapter._execute_default_3d_coordinate_adapter(self.line_element['lineId']['geometry'])
-        z_coord = self.scale_attributes[2] - 2.0
+        z_coord = self.scale_attributes[2]
         expected_result = [[2691044.0, 1236142.0, z_coord], [2691043.0, 1236141.0, z_coord],
                            [2691036.0, 1236151.0, z_coord]]
         self.assertEqual(expected_result, self.coordinate_adapter.coordinates_3d)
@@ -62,7 +62,7 @@ class CoordinateAdapterTestCase(unittest.TestCase):
         self.coordinate_adapter.coordinates_3d = []
         self.coordinate_adapter._execute_adapter(self.line_element_nomatch['lineId']['geometry'],
                                                  self.line_tap_points['lineId'])
-        z_coord = self.scale_attributes[2] - 2.0
+        z_coord = self.scale_attributes[2]
         expected_result = [[2691045.0, 1236143.0, z_coord], [2691044.5, 1236142.5, z_coord],
                            [2691037.0, 1236152.0, z_coord]]
         self.assertEqual(expected_result, self.coordinate_adapter.coordinates_3d)

@@ -18,7 +18,7 @@ class CoordinateAdapterTestCase(unittest.TestCase):
         self.coordinate_adapter.coordinates_3d = []
         self.coordinate_adapter._execute_default_3d_coordinate_adapter(self.point_element['pointId']['geometry'])
         expected_result = [[2691035.0, 1236152.0, self.scale_attributes[2]],
-                           [2691035.0, 1236152.0, self.scale_attributes[2] - 2.0]]
+                           [2691035.0, 1236152.0, self.scale_attributes[2] - 0.6]]
         self.assertEqual(expected_result, self.coordinate_adapter.coordinates_3d)
 
     # Case 2: There are Tapping points matching
@@ -36,7 +36,7 @@ class CoordinateAdapterTestCase(unittest.TestCase):
         self.coordinate_adapter._execute_points_adapter(self.point_element_nomatch['pointId']['geometry'],
                                                         self.point_tap_points['pointId'][0])
         expected_list_3d = [[2691036.0, 1236153.0, self.scale_attributes[2]],
-                            [2691036.0, 1236153.0, self.scale_attributes[2] - 2.0]]
+                            [2691036.0, 1236153.0, self.scale_attributes[2] - 0.6]]
         self.assertEqual(expected_list_3d, self.coordinate_adapter.coordinates_3d)
 
 

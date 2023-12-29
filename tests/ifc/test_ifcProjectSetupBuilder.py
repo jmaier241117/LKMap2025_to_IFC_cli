@@ -1,22 +1,17 @@
 import unittest
 import ifcopenshell.util.element
 
-from ifc import IfcUtils
 from ifc.IfcProjectSetupBuilder import IfcProject, IfcSite
+from ifc.IfcUtils import initialize_zero_points, initialize_directions
 
 
 class TestIfcProjectSetupBuilder(unittest.TestCase):
     def setUp(self):
         self.ifc_file = ifcopenshell.file()
-        self.zero_placement = self.ifc_file.createIfcLocalPlacement(None,
-                                                                    self.ifc_file.createIfcAxis2Placement3D(
-                                                                        self.ifc_file.createIfcCartesianPoint(
-                                                                            IfcUtils.zero_point_3D),
-                                                                        self.ifc_file.createIfcDirection(
-                                                                            IfcUtils.zero_point_3D_direction_1),
-                                                                        self.ifc_file.createIfcDirection(
-                                                                            IfcUtils.zero_point_3D_direction_2)))
-        IfcProject(self.ifc_file, 'Project', (20, 10, 3))
+        initialize_zero_points(self.ifc_file)
+        initialize_directions(self.ifc_file)
+        self.project = IfcProject(self.ifc_file, 'Project', (20, 10, 3))
+        self.zero_placement = self.ifc_file.createIfcLocalPlacement(None, self.project.project_zero_points['3D'])
 
     def test_geometric_representation_context(self):
         self.assertEquals(2, len(self.ifc_file.by_type("IfcGeometricRepresentationContext")))

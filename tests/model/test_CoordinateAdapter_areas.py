@@ -30,12 +30,12 @@ class CoordinateAdapterTestCase(unittest.TestCase):
         self.coordinate_adapter.lkobject_type = 'lkflaeche'
         self.coordinate_adapter.coordinates_3d = []
         self.coordinate_adapter._execute_default_3d_coordinate_adapter(self.area_element['areaId']['geometry'][0])
-        z_coord = self.scale_attributes[2] - 2.0
+        z_coord = self.scale_attributes[2]
         expected_result = [[2691055.0, 1236166.0, z_coord], [2691059.0, 1236164.0, z_coord],
                            [2691058.0, 1236163.0, z_coord], [2691054.0, 1236165.0, z_coord],
                            [2691055.0, 1236166.0, z_coord]]
         self.assertEqual(expected_result, self.coordinate_adapter.coordinates_3d)
-        self.assertEqual(2.0, self.coordinate_adapter.area_thickness)
+        self.assertEqual(1.0, self.coordinate_adapter.area_thickness)
 
     # Case 2: All Tapping points matching
     def test_area_coordinate_adapting(self):
@@ -68,11 +68,11 @@ class CoordinateAdapterTestCase(unittest.TestCase):
         self.coordinate_adapter.coordinates_3d = []
         self.coordinate_adapter._execute_adapter(self.area_element_nomatch['areaId']['geometry'][0],
                                                  self.area_tap_points['areaId'])
-        z_coord = self.scale_attributes[2] - 2.0
+        z_coord = self.scale_attributes[2]
         expected_result = [[2691045.0, 1236143.0, z_coord], [2691044.5, 1236142.5, z_coord],
                            [2691037.0, 1236152.0, z_coord]]
         self.assertEqual(expected_result, self.coordinate_adapter.coordinates_3d)
-        self.assertEqual(2.0, self.coordinate_adapter.area_thickness)
+        self.assertEqual(1.0, self.coordinate_adapter.area_thickness)
 
 if __name__ == '__main__':
     unittest.main()

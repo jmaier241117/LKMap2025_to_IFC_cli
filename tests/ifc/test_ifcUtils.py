@@ -2,7 +2,7 @@ import unittest
 
 import ifcopenshell
 
-from ifc.IfcUtils import initialize_styles
+from ifc.IfcUtils import initialize_styles, initialize_zero_points, initialize_directions
 
 
 class TestIfcUtils(unittest.TestCase):
@@ -16,6 +16,13 @@ class TestIfcUtils(unittest.TestCase):
         self.assertEquals(4, len(styles))
         self.assertEquals(4, len(colors))
 
+    def test_initialize_zero_points(self):
+        initialize_zero_points(self.ifc_file)
+        self.assertEquals(2, len(self.ifc_file.by_type("IfcCartesianPoint")))
+
+    def test_initalize_directions(self):
+        initialize_directions(self.ifc_file)
+        self.assertEquals(3, len(self.ifc_file.by_type("IfcDirection")))
 
 
 if __name__ == '__main__':

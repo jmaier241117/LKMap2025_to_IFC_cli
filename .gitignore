@@ -4,3 +4,4 @@ export/
 node_modules/*
 **/__pycache__/
 *.gpkg
+*.ifc

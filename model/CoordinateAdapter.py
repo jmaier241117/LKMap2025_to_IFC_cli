@@ -27,7 +27,7 @@ class CoordinateAdapter:
                 elif lkobject_type == 'lkflaeche':
                     self._execute_default_3d_coordinate_adapter(elements[key]['geometry'][0])
             elements[key]['geometry'] = self._scale_objects(self.coordinates_3d)
-            if lkobject_type == 'flaeche':
+            if lkobject_type == 'lkflaeche':
                 elements[key]['thickness'] = self.area_thickness
         return elements
 
@@ -35,11 +35,11 @@ class CoordinateAdapter:
         coordinate_2d = list(element_geometry)
         if self.lkobject_type == 'lkpunkt':
             self.coordinates_3d = [[coordinate_2d[0], coordinate_2d[1], self.scale_attributes[2]],
-                                   [coordinate_2d[0], coordinate_2d[1], (self.scale_attributes[2] - 2.0)]]
+                                   [coordinate_2d[0], coordinate_2d[1], (self.scale_attributes[2] - 0.6)]]
         else:
             for coordinate in coordinate_2d:
-                self.coordinates_3d.append([coordinate[0], coordinate[1], self.scale_attributes[2] - 2.0])
-            self.area_thickness = 2.0
+                self.coordinates_3d.append([coordinate[0], coordinate[1], self.scale_attributes[2] - 1.75])
+            self.area_thickness = 1.0
 
     def _execute_points_adapter(self, element_geometry, element_tapping_point):
         coordinate_2d = list(element_geometry)
@@ -69,9 +69,9 @@ class CoordinateAdapter:
                 coordinate_list_2d.remove(x_and_y)
         if coordinate_list_2d:
             for coordinate in coordinate_list_2d:
-                z_line_coordinate = mean(z_coordinates) if z_coordinates else self.scale_attributes[2] - 2.0
+                z_line_coordinate = mean(z_coordinates) if z_coordinates else self.scale_attributes[2] - 1.75
                 self.coordinates_3d.append([coordinate[0], coordinate[1], z_line_coordinate])
-        self.area_thickness = mean(thickness_list) if thickness_list else 2.0
+        self.area_thickness = mean(thickness_list) if thickness_list else 1.0
 
     def _scale_objects(self, coordinates) -> any:
         scaled_coordinates = ()

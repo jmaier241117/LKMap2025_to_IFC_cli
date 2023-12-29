@@ -18,6 +18,7 @@ class GroupingToDictionaryProcessor:
                 dictionary[index]['attributes']['T_Ili_Tid'] = row.T_Ili_Tid
                 if lkobject_type == 'lkflaeche':
                     dictionary[index]['attributes']['CHLKMap_Objektart'] = row.objektart
+                    dictionary[index]['thickness'] = geometries[index]['thickness']
                 dictionary[index]['attributes']['CHLKMap_Lagebestimmung'] = row.lagebestimmung
                 dictionary[index]['attributes']['CHLKMap_Letzte_Aenderung'] = str(
                     row.letzte_aenderung.date())

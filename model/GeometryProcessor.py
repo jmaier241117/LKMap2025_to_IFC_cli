@@ -1,6 +1,15 @@
 import pyogrio
 
 
+def _map_geometry_to_dictionary(dataframe) -> any:
+    geometry_dictionary = {}
+    if not dataframe.empty:
+        for index, row in dataframe.iterrows():
+            geometry_dictionary[index] = {}
+            geometry_dictionary[index]['geometry'] = row.geometry.__geo_interface__['coordinates']
+    return geometry_dictionary
+
+
 class GeometryProcessor:
 
     def __init__(self, dataset, clipsrc):
@@ -20,15 +29,7 @@ class GeometryProcessor:
             lines = pyogrio.read_dataframe(self.dataset, layer='lkobjekt_linie', fid_as_index=True)
             points = pyogrio.read_dataframe(self.dataset, layer='lkobjekt_symbolpos', fid_as_index=True)
         return {
-            'lkflaeche': self._map_geometry_to_dictionary(areas),
-            'lklinie': self._map_geometry_to_dictionary(lines),
-            'lkpunkt': self._map_geometry_to_dictionary(points),
+            'lkflaeche': _map_geometry_to_dictionary(areas),
+            'lklinie': _map_geometry_to_dictionary(lines),
+            'lkpunkt': _map_geometry_to_dictionary(points),
         }
-
-    def _map_geometry_to_dictionary(self, dataframe) -> any:
-        geometry_dictionary = {}
-        if not dataframe.empty:
-            for index, row in dataframe.iterrows():
-                geometry_dictionary[index] = {}
-                geometry_dictionary[index]['geometry'] = row.geometry.__geo_interface__['coordinates']
-        return geometry_dictionary

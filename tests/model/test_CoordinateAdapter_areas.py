@@ -74,5 +74,6 @@ class CoordinateAdapterTestCase(unittest.TestCase):
         self.assertEqual(expected_result, self.coordinate_adapter.coordinates_3d)
         self.assertEqual(1.0, self.coordinate_adapter.area_thickness)
 
+
 if __name__ == '__main__':
     unittest.main()

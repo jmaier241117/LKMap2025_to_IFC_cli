@@ -17,7 +17,7 @@ class PointParamType(click.ParamType):
             else:
                 raise click.ClickException('The WKT Point provided must be 3 Dimensional!')
         except GEOSException:
-            self.fail(f"{value!r} is not a valid WKT Point", param, ctx)
+            raise click.ClickException(f"{value} is not a valid WKT Point")
 
 
 POINT = PointParamType()
@@ -34,7 +34,7 @@ class PolygonParamType(click.ParamType):
                           max(coords, key=lambda coord: coord[0])[0], max(coords, key=lambda coord: coord[1])[1])
             return bbox_tuple
         except GEOSException:
-            self.fail(f"{value!r} is not a valid WKT Polygon", param, ctx)
+            raise click.ClickException(f"{value} is not a valid WKT Polygon")
 
 
 POLYGON = PolygonParamType()

@@ -2,7 +2,8 @@ import unittest
 
 import ifcopenshell
 
-from ifc.IfcUtils import initialize_styles, initialize_zero_points, initialize_directions
+from ifc.IfcUtils import initialize_styles, initialize_zero_points, initialize_directions, \
+    get_height_uncertainty_coordinates
 
 
 class TestIfcUtils(unittest.TestCase):

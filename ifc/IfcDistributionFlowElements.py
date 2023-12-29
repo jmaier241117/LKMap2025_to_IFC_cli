@@ -83,17 +83,13 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
         uncertainty_addon = uncertainty_surcharge['IMPRECISE'] if not self.default_dimension_value else \
             uncertainty_surcharge['DEFAULT_IMPRECISE']
         self.representation_elements['imprecise'] = self.project_file.createIfcSweptDiskSolidPolygonal(
-            self.poly_indexed_curve,
-            self.radius + uncertainty_addon,
-            self.radius)
+            self.poly_indexed_curve, self.radius + uncertainty_addon, self.radius)
 
     def build_representation_uncertainty_unknown_element(self):
         uncertainty_addon = uncertainty_surcharge['UNKNOWN'] if not self.default_dimension_value else \
             uncertainty_surcharge['DEFAULT_UNKNOWN']
         self.representation_elements['unknown'] = self.project_file.createIfcSweptDiskSolidPolygonal(
-            self.poly_indexed_curve,
-            self.radius + uncertainty_addon,
-            self.radius)
+            self.poly_indexed_curve, self.radius + uncertainty_addon, self.radius)
 
     def build_height_uncertainty_element(self):
         index = 0
@@ -107,7 +103,6 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
                                                                                             poly_indexed_curve)
             extruded = self.project_file.createIfcExtrudedAreaSolid(arbitrary_closed_profile, None,
                                                                     self.extrusion_direction, 2.0)
-
             self.representation_elements['height_unknown'].append(extruded)
 
 
@@ -136,9 +131,17 @@ class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
         uncertainty_addon = uncertainty_surcharge['UNKNOWN'] if not self.default_dimension_value else \
             uncertainty_surcharge['DEFAULT_UNKNOWN']
         self.representation_elements['unknown'] = self.project_file.createIfcSweptDiskSolidPolygonal(
-            self.poly_indexed_curve,
-            self.radius + uncertainty_addon,
-            self.radius)
+            self.poly_indexed_curve, self.radius + uncertainty_addon, self.radius)
+
+    def build_height_uncertainty_element(self):
+        uncertainty_coordinates = ((self.coordinates[0][0], self.coordinates[0][1], 0.0),
+                                   (self.coordinates[1][0], self.coordinates[1][1], -2.0))
+        uncertainty_cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(uncertainty_coordinates)
+        uncertainty_poly_indexed_curve = self.project_file.createIfcIndexedPolyCurve(
+            uncertainty_cartesian_point_list_3d)
+        uncertainty_swept_disk_solid = self.project_file.createIfcSweptDiskSolidPolygonal(
+            uncertainty_poly_indexed_curve, self.radius, self.radius * 0.75)
+        self.representation_elements['height_unknown'].append(uncertainty_swept_disk_solid)
 
 
 class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
@@ -155,10 +158,7 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
                                                                                         poly_indexed_curve)
         self.extrusion_direction = self.project_file.createIfcDirection((0.0, 0.0, 1.0))
         self.representation_elements['default'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile,
-            None,
-            self.extrusion_direction,
-            self.thickness)
+            arbitrary_closed_profile, None, self.extrusion_direction, self.thickness)
 
     def build_representation_uncertainty_imprecise_element(self):
         uncertainty_coordinates = []
@@ -171,10 +171,7 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
         arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
                                                                                         poly_indexed_curve)
         self.representation_elements['imprecise'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile,
-            None,
-            self.extrusion_direction,
-            self.thickness)
+            arbitrary_closed_profile, None, self.extrusion_direction, self.thickness)
 
     def build_representation_uncertainty_unknown_element(self):
         uncertainty_coordinates = []
@@ -191,7 +188,17 @@ class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
         arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
                                                                                         poly_indexed_curve)
         self.representation_elements['unknown'] = self.project_file.createIfcExtrudedAreaSolid(
-            arbitrary_closed_profile,
-            None,
-            self.extrusion_direction,
-            self.thickness)
+            arbitrary_closed_profile, None, self.extrusion_direction, self.thickness)
+
+    def build_height_uncertainty_element(self):
+        uncertainty_coordinates = []
+        for coordinate in self.coordinates:
+            uncertainty_tuple = (coordinate[0], coordinate[1], -2.0)
+            uncertainty_coordinates.append(uncertainty_tuple)
+        cartesian_point_list_3d = self.project_file.createIfcCartesianPointList3D(uncertainty_coordinates)
+        poly_indexed_curve = self.project_file.createIfcIndexedPolyCurve(cartesian_point_list_3d)
+        arbitrary_closed_profile = self.project_file.createIfcArbitraryClosedProfileDef('AREA', 'area',
+                                                                                        poly_indexed_curve)
+        extruded = self.project_file.createIfcExtrudedAreaSolid(arbitrary_closed_profile, None,
+                                                                self.extrusion_direction, 2.0)
+        self.representation_elements['height_unknown'].append(extruded)

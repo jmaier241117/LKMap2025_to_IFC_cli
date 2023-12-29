@@ -39,6 +39,8 @@ class IIfcElementBuilder:
             self.element.build_representation_uncertainty_imprecise_element()
         elif self.element.position_uncertain == Uncertainty.UNKNOWN:
             self.element.build_representation_uncertainty_unknown_element()
+        if self.element.height_position_uncertain == Uncertainty.UNKNOWN:
+            self.element.build_height_uncertainty_element()
         self.element.build_style_representation()
         self.element.build_shape_representation()
         self.element.create_element_in_ifc_file()
@@ -63,19 +65,6 @@ class IfcPipeElementBuilder(IIfcElementBuilder):
         # Radius is delivered in mm therefore / 1000
         self.element.radius = radius / 1000
         return self
-
-    def build(self) -> any:
-        self.element.build_representation_element()
-        if self.element.position_uncertain == Uncertainty.IMPRECISE:
-            self.element.build_representation_uncertainty_imprecise_element()
-        elif self.element.position_uncertain == Uncertainty.UNKNOWN:
-            self.element.build_representation_uncertainty_unknown_element()
-        if self.element.height_position_uncertain == Uncertainty.UNKNOWN:
-            self.element.build_height_uncertainty_element()
-        self.element.build_style_representation()
-        self.element.build_shape_representation()
-        self.element.create_element_in_ifc_file()
-        return self.element
 
 
 class IfcSpecialStructureElementBuilder(IIfcElementBuilder):

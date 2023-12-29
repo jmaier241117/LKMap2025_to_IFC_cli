@@ -70,8 +70,8 @@ def get_height_uncertainty_coordinates(point1, point2, radius) -> any:
     slope, intercept, r_value, p_value, std_err = stats.linregress(x_values, y_values)
     dy = math.sqrt(radius ** 2 / (slope ** 2 + 1))
     dx = -slope * dy
-    new_point1 = (float(round(point1[0] + dx, 4)), round(point1[1] + dy, 4), point1[2])
-    new_point2 = (float(round(point1[0] - dx, 4)), round(point1[1] - dy, 4), point1[2])
-    new_point3 = (float(round(point2[0] + dx, 4)), round(point2[1] + dy, 4), point2[2])
-    new_point4 = (float(round(point2[0] - dx, 4)), round(point2[1] - dy, 4), point2[2])
+    new_point1 = (float(round(point1[0] + dx, 4)), round(point1[1] + dy, 4), -2.0)
+    new_point2 = (float(round(point1[0] - dx, 4)), round(point1[1] - dy, 4), -2.0)
+    new_point3 = (float(round(point2[0] + dx, 4)), round(point2[1] + dy, 4), -2.0)
+    new_point4 = (float(round(point2[0] - dx, 4)), round(point2[1] - dy, 4), -2.0)
     return new_point1, new_point3, new_point4, new_point2, new_point1

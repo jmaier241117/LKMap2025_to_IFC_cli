@@ -30,7 +30,6 @@ class IfcProject:
                                                                                       0.01,
                                                                                       self.project_zero_points['2D'],
                                                                                       None)}
-        self.unit_assignment = self._create_unit_assignment()
         self.element = self.project_file.createIfcProject(ifcopenshell.guid.new(), None, project_name, None, None,
                                                           None,
                                                           None,

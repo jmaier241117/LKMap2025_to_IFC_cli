@@ -10,11 +10,12 @@ from ifc.IfcUtils import Uncertainty, initialize_styles
 
 
 class IfcCreationController:
-    def __init__(self, reference_null_point, show_height_uncertainty):
+    def __init__(self, reference_null_point, show_height_uncertainty, show_position_uncertainty):
         self.ifc_file = ifcopenshell.file(schema="IFC4X3")
         self.project = IfcProject(self.ifc_file, 'Project', reference_null_point)
         self.site = IfcSite(self.ifc_file, "Site", self._create_zero_placement())
         self.show_height_uncertainty = show_height_uncertainty
+        self.show_position_uncertainty = show_position_uncertainty
 
     def ifc_base_initialization(self):
         self._relational_aggregates(self.project.element, self.site.element)
@@ -34,8 +35,12 @@ class IfcCreationController:
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
+                                    if self.show_position_uncertainty else Uncertainty.PRECISE,
                                     default_dimension_value)
+                .height_position_uncertain(
+                    self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
+                    if self.show_height_uncertainty else Uncertainty.PRECISE)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, chamber_element.distribution_flow_element,
                                                   dataset[key]['attributes'])
@@ -57,7 +62,8 @@ class IfcCreationController:
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']),
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
+                                    if self.show_position_uncertainty else Uncertainty.PRECISE,
                                     default_dimension_value)
                 .height_position_uncertain(
                     self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
@@ -77,8 +83,12 @@ class IfcCreationController:
                     self.project.project_contexts['model_context'])
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung']))
-                .thickness(2)
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
+                                    if self.show_position_uncertainty else Uncertainty.PRECISE)
+                .height_position_uncertain(
+                    self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
+                    if self.show_height_uncertainty else Uncertainty.PRECISE)
+                .thickness(dataset[key]['thickness'])
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, special_element.distribution_flow_element,
                                                   dataset[key]['attributes'])

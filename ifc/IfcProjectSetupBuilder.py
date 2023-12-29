@@ -8,28 +8,13 @@ class IfcProject:
     def __init__(self, ifc_file, project_name, reference_null_point):
         self.project_file = ifc_file
         self.project_name = project_name
-        self.project_zero_points = {
-            '3D': self.project_file.createIfcAxis2Placement3D(
-                IfcUtils.zero_point_3D, IfcUtils.z_axis_3D_direction, IfcUtils.x_axis_3D_direction),
-            '2D': self.project_file.createIfcAxis2Placement2D(IfcUtils.zero_point_2D, IfcUtils.x_axis_2D_direction)}
-        self.project_contexts = {
-            'model_context': self.project_file.createIfcGeometricRepresentationContext(None,
-                                                                                       IfcUtils.context_type_model, 3,
-                                                                                       0.01,
-                                                                                       self.project_zero_points['3D'],
-                                                                                       None),
-            'plan_context': self.project_file.createIfcGeometricRepresentationContext(None, IfcUtils.context_type_plan,
-                                                                                      2, 0.01,
-                                                                                      self.project_zero_points['2D'],
-                                                                                      None)}
         self.element = self.project_file.createIfcProject(ifcopenshell.guid.new(), None, project_name, None, None,
-                                                          None, None, (self.project_contexts['model_context'],
-                                                                       self.project_contexts['plan_context']),
+                                                          None, None, (IfcUtils.project_model_context,
+                                                                       IfcUtils.project_plan_context),
                                                           self._create_unit_assignment())
-
         projected_crs = self.project_file.createIfcProjectedCRS('EPSG:2056', 'CH1903+ / LV95', 'CH1903Plus_1', None,
                                                                 'Swiss', None, self.length_si_unit)
-        self.project_file.createIfcMapConversion(self.project_contexts['model_context'], projected_crs,
+        self.project_file.createIfcMapConversion(IfcUtils.project_model_context, projected_crs,
                                                  reference_null_point[0], reference_null_point[1],
                                                  reference_null_point[2])
 

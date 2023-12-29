@@ -12,10 +12,6 @@ class IIfcElementBuilder:
         elif isinstance(self, IfcSpecialStructureElementBuilder):
             self.element = IfcSpecialStructureDistributionFlowElement(ifc_file)
 
-    def geometric_context(self, geometric_context):
-        self.element.geometric_context = geometric_context
-        return self
-
     def element_name(self, name):
         self.element.element_name = name
         return self

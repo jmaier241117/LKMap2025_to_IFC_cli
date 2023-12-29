@@ -7,7 +7,6 @@ from ifc.IfcUtils import uncertainty_surcharge, get_height_uncertainty_coordinat
 class IIfcDistributionFlowElement:
     def __init__(self, ifc_file):
         self.project_file = ifc_file
-        self.geometric_context = None
         self.distribution_flow_element = None
         self.element_name = None
         self.coordinates = None
@@ -50,7 +49,7 @@ class IIfcDistributionFlowElement:
             else:
                 rep_elements_list.extend(element)
         rep_elements = [element for element in rep_elements_list if element is not None]
-        shape_rep = self.project_file.createIfcShapeRepresentation(self.geometric_context,
+        shape_rep = self.project_file.createIfcShapeRepresentation(IfcUtils.project_model_context,
                                                                    'Body', self.representation_type,
                                                                    rep_elements)
         self.shape_representation = self.project_file.createIfcProductDefinitionShape(None, None,

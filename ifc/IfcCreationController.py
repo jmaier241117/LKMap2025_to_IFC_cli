@@ -6,7 +6,8 @@ from ifc import IfcUtils
 from ifc.IfcElementBuilders import IfcDuctElementBuilder, IfcPipeElementBuilder, IfcSpecialStructureElementBuilder
 from ifc.IfcProjectSetupBuilder import IfcProject, IfcSite
 from ifc.IfcPropertySetBuilder import IfcPropertySet
-from ifc.IfcUtils import Uncertainty, initialize_styles, initialize_zero_points, initialize_directions
+from ifc.IfcUtils import Uncertainty, initialize_styles, initialize_zero_points, initialize_directions, \
+    initialize_contexts
 
 
 class IfcCreationController:
@@ -21,6 +22,7 @@ class IfcCreationController:
     def ifc_base_initialization(self):
         initialize_zero_points(self.ifc_file)
         initialize_directions(self.ifc_file)
+        initialize_contexts(self.ifc_file)
         initialize_styles(self.ifc_file)
         self.project = IfcProject(self.ifc_file, 'Project', self.reference_null_point)
         self.site = IfcSite(self.ifc_file, "Site", self._create_zero_placement())
@@ -36,7 +38,7 @@ class IfcCreationController:
                 radius = dataset[key]['attributes']['CHLKMap_Dimension_Annahme']
                 default_dimension_value = True
             chamber_element = (
-                IfcDuctElementBuilder(self.ifc_file).geometric_context(self.project.project_contexts['model_context'])
+                IfcDuctElementBuilder(self.ifc_file)
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
@@ -63,7 +65,7 @@ class IfcCreationController:
                 radius = dataset[key]['attributes']['CHLKMap_Breite_Annahme']
                 default_dimension_value = True
             pipe_element = (
-                IfcPipeElementBuilder(self.ifc_file).geometric_context(self.project.project_contexts['model_context'])
+                IfcPipeElementBuilder(self.ifc_file)
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
@@ -84,8 +86,7 @@ class IfcCreationController:
         specials = ()
         for key in islice(dataset.keys(), 1, None):
             special_element = (
-                IfcSpecialStructureElementBuilder(self.ifc_file).geometric_context(
-                    self.project.project_contexts['model_context'])
+                IfcSpecialStructureElementBuilder(self.ifc_file)
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
@@ -102,7 +103,7 @@ class IfcCreationController:
         self._spatial_relations_of_elements(specials, self.site)
 
     def _create_zero_placement(self):
-        return self.ifc_file.createIfcLocalPlacement(None, self.project.project_zero_points['3D'])
+        return self.ifc_file.createIfcLocalPlacement(None, IfcUtils.axis_2_placement_3d)
 
     def _relational_aggregates(self, from_element, to_element):
         self.ifc_file.createIfcRelAggregates(ifcopenshell.guid.new(), None, None, None, from_element, [to_element])

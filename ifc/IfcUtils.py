@@ -78,6 +78,25 @@ def initialize_styles(ifc_file):
                                                                   [surface_style_rendering_height_unknown])
 
 
+axis_2_placement_3d = None
+project_model_context = None
+axis_2_placement_2d = None
+project_plan_context = None
+
+
+def initialize_contexts(ifc_file):
+    global axis_2_placement_3d
+    axis_2_placement_3d = ifc_file.createIfcAxis2Placement3D(zero_point_3D, z_axis_3D_direction, x_axis_3D_direction)
+    global project_model_context
+    project_model_context = ifc_file.createIfcGeometricRepresentationContext(None, context_type_model, 3, 0.01,
+                                                                             axis_2_placement_3d)
+    global axis_2_placement_2d
+    axis_2_placement_2d = ifc_file.createIfcAxis2Placement2D(zero_point_2D, x_axis_2D_direction)
+    global project_plan_context
+    project_plan_context = ifc_file.createIfcGeometricRepresentationContext(None, context_type_plan, 2, 0.01,
+                                                                            axis_2_placement_2d)
+
+
 def write_ifc_file(ifc_file, file_path):
     ifc_file.write(file_path)
 

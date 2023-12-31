@@ -1,5 +1,5 @@
 name: UNITTESTS
-on: [push]
+on: push
 jobs:
   unit_testing:
     runs-on: ubuntu-latest

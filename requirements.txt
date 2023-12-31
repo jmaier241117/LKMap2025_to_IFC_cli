@@ -1,6 +1,7 @@
 ifcopenshell~=0.7.0.230218
 pytest~=7.2.2
-typer~=0.9.0
-geopandas~=0.12.2
 shapely~=2.0.1
 typing_extensions~=4.5.0
+click~=8.1.7
+scipy~=1.11.4
+pyogrio~=0.7.2

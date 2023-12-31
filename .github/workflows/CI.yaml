@@ -1,7 +1,5 @@
 name: UNITTESTS
-on:
-  push:
-    branches: [ main ]
+on: [push]
 jobs:
   unit_testing:
     runs-on: ubuntu-latest

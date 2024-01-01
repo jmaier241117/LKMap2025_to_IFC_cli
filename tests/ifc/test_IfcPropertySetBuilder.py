@@ -8,15 +8,15 @@ class TestIfcPropertySetBuilder(unittest.TestCase):
     def setUp(self):
         self.file = ifcopenshell.file()
         self.element = self.file.createIfcDistributionFlowElement(ifcopenshell.guid.new(), None, 'Duct')
-        self.attributes = {'CHLKMap_Objektart': 'Abwasser.Normschacht.Kontroll_Einsteigschacht',
-                           'CHLKMap_Lagebestimmung': 'unbekannt',
-                           'CHLKMap_Letzte_Aenderung': '2023-09-12',
-                           'CHLKMap_Eigentuemer': 'Verband Schweizer Abwasser- und Gewässerschutzfachleute',
-                           'CHLKMap_Hoehenbestimmung': None,
-                           'CHLKMap_Dimension1': 800,
-                           'CHLKMap_Dimension2': 800,
-                           'CHLKMap_Dimension_Annahme': 600.0,
-                           'CHLKMap_Status': 'in_Betrieb'}
+        self.attributes = {'Objektart': 'Abwasser.Normschacht.Kontroll_Einsteigschacht',
+                           'Lagebestimmung': 'unbekannt',
+                           'Letzte_Aenderung': '2023-09-12',
+                           'Eigentuemer': 'Verband Schweizer Abwasser- und Gewässerschutzfachleute',
+                           'Hoehenbestimmung': None,
+                           'Dimension1': 800,
+                           'Dimension2': 800,
+                           'Dimension_Annahme': 600.0,
+                           'Status': 'in_Betrieb'}
 
     def test_build_chamber_ifc_elements(self):
         IfcPropertySet(self.file, self.element, self.attributes)

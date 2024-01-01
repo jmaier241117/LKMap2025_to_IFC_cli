@@ -31,22 +31,22 @@ class IfcCreationController:
     def build_chamber_ifc_elements(self, dataset):
         chambers = ()
         for key in islice(dataset.keys(), 1, None):
-            if dataset[key]['attributes']['CHLKMap_Dimension1']:
-                radius = dataset[key]['attributes']['CHLKMap_Dimension1']
+            if dataset[key]['attributes']['Dimension1']:
+                radius = dataset[key]['attributes']['Dimension1']
                 default_dimension_value = False
             else:
-                radius = dataset[key]['attributes']['CHLKMap_Dimension_Annahme']
+                radius = dataset[key]['attributes']['Dimension_Annahme']
                 default_dimension_value = True
             chamber_element = (
                 IfcDuctElementBuilder(self.ifc_file)
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['Lagebestimmung'])
                                     if self.show_position_uncertainty else Uncertainty.PRECISE,
                                     default_dimension_value)
                 .height_position_uncertain(
-                    self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
+                    self._check_uncertainty(dataset[key]['attributes']['Hoehenbestimmung'])
                     if self.show_height_uncertainty else Uncertainty.PRECISE)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, chamber_element.distribution_flow_element,
@@ -58,22 +58,22 @@ class IfcCreationController:
     def build_pipe_ifc_elements(self, dataset):
         pipes = ()
         for key in dataset.keys():
-            if dataset[key]['attributes']['CHLKMap_Breite']:
-                radius = dataset[key]['attributes']['CHLKMap_Breite']
+            if dataset[key]['attributes']['Breite']:
+                radius = dataset[key]['attributes']['Breite']
                 default_dimension_value = False
             else:
-                radius = dataset[key]['attributes']['CHLKMap_Breite_Annahme']
+                radius = dataset[key]['attributes']['Breite_Annahme']
                 default_dimension_value = True
             pipe_element = (
                 IfcPipeElementBuilder(self.ifc_file)
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
                 .radius(radius)
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['Lagebestimmung'])
                                     if self.show_position_uncertainty else Uncertainty.PRECISE,
                                     default_dimension_value)
                 .height_position_uncertain(
-                    self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
+                    self._check_uncertainty(dataset[key]['attributes']['Hoehenbestimmung'])
                     if self.show_height_uncertainty else Uncertainty.PRECISE)
                 .build())
             property_set_builder = IfcPropertySet(self.ifc_file, pipe_element.distribution_flow_element,
@@ -89,10 +89,10 @@ class IfcCreationController:
                 IfcSpecialStructureElementBuilder(self.ifc_file)
                 .element_name(dataset[key]['attributes']['T_Ili_Tid'])
                 .coordinates(dataset[key]['geometry'])
-                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Lagebestimmung'])
+                .position_uncertain(self._check_uncertainty(dataset[key]['attributes']['Lagebestimmung'])
                                     if self.show_position_uncertainty else Uncertainty.PRECISE)
                 .height_position_uncertain(
-                    self._check_uncertainty(dataset[key]['attributes']['CHLKMap_Hoehenbestimmung'])
+                    self._check_uncertainty(dataset[key]['attributes']['Hoehenbestimmung'])
                     if self.show_height_uncertainty else Uncertainty.PRECISE)
                 .thickness(dataset[key]['thickness'])
                 .build())

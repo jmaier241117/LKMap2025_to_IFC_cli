@@ -6,30 +6,28 @@ scale 600 width
 [*] -> DataProcessingChain
 
 state DataProcessingChain{
-    note "With Ili2GPKG" as N1
     state XtfFile : LKMap2025 INTERLIS tranfer file
     state GeoPackage : GeoPackage containing xtf data
 
     state TappingPointsGeometries {
         state 3DTappingPoints : (x, y, KoteZ), (x, y, KoteRef)
         state CombinedTappingPoints : (x, y, KoteZ, KoteRef)
-        3DTappingPoints --> CombinedTappingPoints : TapPointProcessor
+        3DTappingPoints --> CombinedTappingPoints
     }
      state LKObject2DGeometries : 2D geometries of lkobject types
     state LKObject3DGeometries : 3D geometries of lkobject types
     state FinalDictionaries : LKObject dictionaries containing all relevant data
-    XtfFile --> GeoPackage : GeoPackageUtils
-    GeoPackage --> LKObject2DGeometries : GeometryProcessor
+    XtfFile --> GeoPackage
+    GeoPackage --> LKObject2DGeometries
     GeoPackage --> TappingPointsGeometries
     state CoordinateAdapter <<join>>
     TappingPointsGeometries --> CoordinateAdapter
     LKObject2DGeometries --> CoordinateAdapter
-    CoordinateAdapter --> LKObject3DGeometries : CoordinateAdapter
+    CoordinateAdapter --> LKObject3DGeometries
     state GroupingToDictionaryProcessor <<join>>
     GeoPackage --> GroupingToDictionaryProcessor
-    note "With pyogrio" as N2
     LKObject3DGeometries --> GroupingToDictionaryProcessor
-    GroupingToDictionaryProcessor --> FinalDictionaries : GroupingToDictionaryProcessor
+    GroupingToDictionaryProcessor --> FinalDictionaries
 }
 
 

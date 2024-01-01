@@ -20,25 +20,25 @@ class TestIfcPipeElementBuilder(unittest.TestCase):
     def test_duct_creation_no_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.PRECISE).height_position_uncertain(
             Uncertainty.PRECISE).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # one default styled item
         self.assertEqual(1, len(self.ifc_file.by_type("IfcStyledItem")))
 
     def test_duct_creation_with_height_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.PRECISE).height_position_uncertain(Uncertainty.UNKNOWN).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # one height uncertainty styled item
         self.assertEqual(2, len(self.ifc_file.by_type("IfcStyledItem")))
 
     def test_duct_creation_with_position_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.UNKNOWN).height_position_uncertain(Uncertainty.PRECISE).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # one uncertainty styled item + the default style
         self.assertEqual(2, len(self.ifc_file.by_type("IfcStyledItem")))
 
     def test_duct_creation_with_position_and_height_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.UNKNOWN).height_position_uncertain(Uncertainty.UNKNOWN).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # one height uncertainty styled item + one position uncertainty style + the default style
         self.assertEqual(3, len(self.ifc_file.by_type("IfcStyledItem")))
 

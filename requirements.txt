@@ -1,4 +1,4 @@
-ifcopenshell~=0.7.0.230218
+ifcopenshell==0.7.0.230918
 pytest~=7.2.2
 shapely~=2.0.1
 typing_extensions~=4.5.0

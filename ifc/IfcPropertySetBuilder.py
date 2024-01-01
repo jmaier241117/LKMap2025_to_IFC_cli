@@ -25,7 +25,7 @@ class IfcPropertySet:
         return properties
 
     def _create_property_set(self) -> any:
-        return self.project_file.createIfcPropertySet(ifcopenshell.guid.new(), None, 'LKMap_Pset', None,
+        return self.project_file.createIfcPropertySet(ifcopenshell.guid.new(), None, 'CHSIA_LKMap', None,
                                                       self.properties)
 
     def create_property_set_element_relationship(self):

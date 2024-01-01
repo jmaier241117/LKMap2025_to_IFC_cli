@@ -17,15 +17,15 @@ class GroupingToDictionaryProcessor:
                 dictionary[index] = {'attributes': {}}
                 dictionary[index]['attributes']['T_Ili_Tid'] = row.T_Ili_Tid
                 if lkobject_type == 'lkflaeche':
-                    dictionary[index]['attributes']['CHLKMap_Objektart'] = row.objektart
+                    dictionary[index]['attributes']['Objektart'] = row.objektart
                     dictionary[index]['thickness'] = geometries[index]['thickness']
-                dictionary[index]['attributes']['CHLKMap_Lagebestimmung'] = row.lagebestimmung
-                dictionary[index]['attributes']['CHLKMap_Letzte_Aenderung'] = str(
+                dictionary[index]['attributes']['Lagebestimmung'] = row.lagebestimmung
+                dictionary[index]['attributes']['Letzte_Aenderung'] = str(
                     row.letzte_aenderung.date())
-                dictionary[index]['attributes']['CHLKMap_Eigentuemer'] = organisations[
+                dictionary[index]['attributes']['Eigentuemer'] = organisations[
                     row.eigentuemerref]
-                dictionary[index]['attributes']['CHLKMap_Hoehenbestimmung'] = row.hoehenbestimmung
-                dictionary[index]['attributes']['CHLKMap_Status'] = row.astatus
+                dictionary[index]['attributes']['Hoehenbestimmung'] = row.hoehenbestimmung
+                dictionary[index]['attributes']['Status'] = row.astatus
                 dictionary[index]['geometry'] = geometries[index]['geometry']
                 if lkobject_type == 'lklinie':
                     dictionary = self._execute_lklinie_processor(dictionary, index, row)
@@ -34,22 +34,22 @@ class GroupingToDictionaryProcessor:
         return dictionary
 
     def _execute_lkpunkt_processor(self, lkpunkt_dictionary, index, row) -> any:
-        lkpunkt_dictionary[index]['attributes']['CHLKMap_Objektart'] = row.objektart2
-        lkpunkt_dictionary[index]['attributes']['CHLKMap_Dimension1'] = row.dimension1 if not math.isnan(
+        lkpunkt_dictionary[index]['attributes']['Objektart'] = row.objektart2
+        lkpunkt_dictionary[index]['attributes']['Dimension1'] = row.dimension1 if not math.isnan(
             row.dimension1) else None
-        lkpunkt_dictionary[index]['attributes']['CHLKMap_Dimension2'] = row.dimension2 if not math.isnan(
+        lkpunkt_dictionary[index]['attributes']['Dimension2'] = row.dimension2 if not math.isnan(
             row.dimension2) else None
-        lkpunkt_dictionary[index]['attributes']['CHLKMap_Dimension_Annahme'] = 600.0
-        lkpunkt_dictionary[index]['attributes']['CHLKMap_SymbolOri'] = row.symbolori if not math.isnan(
+        lkpunkt_dictionary[index]['attributes']['Dimension_Annahme'] = 600.0
+        lkpunkt_dictionary[index]['attributes']['SymbolOri'] = row.symbolori if not math.isnan(
             row.symbolori) else None
         return lkpunkt_dictionary
 
     def _execute_lklinie_processor(self, lklinie_dictionary, index, row) -> any:
-        lklinie_dictionary[index]['attributes']['CHLKMap_Objektart'] = row.objektart1
-        lklinie_dictionary[index]['attributes']['CHLKMap_Breite'] = row.breite if not math.isnan(
+        lklinie_dictionary[index]['attributes']['Objektart'] = row.objektart1
+        lklinie_dictionary[index]['attributes']['Breite'] = row.breite if not math.isnan(
             row.breite) else None
-        lklinie_dictionary[index]['attributes']['CHLKMap_Breite_Annahme'] = 250.0
-        lklinie_dictionary[index]['attributes']['CHLKMap_Profiltyp'] = row.profiltyp
+        lklinie_dictionary[index]['attributes']['Breite_Annahme'] = 250.0
+        lklinie_dictionary[index]['attributes']['Profiltyp'] = row.profiltyp
         return lklinie_dictionary
 
     def _get_organisations(self) -> any:

@@ -9,24 +9,34 @@ from setup import POLYGON, POINT, XTF_ERROR, CONFIG_ERROR, SUCCESS
 
 
 @click.argument('import_file', type=click.Path())
-@click.argument('null_point',  type=POINT)
+@click.argument('null_point', type=POINT)
 @click.option('--export_path', default=None, type=click.Path(),
               help='The path to where you would like your IFC file to be generated')
 @click.option('--clip_src', default=None, type=POLYGON,
-              help='The range for which elements should be included, example: \'POLYGON((69.0 41.0, 69.0 41.4, 69.4 41.4, 69.4 41.0, 69.0 41.0))\'')
+              help='Polygon representing bbox of elements to be considered')
 @click.option('--show_height_uncertainty', default=True,
-              help='Flag if height uncertainties should be shown, default = True')
+              help='Flag if height uncertainties should be shown')
 @click.option('--show_position_uncertainty', default=True,
-              help='Flag if position uncertainties should be shown, default = True')
-@click.command()
+              help='Flag if position uncertainties should be shown')
+@click.command(context_settings={'show_default': True, 'max_content_width': 120})
 def convertLKMap2IFC(import_file, null_point, export_path, clip_src, show_height_uncertainty,
                      show_position_uncertainty):
     """
-     IMPORTFILE is the path to the INTERLIS transferfile (.xtf) you would like to use!
+     This command converts a LKMap_2025 INTERLIS transfer file into an IFC 4.3 file
 
-     NULLPOINT is the reference null point for all elements, format LV95: x , y, z
+     \b
+     IMPORTFILE: the path to the INTERLIS transfer file you would like to use!
+        format: file path, example: <yourFileName>.xtf
 
-     EXPORTFILE is , format: <name>.ifc
+
+     \b
+     NULLPOINT: the reference null point for all to be created elements
+        format: LV95 WKT POINT, example: 'POINT(2691039.8 1236160.3 420.0)'
+
+     \b
+     --clip_src: Polygon representing bbox of elements to be considered
+        format: LV95 WKT Polygon
+        example: 'POLYGON((2691019.5 1236189.3, 2691079.8 1236187.8, 2691075.5 1236126.3, 2691009.0 1236129.3, 2691019.5 1236189.3))'
     """
     try:
         if not os.path.isfile(import_file):

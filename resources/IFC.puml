@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+skinparam linetype ortho
+
+class IfcPropertySet
+abstract class IfcSpatialStructureElement
+class IfcShapeRepresentation
+class IfcElement
+IfcElement "1" -- "0..*" IfcPropertySet
+IfcElement "0..*" -- "1" IfcSpatialStructureElement : RelContainedInSpatialStructure
+IfcElement "1" -- "0..*" IfcShapeRepresentation
+
+
+@enduml

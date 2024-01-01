@@ -1,16 +1,16 @@
-from ifc.IfcDistributionFlowElements import IfcPipeDistributionFlowElement, IfcDuctDistributionFlowElement, \
-    IfcSpecialStructureDistributionFlowElement
+from ifc.IfcDistributionElements import IfcPipeDistributionElement, IfcDuctDistributionElement, \
+    IfcSpecialStructureDistributionElement
 from ifc.IfcUtils import Uncertainty
 
 
 class IIfcElementBuilder:
     def __init__(self, ifc_file):
         if isinstance(self, IfcPipeElementBuilder):
-            self.element = IfcPipeDistributionFlowElement(ifc_file)
+            self.element = IfcPipeDistributionElement(ifc_file)
         elif isinstance(self, IfcDuctElementBuilder):
-            self.element = IfcDuctDistributionFlowElement(ifc_file)
+            self.element = IfcDuctDistributionElement(ifc_file)
         elif isinstance(self, IfcSpecialStructureElementBuilder):
-            self.element = IfcSpecialStructureDistributionFlowElement(ifc_file)
+            self.element = IfcSpecialStructureDistributionElement(ifc_file)
 
     def element_name(self, name):
         self.element.element_name = name

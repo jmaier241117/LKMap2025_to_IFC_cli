@@ -4,7 +4,7 @@ from ifc import IfcUtils
 from ifc.IfcUtils import uncertainty_surcharge, get_height_uncertainty_coordinates
 
 
-class IIfcDistributionFlowElement:
+class IIfcDistributionElement:
     def __init__(self, ifc_file):
         self.project_file = ifc_file
         self.distribution_flow_element = None
@@ -23,11 +23,11 @@ class IIfcDistributionFlowElement:
         self.default_dimension_value = None
 
     def create_element_in_ifc_file(self) -> any:
-        self.distribution_flow_element = self.project_file.createIfcDistributionFlowElement(ifcopenshell.guid.new(),
-                                                                                            None,
-                                                                                            self.element_name,
-                                                                                            None, None, None,
-                                                                                            self.shape_representation)
+        self.distribution_flow_element = self.project_file.createIfcDistributionElement(ifcopenshell.guid.new(),
+                                                                                        None,
+                                                                                        self.element_name,
+                                                                                        None, None, None,
+                                                                                        self.shape_representation)
 
     def build_style_representation(self):
         self.project_file.createIfcStyledItem(self.representation_elements['default'], [IfcUtils.default_surface_style])
@@ -56,7 +56,7 @@ class IIfcDistributionFlowElement:
                                                                                       [shape_rep])
 
 
-class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
+class IfcPipeDistributionElement(IIfcDistributionElement):
     def __init__(self, ifc_file):
         super().__init__(ifc_file)
         self.radius = None
@@ -98,7 +98,7 @@ class IfcPipeDistributionFlowElement(IIfcDistributionFlowElement):
             self.representation_elements['height_unknown'].append(extruded)
 
 
-class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
+class IfcDuctDistributionElement(IIfcDistributionElement):
     def __init__(self, ifc_file):
         super().__init__(ifc_file)
         self.radius = None
@@ -136,7 +136,7 @@ class IfcDuctDistributionFlowElement(IIfcDistributionFlowElement):
         self.representation_elements['height_unknown'].append(uncertainty_swept_disk_solid)
 
 
-class IfcSpecialStructureDistributionFlowElement(IIfcDistributionFlowElement):
+class IfcSpecialStructureDistributionElement(IIfcDistributionElement):
     def __init__(self, ifc_file):
         super().__init__(ifc_file)
         self.thickness = None

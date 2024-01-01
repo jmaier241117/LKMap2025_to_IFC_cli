@@ -19,25 +19,25 @@ class TestIfcPipeElementBuilder(unittest.TestCase):
 
     def test_line_creation_no_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.PRECISE).height_position_uncertain(Uncertainty.PRECISE).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # one default styled item
         self.assertEqual(1, len(self.ifc_file.by_type("IfcStyledItem")))
 
     def test_line_creation_with_height_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.PRECISE).height_position_uncertain(Uncertainty.UNKNOWN).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # Two pipe segments equals two height uncertainty styled items + the default style
         self.assertEqual(3, len(self.ifc_file.by_type("IfcStyledItem")))
 
     def test_line_creation_with_position_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.UNKNOWN).height_position_uncertain(Uncertainty.PRECISE).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # one uncertainty styled item + the default style
         self.assertEqual(2, len(self.ifc_file.by_type("IfcStyledItem")))
 
     def test_line_creation_with_position_and_height_uncertainties(self):
         self.builder.position_uncertain(Uncertainty.UNKNOWN).height_position_uncertain(Uncertainty.UNKNOWN).build()
-        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionFlowElement")))
+        self.assertEqual(1, len(self.ifc_file.by_type("IfcDistributionElement")))
         # Two pipe segments, two height uncertainty styled items + one position uncertainty style + the default style
         self.assertEqual(4, len(self.ifc_file.by_type("IfcStyledItem")))
 

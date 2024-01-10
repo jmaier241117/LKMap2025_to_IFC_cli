@@ -1,23 +1,23 @@
 @startuml
 !include C4_Component.puml
 
-title LKMap-to-IFC Converter Prototype - Data Processing Chain Component Diagram
+title LKMap-to-IFC Converter Prototype - Model Component Diagram
 
-Container(cli, "ConvertLKMap2IFC", "Python, Click", "Provides the CLI with required arguments and options")
+Container(cli, "ConvertLKMap2IFC", "Python, Click")
 
-Container(ifcController, "IFC Creation Controller", "Python, IfcOpenShell", "Creates an IFC Model with prepared data")
-ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided LKMap_2025 data to be converted")
-Component_Ext(ili2gpkg, "Ili2GPKG", "java", "Library to handle the interface of INTERLIS transfer data files and GeoPackages")
+Container(ifcController, "IFC Creation Controller", "Python, IfcOpenShell")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database")
+Component_Ext(ili2gpkg, "Ili2GPKG", "java")
 
-Rel_L(cli, DataProcessingChain, "Uses")
-Rel(cli, ifcController, "Uses")
-Container_Boundary(DataProcessingChain, "Data Processing Chain") {
-    Component(dataProcessingChain, "Data Processing Chain", "Python", "Controls the extracting and processing of given data")
-    Component(coordinateAdapter, "Coordinate Adapter", "Python", "Combines the tapping points and 2D coordinates to create valid 3D coordinates")
-    Component(geometryProcessor, "Geometry Processor", "Python, Pyogrio", "Extracts the 2D coordinates from the Geopackage")
-    Component(geoPackageUtils, "GeoPackage Utils", "Python, Pyogrio, Subprocess", "Contains functionality to interact with Ili2GPKG")
-    Component(tapPointProcessor, "Tapping Point Processor", "Python, Pyogrio", "Extracts the tapping points from the GeoPackage")
-    Component(toDictionaryProcessor, "GroupingToDictionaryProcessor", "Python, Pyogrio", "Extracts all relevant attributes from GeoPackage and combines them with the corresponding element 3D coordinates")
+Rel_D(cli, Model, "Uses")
+Rel_R(cli, ifcController, "Uses")
+Container_Boundary(Model, "Model") {
+    Component(dataProcessingChain, "Data Processing Chain", "Python")
+    Component(coordinateAdapter, "Coordinate Adapter", "Python")
+    Component(geometryProcessor, "Geometry Processor", "Python, Pyogrio")
+    Component(geoPackageUtils, "GeoPackage Utils", "Python, Pyogrio, Subprocess")
+    Component(tapPointProcessor, "Tapping Point Processor", "Python, Pyogrio")
+    Component(toDictionaryProcessor, "GroupingToDictionaryProcessor", "Python, Pyogrio")
     Rel_R(dataProcessingChain, geometryProcessor, "uses")
     Rel_L(dataProcessingChain, tapPointProcessor, "uses")
     Rel(dataProcessingChain, geoPackageUtils, "uses")
@@ -25,11 +25,11 @@ Container_Boundary(DataProcessingChain, "Data Processing Chain") {
     Rel(dataProcessingChain, toDictionaryProcessor, "uses")
 }
 Rel(geoPackageUtils, ili2gpkg, "uses")
-System_Ext(filesystem, "File System", "File system provided by the OS")
-ContainerDb(geoPackage, "GeoPackage", "SQLite Database", "Stores provided LKMap_2025 data to be converted")
+System_Ext(filesystem, "File System")
+ContainerDb(geoPackage, "GeoPackage", "SQLite Database")
 
-Rel(DataProcessingChain, geoPackage, "Uses")
-Rel(cli, filesystem, "writes to")
+Rel(Model, geoPackage, "Uses")
+Rel_L(cli, filesystem, "writes to")
 
 
 @enduml

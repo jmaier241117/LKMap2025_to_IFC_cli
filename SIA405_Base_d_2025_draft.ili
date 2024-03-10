@@ -1,7 +1,7 @@
 INTERLIS 2.4;
 
 MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
-  VERSION "0.3.1" =
+  VERSION "0.5.0" =
 
   IMPORTS UNQUALIFIED INTERLIS;
   IMPORTS Units;
@@ -28,7 +28,7 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
     /** Definiert die Lage- und Höhenbestimmung eines Objektes. Das Matching der Genauigkeit auf die Werte der Bestimmung wird vom Werkleitungsmedium festgelegt. Das Matching kann sich unterscheiden, da je nach Werkleitungsmedium verschiedene Anforderungen z. B. an die Höhe gestellt werden.
      */
     Bestimmungswert = (
-      /** Die Bestimmung wird als "genau" bezeichnet, wenn die Präzision und die Richtigkeit die Vorgaben des entsprechenden Fachverbands einhalten (siehe Kapitel 6.6.5 der Wegleitung).
+      /** Die Bestimmung wird als "genau" bezeichnet, wenn die Präzision und die Richtigkeit die Vorgaben des entsprechenden Fachverbands einhalten.
       */
       genau,
       /** Die Bestimmung wird als "unbekannt" bezeichnet, wenn keine Informationen zur Präzision oder Richtigkeit vorliegen.
@@ -39,7 +39,7 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
       ungenau
     );
 
-    /** unbekannt = 1800 (niedrigster Wert des Wertebereiches)
+    /** unbekannt = 1800 (niedrigster Wert des Wertebereiches).
      */
     Jahr = 1800 .. 2100;
 
@@ -47,28 +47,33 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
 
     OrganisationBezeichnung = TEXT*255;
 
-    /** Plantyp, für welchen die TextPos / SymbolPos definiert ist
+    /** Plantyp, für welchen die TextPos / SymbolPos definiert ist.
      */
     Plantyp = (
-      /** Default Leitungskataster 1:200
-       */
-      Leitungskataster200,
-      Uebersichtsplan (
-        /** 1:10'000 
+      Leitungskataster (
+        /** Leitungskataster 1:200
          */
-        UeP10000,
-        /** 1:2'000 
+        LK200,
+        /** Leitungskataster 1:500
+         */
+        LK500
+      ),
+      Uebersichtsplan (
+        /** Übersichtsplan 1:2'000 
          */
         UeP2000,
-        /** 1:5'000 
+        /** Übersichtsplan 1:5'000 
          */
-        UeP5000
+        UeP5000,
+        /** Übersichtsplan 1:10'000 
+         */
+        UeP10000
       ),
       Werkplan (
-        /** 1:200 
+        /** Werkplan 1:200 
          */
         WP200,
-        /** 1:500 
+        /** Werkplan 1:500 
          */
         WP500
       )
@@ -77,16 +82,16 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
     /** Betriebs- und Planungszustand mit folgendem Lebenszyklus (Projekt -> in_Betrieb -> ausser_Betrieb -> stillgelegt). Zuordnung Werte von allfällig erweiterten Werten für Status siehe bei den einzelnen Fachmedien.
      */
     Status= (
-      /** ausser_Betrieb sind Objekte welche aktuell nicht mehr im Betrieb sind, aber wieder reaktiviert werden könnten z.B. Reserve und weiterhin einen minimalen Unterhalt benötigen.
+      /** ausser_Betrieb sind Objekte, welche aktuell nicht mehr im Betrieb sind, aber wieder reaktiviert werden könnten z.B. Reserve und weiterhin einen minimalen Unterhalt benötigen.
        */
       ausser_Betrieb,
-      /** in_Betrieb sind Objekte welche dem Betrieb übergeben sind und instand zu halten sind
+      /** in_Betrieb sind Objekte, welche dem Betrieb übergeben sind und instand zu halten sind.
        */
       in_Betrieb,
       /** konkretes Bauprojekt vorhanden oder in Ausführung (im Bau). 
        */
       Projekt,
-      /** Objekte, welche vom Netz getrennt sind und in der Anlagenbuchhaltung abgeschrieben oder gelöscht wurden, aber sich weiterhin im Boden befinden. 
+      /** Objekte, welche vom Netz getrennt sind und in der Anlagenbuchhaltung abgeschrieben oder gelöscht wurden, sich aber weiterhin im Boden befinden und nicht mehr in Betrieb genommen werden können. 
        */
       stillgelegt,
       unbekannt
@@ -104,11 +109,11 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
     TextHAli: MANDATORY HALIGNMENT;
     TextVAli: MANDATORY VALIGNMENT;
     Plantyp: MANDATORY Plantyp;
-    /** ein oder mehrzeiliger, aus Sachattributen berechneter Wert (Datentyp MTEXT)
+    /** ein oder mehrzeiliger, aus Sachattributen berechneter Wert (Datentyp MTEXT).
      */
     Textinhalt: MANDATORY MTEXT;
     
-    /** für bilaterale weitere Spezifikationen
+    /** für bilaterale weitere Spezifikationen.
      */
     Bemerkung: TEXT*80;
   END SIA405_TextPos;
@@ -122,17 +127,16 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
     SymbolskalierungLaengs: 0.0 .. 9.9;
     SymbolskalierungHoch: 0.0 .. 9.9;
   END SIA405_SymbolPos;
-  
-    
+
   TOPIC Administration =
 
-    /** Bildet das Werkeigentümerverzeichnis in INTERLIS, allenfalls TOPIC so nennen?
+    /** Bildet das Organisationsverzeichnis.
      */
     CLASS Organisation =
-      /** STANDARD-OID gemäss INTERLIS 2.x nach dem Präfix-Postfix-Prinzip (16 Zeichen) definiert. Für Details siehe INTERLIS Referenzhandbuch. Die dazu notwendigen Präfixe können über https://www.interlis.ch/dienste/oid-bestellen  bezogen werden
+      /** STANDARDOID gemäss INTERLIS 2.x nach dem Präfix-Postfix-Prinzip (16 Zeichen) definiert. Für Details siehe INTERLIS Referenzhandbuch. Die dazu notwendigen Präfixe können über https://www.interlis.ch/dienste/oid-bestellen  bezogen werden.
        */
        OID AS STANDARDOID;
-      /** Allgemeine Bemerkungen
+      /** Allgemeine Bemerkungen.
        */
       Bemerkung: TEXT*255;
       /** Die Bezeichnung für Gemeinden wird gemäss BFS-Liste übernommen; für Private gemäss UID-Register, allenfalls mit Zusatz des Ortes der Filiale, falls keine separate UID dafür besteht.
@@ -141,35 +145,34 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
       /** Offizielle Gemeinde Nummer gemäss Bundesamt für Statistik (BFS), bei Gemeinde zwingend, sonst leer lassen.
        */
       Gemeindenummer: GemeindeNr;
-      /** Kurzbezeichnung
+      /** Kurzbezeichnung.
        */
       Kurzbezeichnung: TEXT*12;
-      /** Datum der letzten Änderung eines Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden, wird das Datum der Erzeugung des Transferdatensatzes ein gesetzt. Format: yyyymmdd (INTERLIS_1_DATE)
+      /** Datum der letzten Änderung eines Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden, wird das Datum der Erzeugung des Transferdatensatzes ein gesetzt. Format: yyyy-mm-dd
        */
-      Letzte_Aenderung: MANDATORY INTERLIS.INTERLIS_1_DATE;
+      Letzte_Aenderung: MANDATORY FORMAT INTERLIS.XMLDate "2015-01-01" .. "2034-12-31";
 
       Organisationstyp: MANDATORY (
-        /** Verband z.B. Abwasserverband oder Trinkwasserverbund
+        /** Verband z.B. Abwasserverband oder Trinkwasserverbund.
          */
         Verband,
         /** Teil einer Bundesverwaltung (z.B. Bundesamt für Umwelt, ASTRA, Armasuisse).
          */
         Bund,
-        /** Für die Belange der Siedlungsentwässerung zuständiges Organ der Gemeindeverwaltung.
+        /** Organ der Gemeindeverwaltung.
          */
         Gemeinde,
         /** Genossenschaft oder Korporation: Körperschaft öffentlichen Rechts. Falls privaten Rechtes dann als Privat abbilden.
          */
         Genossenschaft_Korporation,
-        /** Teil einer kantonalen Verwaltung (z.B. Amt für Umweltschutz, Amt für Abwasserentsorgung)
+        /** Teil einer kantonalen Verwaltung (z.B. Amt für Umweltschutz, Amt für Abwasserentsorgung).
          */
         Kanton,
-        /** Privatperson oder Privatorganisation
+        /** Privatperson oder Privatorganisation.
          */
         Privat
       );
-      Perimeter: GeometryCHLV95_V2.Surface;
-      /** Status der Organisation, damit untergegangende Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind.
+      /** Status der Organisation, damit untergegangene Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind.
        */
       Status: MANDATORY (
         aktiv,
@@ -179,7 +182,7 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
        */
       UID: UID;
     UNIQUE 
-      /** Die Kombination Bezeichnung, Organisationstyp und UID muss zusammen eindeutig sein
+      /** Die Kombination Bezeichnung, Organisationstyp und UID muss zusammen eindeutig sein.
        */
       Bezeichnung, Organisationstyp, UID; 
     END Organisation;
@@ -190,28 +193,42 @@ MODEL SIA405_Base_d_2025_draft (de) AT "https://405.sia.ch/models/"
     DEPENDS ON SIA405_Base_d_2025_draft.Administration;
     
       CLASS SIA405_BaseClass (ABSTRACT) =
-        /** STANDARD-OID gemäss INTERLIS 2.x nach dem Präfix-Postfix-Prinzip (16 Zeichen) definiert. Für Details siehe INTERLIS Referenzhandbuch. Die dazu notwendigen Präfixe können über https://www.interlis.ch/dienste/oid-bestellen  bezogen werden
+        /** UUIDOID gemäss INTERLIS 2 Referenzhandbuch. Format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
          */
-        OID AS STANDARDOID;
-        /** Datum der letzten Änderung eines Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden, wird das Datum der Erzeugung des Transferdatensatzes ein gesetzt. Format: yyyymmdd (INTERLIS_1_DATE)
+        OID AS UUIDOID;
+        /** Datum der letzten Änderung eines Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden, wird das Datum der Erzeugung des Transferdatensatzes ein gesetzt. Format: yyyy-mm-dd
          */
-        Letzte_Aenderung: MANDATORY INTERLIS.INTERLIS_1_DATE;
+        Letzte_Aenderung: MANDATORY FORMAT INTERLIS.XMLDate "1980-01-01" .. "2034-12-31";
       END SIA405_BaseClass;
 
       /** Person oder Stelle, die zuständig ist für Erheben, Nachführen und Verwalten eines Datensatzes. Falls z.B. ein Ingenieurbüro diese Rolle im Auftrag einer Gemeinde wahrnimmt, ist die Gemeinde Datenherr und nicht das Ingenieurbüro. Letzteres nimmt in diesem Fall die Rolle des Datenlieferanten wahr.
-         */
-      ASSOCIATION DatenherrAssoc = 
+       */
+      ASSOCIATION DatenherrAssoc =
         DatenherrRef (EXTERNAL) -- {1} SIA405_Base_d_2025_draft.Administration.Organisation;
         SIA405_BaseClass_DatenherrAssocRef -- {0..*} SIA405_BaseClass;
       END DatenherrAssoc;
 
-      /** Person oder Stelle, die einen Transferdatensatz erzeugt
-         */
+      /** Person oder Stelle, die einen Transferdatensatz erzeugt.
+       */
       ASSOCIATION DatenlieferantAssoc =
         DatenlieferantRef (EXTERNAL) -- {1} SIA405_Base_d_2025_draft.Administration.Organisation;
         SIA405_BaseClass_DatenlieferantAssocRef -- {0..*} SIA405_BaseClass;
       END DatenlieferantAssoc;
-  
+
+      /** Person oder Stelle, die Eigentümerin eines Objekts ist.
+       */
+      ASSOCIATION NetzeigentuemerAssoc =
+        NetzeigentuemerRef (EXTERNAL) -- {1} SIA405_Base_d_2025_draft.Administration.Organisation;
+        SIA405_BaseClass_NetzeigentuemerAssocRef -- {0..*} SIA405_BaseClass;
+      END NetzeigentuemerAssoc;
+
+      /** Person oder Stelle, die Betreiberin eines Objektes ist.
+       */
+      ASSOCIATION NetzbetreiberAssoc =
+        NetzbetreiberRef (EXTERNAL) -- {1} SIA405_Base_d_2025_draft.Administration.Organisation;
+        SIA405_BaseClass_NetzbetreiberAssocRef -- {0..*} SIA405_BaseClass;
+      END NetzbetreiberAssoc;
+
   END SIA405_BaseTopic;
-  
+
 END SIA405_Base_d_2025_draft.

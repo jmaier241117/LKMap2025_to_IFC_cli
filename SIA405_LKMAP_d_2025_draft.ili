@@ -1,7 +1,7 @@
 INTERLIS 2.4;
 
 MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
-  VERSION "0.7.3" =
+  VERSION "0.8.0" =
 
   IMPORTS UNQUALIFIED INTERLIS;
   IMPORTS Units;
@@ -17,9 +17,9 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
       /** Art des Abstichpunktes, der zu einem LKObjekt gehört.
        */
       Art: MANDATORY (
-        /** Der Abstichpunkt beschreibt eine Ersatzkote, wenn andere Höheninformationen fehlen. Dies kann z. B. die Terrainhöhe oder eine darauf basierende Normtiefe sein.
+        /** Der Abstichpunkt beschreibt eine theoretisch angenommene Kote, wenn andere Höheninformationen fehlen. Dies kann z. B. die Terrainhöhe oder eine darauf basierende Normtiefe sein.
          */
-        KoteErsatz,
+        KoteAnnahme,
         /** Der Abstichpunkt beschreibt einen Punkt der Referenzebene gemäss Wegleitung.
          */
         KoteRef,
@@ -47,10 +47,10 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
       /** Weitere Attribute zum LKObjekt gemäss bilateralen Vereinbarungen und medienspezifisch, die über die Darstellung der belegten Fläche hinausgehen.
        */
       Eigenschaft: BAG OF Eigenschaften;
-      Lagebestimmung: MANDATORY SIA405_Base_d_2025_draft.Bestimmungswert;
       /** Hoehenbestimmung des gesamten Objekt, d.h. die schlechteste Höhengenauigkeit eines Abstichpunkts bestimmt die Hoehenbestimmung.
        */
       Hoehenbestimmung: SIA405_Base_d_2025_draft.Bestimmungswert;
+      Lagebestimmung: MANDATORY SIA405_Base_d_2025_draft.Bestimmungswert;
       /** Betriebs- und Planungszustand. 
        */
       Status: SIA405_Base_d_2025_draft.Status;
@@ -91,18 +91,10 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
           /** flächenhafte Spezialschächte (Kabine, Oeffentlicher_Verbraucher, Schacht, Station mit Geometrie), sonst als LKPunkt abbilden.
            */ 
           Spezialbauwerk (
-            /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
-             */
             Kabine,
-            /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
-             */
+            OeffentlicherVerbraucher,
             Schacht,
-            /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
-             */
-            Station,
-            /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
-             */
-            OeffentlicherVerbraucher
+            Station
           ),
           /** Tragwerke werden in der Regel als Symbol dargestellt. Bei Tragwerken mit grosser Fläche (z.B. Gittermast) kann optional auch die Fläche dargestellt werden.
            */
@@ -112,7 +104,7 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
           Trasse,
           unbekannt
         ),
-        Fernwaerme (
+        Waerme (
           /** flächenhafte Bauwerke mit Geometrie.
            */
           Bauwerk (
@@ -150,6 +142,18 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
           Trasse,
           unbekannt
         ),
+        medienuebergreifend (
+          /** Innerhalb des Perimeters werden keine Detaildaten an LKMap geliefert.
+           */
+          Perimeter_ohne_Details,
+          /** Die Rohrleitungsverordnung (RLV) schreibt vor, dass alle Bauvorhaben innerhalb eines waagrecht gemessenen Abstandes von 10 m von der Rohrleitung bewilligungspflichtig sind. Diese Information wird aus den Basisdaten der amtlichen Vermessung (TOPIC Rohrleitungen, Werkleitungsmedium Gas) generiert (eigener Datenlieferant).
+           */
+          Sicherheitskorridor,
+          /** z.B. Düker, Kulisse, Leitungskanal, Stollen, uebrige die nicht einem Werkleitungsmedium zugeordnet werden können.
+           */
+          Spezialbauwerk,
+          weitere
+        ),
         Wasser (
           /** alle Subwerte von Spezialbauwerk.Art
            */
@@ -161,25 +165,12 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
           /** weitere in LKMap bisher nicht abgebildete Medien.
            */
           weitere
-        ),
-        Medien_uebergreifend (
-          /** Die Rohrleitungsverordnung (RLV) schreibt vor, dass alle Bauvorhaben innerhalb eines waagrecht gemessenen Abstandes von 10 m von der Rohrleitung bewilligungspflichtig sind. Diese Information wird aus den Basisdaten der amtlichen Vermessung (TOPIC Rohrleitungen, Werkleitungsmedium Gas) generiert (eigener Datenlieferant).
-           */
-          Sicherheitskorridor,
-          /** z.B. Dücker, Kulisse, Leitungskanal, Stollen, uebrige die nicht einem Werkleitungsmedium zugeordnet werden können.
-           */
-          Spezialbauwerk,
-          /** aus dem LK entlassenes Gebiet.
-           */
-          Perimeter_entlassenes_Gebiet,
-          weitere
         )
       );
     END LKFlaeche;
 
     ASSOCIATION Abstichpunkt_LKFlaecheAssoc =
-      /* LKFlaecheRef -<#> {1} LKFlaeche; */
-	  LKFlaecheRef -<#> {0..1} LKFlaeche;
+      LKFlaecheRef -<#> {0..1} LKFlaeche;
       Abstichpunkt_LKFlaecheAssocRef -- {0 .. *} Abstichpunkt;
     END Abstichpunkt_LKFlaecheAssoc;
 
@@ -190,7 +181,7 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
       /** falls Breite nicht vorhanden, abfüllen der angenommenen Breite des Objektes [mm]. Der Standardwert ist 250 [mm]. (neu Release 2025)
        */
       Breite_Annahme: SIA405_Base_d_2025_draft.Breite;
-      /** offener Linienzug, Stützpunkte in 2D-Landeskoordinaten, 2 Dezimalstellen
+      /** offener Linienzug, der Kreisbögen enthalten kann
        */
       Linie: MANDATORY GeometryCHLV95_V2.Line;
       /** Es werden alle Objekte aufgelistet, die gemäss WI Modell dargestellt werden. Typ / Funktion / Art werden direkt übernommen und nicht zusammengefasst unter anderen Namen.
@@ -212,7 +203,7 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
             unterirdisch
           )
         ),
-        Fernwaerme (
+        Waerme (
           /** Steuer- und Signalkabel
            */
           Fernwirkkabel,
@@ -267,8 +258,7 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
     END LKLinie;
 
     ASSOCIATION Abstichpunkt_LKLinieAssoc =
-      /* LKLinieRef -<#> {1} LKLinie; */
-	  LKLinieRef -<#> {0..1} LKLinie;
+      LKLinieRef -<#> {0..1} LKLinie;
       Abstichpunkt_LKLinieAssocRef -- {0 .. *} Abstichpunkt;
     END Abstichpunkt_LKLinieAssoc;
 
@@ -317,17 +307,27 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
           Versickerungsanlage
         ),
         Elektrizitaet (
+          /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
+           */
           Kabine,
+          /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
+           */
           OeffentlicherVerbraucher,
+          /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
+           */
           Schacht (
             rechteckig,
             rund
           ),
+          /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
+           */
           Station,
+          /** falls zusätzlich Fläche erfasst, auch als LKFlaeche exportieren.
+           */
           Tragwerk,
           unbekannt
         ),
-        Fernwaerme (
+        Waerme (
           Kabelpunkt (
             Kabelschacht,
             Kabine
@@ -400,8 +400,7 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
     END LKPunkt;
 
     ASSOCIATION Abstichpunkt_LKPunktAssoc =
-      !! LKPunktRef -<#> {1} LKPunkt;
-	  LKPunktRef -<#> {0..1} LKPunkt;
+      LKPunktRef -<#> {0..1} LKPunkt;
       Abstichpunkt_LKPunktAssoc -- {0 .. *} Abstichpunkt;
     END Abstichpunkt_LKPunktAssoc;
 
@@ -412,76 +411,6 @@ MODEL SIA405_LKMap_d_2025_draft (de) AT "https://405.sia.ch/models/"
       LKObjektRef -<#> {1} LKObjekt;
       LKObjekt_LKObjekt_TextAssocRef -- {0 .. *} LKObjekt_Text;
     END LKObjekt_LKObjektTextAssoc;
-
-    ASSOCIATION EigentuemerAssoc =
-      EigentuemerRef (EXTERNAL) -- {1} SIA405_Base_d_2025_draft.Administration.Organisation;
-      LKObjekt_EigentuemerAssocRef -- {0..*} LKObjekt;
-    END EigentuemerAssoc;
-
-    /** Datenträger
-     */
-    CLASS Datentraeger EXTENDS SIA405_BaseClass =
-    /** Beschreibt die Art des Datenträgers.
-     */
-    Art: MANDATORY (
-      andere,
-      CD,
-      Diskette,
-      DVD,
-      Festplatte,
-      Server,
-      Videoband
-    );
-    /** Bemerkungen zum Datenträger.
-     */
-    Bemerkung: TEXT*80;
-    Bezeichnung: MANDATORY TEXT*60;
-    /** Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer.
-     */
-    Pfad: TEXT*100;
-    /** Ort, wo sich der Datenträger befindet.
-     */
-    Standort: TEXT*50;
-    END Datentraeger;
-
-    /** Die Klasse Datei kann eine Assoziation mit jeder Klasse des Datenmodells eingehen.
-     */
-    CLASS Datei EXTENDS SIA405_BaseClass =
-    /** Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ 'Video' einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes.
-     */
-    Art: MANDATORY (
-      andere,
-      digitales_Video,
-      Foto,
-      Panoramofilm,
-      Scan,
-      Skizze,
-      Textdatei,
-      Video
-    );
-    /** Allgemeine Bemerkungen.
-     */
-    Bemerkung: TEXT*80;
-    Bezeichnung: MANDATORY TEXT*60;
-    /** Gibt an, zu welcher Klasse des Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Für Fachmodelle erweitern mit den Klassen des Fachmodells.
-     */
-    Klasse: MANDATORY (
-      LKFlaeche,
-      LKLinie,
-      LKPunkt
-    );
-    /** Objekt-ID (OID) des Datensatzes zu dem die Datei gehört.
-     */
-    Objekt: MANDATORY TEXT*16;
-    /** Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01.
-     */
-    Relativpfad: TEXT*200;
-    END Datei;
-
-    ASSOCIATION Datei_DatentraegerAssoc =
-      DatentraegerRef  -- {1} Datentraeger;
-      Datei_DatentraegerAssocRef -- {0..*} Datei;
-    END Datei_DatentraegerAssoc;
 
   END SIA405_LKMap;
 
